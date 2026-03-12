@@ -12,4 +12,19 @@
   body {
     @apply bg-background-light text-slate-900 font-sans;
   }
+  
+  button {
+    @apply cursor-pointer;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    @apply text-slate-400;
+  }
+
+  input[type="date"]::-webkit-calendar-picker-indicator,
+  input[type="time"]::-webkit-calendar-picker-indicator {
+    opacity: 0.8;
+    filter: invert(63%) sepia(9%) saturate(342%) hue-rotate(178deg) brightness(92%) contrast(88%);
+  }
 }

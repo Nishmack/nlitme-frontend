@@ -50,12 +50,20 @@ const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 const Header = ({ currentPage, setCurrentPage }: { currentPage: string, setCurrentPage: (page: string) => void }) => {
   const [isServicesOpen, setIsServicesOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMobileServicesOpen, setIsMobileServicesOpen] = useState(false);
+  const [isMobilePagesOpen, setIsMobilePagesOpen] = useState(false);
 
   const services = [
     { id: 'services', label: 'All Services' },
     { id: 'adhd', label: 'ADHD Therapy' },
-    { id: 'anxiety', label: 'Anxiety Focus' },
-    { id: 'relationships', label: 'Relationships' },
+    { id: 'anxiety', label: 'Anxiety Therapy' },
+    { id: 'learning', label: 'Learning Problem Therapy' },
+    { id: 'depression', label: 'Depression Therapy' },
+    { id: 'mood', label: 'Mood Disorders Therapy' },
+    { id: 'ocd', label: 'OCD Therapy' },
+    { id: 'relationships', label: 'Relationships Therapy' },
+    { id: 'anger', label: 'Anger management Therapy' },
   ];
 
   const pages = [
@@ -66,19 +74,28 @@ const Header = ({ currentPage, setCurrentPage }: { currentPage: string, setCurre
   ];
 
   return (
-    <header className="flex items-center justify-between border-b border-slate-200 bg-white/80 backdrop-blur-md px-6 py-4 lg:px-20 sticky top-0 z-50">
+    <header className="flex items-center justify-between border-b border-slate-200 bg-white px-6 py-4 lg:px-20 sticky top-0 z-50">
+      {/* Logo */}
       <div className="flex items-center gap-2 text-primary cursor-pointer" onClick={() => setCurrentPage('home')}>
         <div className="size-10 bg-primary rounded-lg flex items-center justify-center">
           <span className="material-symbols-outlined text-white text-2xl">spa</span>
         </div>
         <h2 className="text-2xl font-bold tracking-tight text-primary">nlitme</h2>
       </div>
+
+      {/* Desktop nav */}
       <nav className="hidden md:flex flex-1 justify-center gap-8">
         <button 
           onClick={() => setCurrentPage('home')}
           className={`text-sm font-semibold transition-colors ${currentPage === 'home' ? 'text-primary' : 'text-slate-600 hover:text-primary'}`}
         >
           Home
+        </button>
+        <button 
+          onClick={() => setCurrentPage('about')}
+          className={`text-sm font-semibold transition-colors ${currentPage === 'about' ? 'text-primary' : 'text-slate-600 hover:text-primary'}`}
+        >
+          About Us
         </button>
         <div 
           className="relative group"
@@ -115,12 +132,6 @@ const Header = ({ currentPage, setCurrentPage }: { currentPage: string, setCurre
             )}
           </AnimatePresence>
         </div>
-        <button 
-          onClick={() => setCurrentPage('about')}
-          className={`text-sm font-semibold transition-colors ${currentPage === 'about' ? 'text-primary' : 'text-slate-600 hover:text-primary'}`}
-        >
-          About Us
-        </button>
         
         <div className="relative group">
           <button 
@@ -141,7 +152,9 @@ const Header = ({ currentPage, setCurrentPage }: { currentPage: string, setCurre
           </div>
         </div>
       </nav>
-      <div className="flex items-center gap-6">
+
+      {/* Right side actions + mobile hamburger */}
+      <div className="flex items-center gap-4">
         <button 
           onClick={() => setCurrentPage('contact')}
           className="hidden sm:block text-sm font-bold text-slate-600 hover:text-primary transition-colors"
@@ -150,16 +163,163 @@ const Header = ({ currentPage, setCurrentPage }: { currentPage: string, setCurre
         </button>
         <button 
           onClick={() => setCurrentPage('appointment')}
-          className="flex items-center justify-center rounded-xl h-11 px-6 bg-primary text-white text-sm font-bold gap-2 hover:bg-primary/90 transition-all shadow-lg shadow-primary/20"
+          className="hidden md:flex items-center justify-center rounded-xl h-11 px-6 bg-primary text-white text-sm font-bold gap-2 hover:bg-primary/90 transition-all shadow-lg shadow-primary/20"
         >
           <span>Book Now</span>
         </button>
+        {/* Mobile hamburger icon (visible on mobile) */}
+        <button
+          type="button"
+          className="inline-flex items-center justify-center rounded-lg p-2 text-slate-700 hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-primary/20 md:hidden"
+          aria-label="Open menu"
+          onClick={() => setIsMobileMenuOpen(true)}
+        >
+          <svg
+            className="h-6 w-6"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M4 6H20M4 12H20M4 18H20"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </button>
       </div>
+
+      {/* Mobile slide-in menu */}
+      {isMobileMenuOpen && (
+        <div className="fixed inset-0 z-50 bg-white md:hidden">
+          <button
+            className="absolute inset-0 w-full h-full cursor-default"
+            aria-label="Close menu overlay"
+            onClick={() => setIsMobileMenuOpen(false)}
+          />
+          <div className="absolute right-0 top-0 h-full w-full max-w-full bg-white shadow-xl flex flex-col">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200">
+              <div className="flex items-center gap-2 text-primary">
+                <div className="size-9 bg-primary rounded-lg flex items-center justify-center">
+                  <span className="material-symbols-outlined text-white text-xl">spa</span>
+                </div>
+                <span className="font-bold tracking-tight text-lg">nlitme</span>
+              </div>
+              <button
+                type="button"
+                className="inline-flex items-center justify-center rounded-lg p-2 text-slate-700 hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-primary/20"
+                aria-label="Close menu"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                <svg
+                  className="h-5 w-5"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M6 6L18 18M6 18L18 6"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </button>
+            </div>
+            <nav className="flex-1 px-6 py-6 space-y-2">
+              {/* Top-level header items */}
+              <button
+                onClick={() => { setCurrentPage('home'); setIsMobileMenuOpen(false); }}
+                className="block w-full text-left text-sm font-semibold text-slate-700 py-2"
+              >
+                Home
+              </button>
+              <button
+                onClick={() => { setCurrentPage('about'); setIsMobileMenuOpen(false); }}
+                className="block w-full text-left text-sm font-semibold text-slate-700 py-2"
+              >
+                About Us
+              </button>
+
+              {/* Services dropdown */}
+              <div className="pt-2 border-t border-slate-200">
+                <button
+                  type="button"
+                  onClick={() => setIsMobileServicesOpen((prev) => !prev)}
+                  className="flex w-full items-center justify-between py-2 text-sm font-semibold text-slate-700"
+                >
+                  <span>Services</span>
+                  <ChevronDown
+                    className={`size-4 transition-transform ${isMobileServicesOpen ? 'rotate-180' : ''}`}
+                  />
+                </button>
+                {isMobileServicesOpen && (
+                  <div className="mt-1 space-y-1">
+                    {services.map(service => (
+                      <button
+                        key={service.id}
+                        onClick={() => { setCurrentPage(service.id); setIsMobileMenuOpen(false); }}
+                        className="block w-full text-left text-sm text-slate-600 py-1 pl-3"
+                      >
+                        {service.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Pages dropdown */}
+              <div className="pt-2 border-t border-slate-200">
+                <button
+                  type="button"
+                  onClick={() => setIsMobilePagesOpen((prev) => !prev)}
+                  className="flex w-full items-center justify-between py-2 text-sm font-semibold text-slate-700"
+                >
+                  <span>Pages</span>
+                  <ChevronDown
+                    className={`size-4 transition-transform ${isMobilePagesOpen ? 'rotate-180' : ''}`}
+                  />
+                </button>
+                {isMobilePagesOpen && (
+                  <div className="mt-1 space-y-1">
+                    {pages.map(page => (
+                      <button
+                        key={page.id}
+                        onClick={() => { setCurrentPage(page.id); setIsMobileMenuOpen(false); }}
+                        className="block w-full text-left text-sm text-slate-600 py-1 pl-3"
+                      >
+                        {page.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </nav>
+            <div className="border-t border-slate-200 px-6 py-4 space-y-3">
+              <button
+                onClick={() => { setCurrentPage('contact'); setIsMobileMenuOpen(false); }}
+                className="w-full text-sm font-semibold text-slate-700 py-2"
+              >
+                Contact Us
+              </button>
+              <button
+                onClick={() => { setCurrentPage('appointment'); setIsMobileMenuOpen(false); }}
+                className="w-full flex items-center justify-center rounded-xl h-10 bg-primary text-white text-sm font-bold gap-2 hover:bg-primary/90 transition-all shadow-md shadow-primary/20"
+              >
+                Book Now
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </header>
   );
 };
 
-const HomeHero = () => (
+const HomeHero = ({ setCurrentPage }: { setCurrentPage: (page: string) => void }) => (
   <section className="max-w-7xl mx-auto px-6 py-12 lg:py-24">
     <div className="grid lg:grid-cols-2 gap-16 items-center">
       <motion.div 
@@ -173,30 +333,16 @@ const HomeHero = () => (
             Highly evaluated therapists, selected for you
           </h1>
           <p className="text-slate-600 text-xl leading-relaxed max-w-xl">
-            Modern therapist search fields for your unique mental health needs. Find the perfect match today.
-          </p>
+          Start your path to psychological wellness with our thoroughly selected specialists.          </p>
         </div>
         
-        <div className="flex flex-col sm:flex-row gap-2 bg-white p-3 rounded-2xl shadow-2xl shadow-slate-200/50 border border-slate-100">
-          <div className="flex items-center flex-1 px-4 py-3 gap-3">
-            <Search className="text-slate-400 size-5" />
-            <input 
-              className="w-full bg-transparent border-none focus:ring-0 text-slate-900 placeholder:text-slate-400 font-medium" 
-              placeholder="Specialty or therapist name..."
-            />
-          </div>
-          <div className="hidden sm:block w-px h-10 bg-slate-100 self-center"></div>
-          <div className="flex items-center flex-1 px-4 py-3 gap-3">
-            <MapPin className="text-slate-400 size-5" />
-            <input 
-              className="w-full bg-transparent border-none focus:ring-0 text-slate-900 placeholder:text-slate-400 font-medium" 
-              placeholder="Location..."
-            />
-          </div>
-          <button className="bg-primary text-white px-10 py-4 rounded-xl font-bold hover:bg-primary/95 transition-all shadow-xl shadow-primary/20">
-            Search
-          </button>
-        </div>
+        <button
+          type="button"
+          onClick={() => setCurrentPage('appointment')}
+          className="w-full sm:w-auto bg-primary text-white px-10 py-4 rounded-xl font-bold hover:bg-primary/95 transition-all shadow-xl shadow-primary/20"
+        >
+          Start Your Journey
+        </button>
       </motion.div>
 
       <motion.div 
@@ -227,7 +373,7 @@ const HomeHero = () => (
   </section>
 );
 
-const AboutHero = () => (
+const AboutHero = ({ onLearnMission }: { onLearnMission: () => void }) => (
   <section className="max-w-7xl mx-auto px-6 py-12 lg:py-24">
     <div className="flex flex-col lg:flex-row gap-16 items-center">
       <motion.div 
@@ -251,7 +397,11 @@ const AboutHero = () => (
             Empowering your mental wellness with culturally sensitive care and expert guidance tailored for the Asian community. We understand the nuances of heritage and the pressures of modern life.
           </p>
         </div>
-        <button className="bg-primary text-white px-10 py-4 rounded-xl font-bold hover:bg-primary/95 transition-all shadow-xl shadow-primary/20 w-fit">
+        <button
+          type="button"
+          onClick={onLearnMission}
+          className="bg-primary text-white px-10 py-4 rounded-xl font-bold hover:bg-primary/95 transition-all shadow-xl shadow-primary/20 w-fit"
+        >
           Learn Our Mission
         </button>
       </motion.div>
@@ -260,7 +410,7 @@ const AboutHero = () => (
 );
 
 const MissionApproach = () => (
-  <section className="py-24 bg-white">
+  <section id="about-mission" className="py-24 bg-white">
     <div className="max-w-7xl mx-auto px-6">
       <h2 className="text-3xl font-black mb-12 tracking-tight">About Us</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
@@ -303,7 +453,7 @@ const MissionApproach = () => (
   </section>
 );
 
-const TopSpecialties = () => {
+const TopSpecialties = ({ setCurrentPage }: { setCurrentPage: (page: string) => void }) => {
   const specialties = [
     { name: "Anxiety", icon: <Brain className="size-8" />, desc: "Techniques to manage intrusive thoughts and physical symptoms of stress." },
     { name: "Relationships", icon: <Users className="size-8" />, desc: "Navigating family dynamics, dating, and interpersonal communication." },
@@ -319,7 +469,11 @@ const TopSpecialties = () => {
             <h2 className="text-4xl font-black tracking-tight">Top Specialties</h2>
             <p className="text-slate-500 text-lg font-medium mt-2">Focused care for life's most common challenges.</p>
           </div>
-          <button className="text-primary font-bold flex items-center gap-2 hover:underline text-lg">
+          <button
+            type="button"
+            onClick={() => setCurrentPage('services')}
+            className="text-primary font-bold flex items-center gap-2 hover:underline text-lg"
+          >
             View All Services <ChevronRight className="size-5" />
           </button>
         </div>
@@ -395,11 +549,18 @@ const CommunityVoices = () => (
   </section>
 );
 
+const isValidEmail = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+const isValidPhone = (value: string) => {
+  const digits = value.replace(/\D/g, '');
+  return digits.length === 10;
+};
+
 const AppointmentForm = () => {
   const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
   const [preferredDate, setPreferredDate] = useState('');
-  const [preferredTime, setPreferredTime] = useState('Morning (9 AM - 12 PM)');
+  const [preferredTime, setPreferredTime] = useState('');
   const [notes, setNotes] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState<string | null>(null);
@@ -411,8 +572,18 @@ const AppointmentForm = () => {
     setSubmitSuccess(null);
     setSubmitError(null);
 
-    if (!name.trim() || !preferredDate || !preferredTime) {
-      setSubmitError('Please fill in your name, preferred date, and time.');
+    if (!name.trim() || !email.trim() || !phone.trim() || !preferredDate || !preferredTime) {
+      setSubmitError('Please fill in your name, email, phone, preferred date, and time.');
+      return;
+    }
+
+    if (!isValidEmail(email.trim())) {
+      setSubmitError('Please enter a valid email address.');
+      return;
+    }
+
+    if (!isValidPhone(phone.trim())) {
+      setSubmitError('Please enter a valid phone number.');
       return;
     }
 
@@ -420,7 +591,8 @@ const AppointmentForm = () => {
       'Request an Appointment (About page)',
       '',
       `Name: ${name.trim()}`,
-      email.trim() ? `Email: ${email.trim()}` : null,
+      `Email: ${email.trim()}`,
+      `Phone: ${phone.trim()}`,
       `Preferred Date: ${preferredDate}`,
       `Preferred Time: ${preferredTime}`,
       '',
@@ -437,7 +609,7 @@ const AppointmentForm = () => {
         },
         body: JSON.stringify({
           name: name.trim(),
-          email: email.trim() || undefined,
+          email: email.trim(),
           message: messageLines.join('\n')
         })
       });
@@ -449,6 +621,7 @@ const AppointmentForm = () => {
       setSubmitSuccess('Your appointment request has been sent. We will contact you shortly.');
       setName('');
       setEmail('');
+      setPhone('');
       setPreferredDate('');
       setPreferredTime('Morning (9 AM - 12 PM)');
       setNotes('');
@@ -498,57 +671,80 @@ const AppointmentForm = () => {
                 </div>
               )}
               <div className="flex flex-col gap-3">
-                <label className="text-sm font-black text-slate-900 uppercase tracking-wider">Full Name</label>
-                <input 
-                  className="w-full h-14 px-5 rounded-2xl border border-slate-200 bg-slate-50 focus:ring-2 focus:ring-primary focus:bg-white outline-none transition-all font-medium" 
-                  placeholder="e.g. Anjali Gupta" 
+                <label className="text-sm font-semibold text-slate-700">
+                  Full Name <span className="text-red-500">*</span>
+                </label>
+                <input
+                  className="w-full px-5 py-3 rounded-lg border border-slate-200 bg-slate-50 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
+                  placeholder="Enter your full name" 
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                 />
               </div>
               <div className="flex flex-col gap-3">
-                <label className="text-sm font-black text-slate-900 uppercase tracking-wider">Email Address</label>
-                <input 
-                  className="w-full h-14 px-5 rounded-2xl border border-slate-200 bg-slate-50 focus:ring-2 focus:ring-primary focus:bg-white outline-none transition-all font-medium" 
-                  placeholder="email@example.com" 
+                <label className="text-sm font-semibold text-slate-700">
+                  Phone Number <span className="text-red-500">*</span>
+                </label>
+                <input
+                  className="w-full px-5 py-3 rounded-lg border border-slate-200 bg-slate-50 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
+                  placeholder="Enter your phone number"
+                  type="tel"
+                  value={phone}
+                  onChange={(e) => {
+                    const digits = e.target.value.replace(/\D/g, '').slice(0, 10);
+                    setPhone(digits);
+                  }}
+                />
+              </div>
+              <div className="flex flex-col gap-3">
+                <label className="text-sm font-semibold text-slate-700">
+                  Email Address <span className="text-red-500">*</span>
+                </label>
+                <input
+                  className="w-full px-5 py-3 rounded-lg border border-slate-200 bg-slate-50 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
+                  placeholder="Enter your email address" 
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
               <div className="flex flex-col gap-3">
-                <label className="text-sm font-black text-slate-900 uppercase tracking-wider">Preferred Date</label>
+                <label className="text-sm font-semibold text-slate-700">
+                  Preferred Date <span className="text-red-500">*</span>
+                </label>
                 <div className="relative">
-                  <input 
-                    className="w-full h-14 px-5 rounded-2xl border border-slate-200 bg-slate-50 focus:ring-2 focus:ring-primary focus:bg-white outline-none transition-all font-medium" 
+                  <input
+                    className="w-full px-5 py-3 rounded-lg border border-slate-200 bg-slate-50 text-slate-400 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
                     type="date"
                     value={preferredDate}
                     onChange={(e) => setPreferredDate(e.target.value)}
                   />
-                  <Calendar className="absolute right-5 top-1/2 -translate-y-1/2 text-slate-400 size-5 pointer-events-none" />
                 </div>
               </div>
               <div className="flex flex-col gap-3">
-                <label className="text-sm font-black text-slate-900 uppercase tracking-wider">Preferred Time</label>
+                <label className="text-sm font-semibold text-slate-700">
+                  Preferred Time <span className="text-red-500">*</span>
+                </label>
                 <div className="relative">
                   <select
-                    className="w-full h-14 px-5 rounded-2xl border border-slate-200 bg-slate-50 focus:ring-2 focus:ring-primary focus:bg-white outline-none transition-all font-medium appearance-none"
+                    className="w-full px-5 py-3 rounded-lg border border-slate-200 bg-slate-50 text-slate-400 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all appearance-none"
                     value={preferredTime}
                     onChange={(e) => setPreferredTime(e.target.value)}
                   >
-                    <option>Morning (9 AM - 12 PM)</option>
-                    <option>Afternoon (12 PM - 5 PM)</option>
-                    <option>Evening (5 PM - 8 PM)</option>
+                    <option value="">Select a time</option>
+                    <option value="Morning (9 AM - 12 PM)">Morning (9 AM - 12 PM)</option>
+                    <option value="Afternoon (12 PM - 5 PM)">Afternoon (12 PM - 5 PM)</option>
+                    <option value="Evening (5 PM - 8 PM)">Evening (5 PM - 8 PM)</option>
                   </select>
                   <Clock className="absolute right-5 top-1/2 -translate-y-1/2 text-slate-400 size-5 pointer-events-none" />
                 </div>
               </div>
               <div className="flex flex-col gap-3 sm:col-span-2">
-                <label className="text-sm font-black text-slate-900 uppercase tracking-wider">Briefly share what's on your mind</label>
-                <textarea 
-                  className="w-full p-5 rounded-2xl border border-slate-200 bg-slate-50 focus:ring-2 focus:ring-primary focus:bg-white outline-none transition-all font-medium" 
-                  placeholder="I'm interested in..." 
+                <label className="text-sm font-semibold text-slate-700">Reason for Appointment</label>
+                <textarea
+                  className="w-full p-4 rounded-lg border border-slate-200 bg-slate-50 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
+                  placeholder="Enter what's on your mind" 
                   rows={4}
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
@@ -642,10 +838,23 @@ const Services = ({ setCurrentPage }: { setCurrentPage: (page: string) => void, 
           Compassionate care tailored for Southeast and South Asian communities, focusing on anxiety and relationship healing through culturally sensitive therapy.
         </p>
         <div className="flex gap-4">
-          <button className="bg-primary text-white px-8 py-4 rounded-xl font-bold text-base hover:shadow-xl transition-all shadow-lg shadow-primary/20">
+          <button
+            type="button"
+            onClick={() => setCurrentPage('appointment')}
+            className="bg-primary text-white px-8 py-4 rounded-xl font-bold text-base hover:shadow-xl transition-all shadow-lg shadow-primary/20"
+          >
             Consultation
           </button>
-          <button className="border border-slate-300 px-8 py-4 rounded-xl font-bold text-base hover:bg-slate-50 transition-all">
+          <button
+            type="button"
+            onClick={() => {
+              const el = document.getElementById('services-faqs');
+              if (el) {
+                el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }
+            }}
+            className="border border-slate-300 px-8 py-4 rounded-xl font-bold text-base hover:bg-slate-50 transition-all"
+          >
             View FAQs
           </button>
         </div>
@@ -663,7 +872,7 @@ const Services = ({ setCurrentPage }: { setCurrentPage: (page: string) => void, 
       </div>
     </section>
 
-    <section className="py-24 bg-white">
+    <section id="services-faqs" className="py-24 bg-white">
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
           <div className="max-w-xl">
@@ -758,61 +967,6 @@ const Services = ({ setCurrentPage }: { setCurrentPage: (page: string) => void, 
         </div>
       </div>
     </section>
-
-    <section className="py-24 bg-white">
-      <div className="max-w-4xl mx-auto px-6">
-        <div className="bg-white border border-slate-100 rounded-[3rem] overflow-hidden shadow-2xl">
-          <div className="bg-primary p-12 text-white text-center">
-            <h2 className="text-4xl font-black mb-4 tracking-tight">Request an Appointment</h2>
-            <p className="text-white/70 text-lg font-medium">Take the first step towards mental clarity and peace.</p>
-          </div>
-          <div className="p-12 lg:p-16">
-            <form className="grid grid-cols-1 md:grid-cols-2 gap-10">
-              <div className="flex flex-col gap-3">
-                <label className="text-sm font-black text-slate-900 uppercase tracking-wider flex items-center gap-2">
-                  <User className="size-4" /> Full Name
-                </label>
-                <input className="w-full h-14 px-5 rounded-2xl border border-slate-200 bg-slate-50 focus:ring-2 focus:ring-primary focus:bg-white outline-none transition-all font-medium" placeholder="John Doe" type="text"/>
-              </div>
-              <div className="flex flex-col gap-3">
-                <label className="text-sm font-black text-slate-900 uppercase tracking-wider flex items-center gap-2">
-                  <Mail className="size-4" /> Email Address
-                </label>
-                <input className="w-full h-14 px-5 rounded-2xl border border-slate-200 bg-slate-50 focus:ring-2 focus:ring-primary focus:bg-white outline-none transition-all font-medium" placeholder="john@example.com" type="email"/>
-              </div>
-              <div className="flex flex-col gap-3">
-                <label className="text-sm font-black text-slate-900 uppercase tracking-wider flex items-center gap-2">
-                  <LayoutDashboard className="size-4" /> Service Interest
-                </label>
-                <select className="w-full h-14 px-5 rounded-2xl border border-slate-200 bg-slate-50 focus:ring-2 focus:ring-primary focus:bg-white outline-none transition-all font-medium appearance-none">
-                  <option>Anxiety Focus</option>
-                  <option>Relationship Counseling</option>
-                  <option>ADHD Assessment</option>
-                  <option>Mood Support</option>
-                </select>
-              </div>
-              <div className="flex flex-col gap-3">
-                <label className="text-sm font-black text-slate-900 uppercase tracking-wider flex items-center gap-2">
-                  <Calendar className="size-4" /> Preferred Time
-                </label>
-                <input className="w-full h-14 px-5 rounded-2xl border border-slate-200 bg-slate-50 focus:ring-2 focus:ring-primary focus:bg-white outline-none transition-all font-medium" type="datetime-local"/>
-              </div>
-              <div className="flex flex-col gap-3 md:col-span-2">
-                <label className="text-sm font-black text-slate-900 uppercase tracking-wider flex items-center gap-2">
-                  <FileText className="size-4" /> Tell us a little more (Optional)
-                </label>
-                <textarea className="w-full p-5 rounded-2xl border border-slate-200 bg-slate-50 focus:ring-2 focus:ring-primary focus:bg-white outline-none transition-all font-medium" placeholder="Briefly share your current concerns..." rows={4}></textarea>
-              </div>
-              <div className="md:col-span-2">
-                <button className="w-full bg-primary text-white font-black py-5 rounded-2xl shadow-xl shadow-primary/20 hover:-translate-y-1 transition-all text-lg">
-                  Send Request
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </section>
   </motion.div>
 );
 
@@ -820,10 +974,10 @@ const servicesContent: Record<string, any> = {
   adhd: {
     name: "ADHD",
     title: "ADHD Therapy",
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCy4FH8dl7LBdgLa6Wx5m0VAOTXTMui2eSgoi24W3Ro0rLSpKH_66xXDBW-ZxBSvZNcIskRjJVM0xEBWEAwUPQO2XLfalUOxtAEN3qgeTd4hZmgLzs-BPRP0cYcut2HjCkmoU3pogBA0lc75DMtEN0YAvG_8DZ1maXJeMje0THkXbBFfDZVUkktVVmiCoa9wbGxl3XYLHnyUjHhbBgWX--UlDiSM20CgN6H8OTsAev4fiuy073urT6VnoXFfa6GJRh-PDAWyHWYiMQC",
+    image: "/images/adhd.png",
     about: [
-      "Attention-Deficit/Hyperactivity Disorder (ADHD) is a neurodevelopmental condition that affects focus, impulse control, and activity levels. Our specialized therapy services provide a comprehensive framework for understanding and managing these challenges across all stages of life.",
-      "We utilize evidence-based strategies, including Cognitive Behavioral Therapy (CBT), executive function coaching, and mindfulness-based interventions. Our approach is holistic, focusing not just on symptom management but on identifying your unique strengths and creating systems that work for your brain."
+      "Our ADHD Service is dedicated to providing specialized care for individuals of all ages who are dealing with Attention-Deficit/Hyperactivity Disorder (ADHD). Our experienced team of professionals offers comprehensive evaluations, personalized treatment plans, and ongoing support to help manage symptoms and improve overall functioning.",
+      "We utilize a combination of evidence-based therapies, medication management, and educational resources to address the unique needs of each individual, promoting success in school, work, and daily life."
     ],
     faqs: [
       { q: "What are the common symptoms of ADHD?", a: "Common symptoms include difficulty sustaining attention in tasks, frequent careless mistakes, trouble organizing activities, avoiding tasks that require sustained mental effort, being easily distracted, and forgetfulness in daily activities." },
@@ -833,11 +987,11 @@ const servicesContent: Record<string, any> = {
   },
   anxiety: {
     name: "Anxiety",
-    title: "Anxiety Focus",
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDux4tgc24IS9ApbNw5EU4kuJqSeb6BOo9srb1U_F7DDvZ3RZfqcQIBjnj6yAJ3mpkmH7Rf_tSq2I1sslXT0vEIUm2u6a5BDOr9H5iB-5Ntkxn4LBW1LTnEw0ie36ZLwevm4umhx1MYk-4UqqgzIs9wxnmEqo4SeOxC_u-uwnR3WU7L1rMLWJWwkIP7L8Dp6PNTVWVWOSuest6aS7Hodu55butQJdEKdSsFA-0aq9mirkaHvyb0ZCwbyUnBXhFz_EPC7Q9wIDq-kqxk",
+    title: "Anxiety Therapy",
+    image: "/images/anxiety.png",
     about: [
-      "Anxiety can manifest as persistent worry, physical tension, and a sense of being overwhelmed. Our anxiety-focused therapy helps you understand the root causes of your stress and provides practical tools to regain calm and control.",
-      "We specialize in addressing cultural performance pressure and social anxiety within the Asian diaspora, recognizing how family expectations and societal standards can contribute to heightened stress levels."
+      "Our Anxiety Service is committed to helping individuals manage and overcome anxiety disorders through comprehensive, evidence-based treatment. We understand that anxiety can significantly impact your daily life, and our team of skilled professionals is here to provide support, guidance, and effective interventions.",
+      "We offer personalized treatment plans tailored to each individual’s unique needs, utilizing the latest research and therapeutic techniques to promote recovery and enhance well-being."
     ],
     faqs: [
       { q: "How do I know if my anxiety is 'normal'?", a: "While some stress is normal, persistent anxiety that interferes with your daily life, sleep, or relationships often benefits from professional support." },
@@ -847,10 +1001,10 @@ const servicesContent: Record<string, any> = {
   relationships: {
     name: "Relationships",
     title: "Relationship Counseling",
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuB2sQ1ma-t35D4anIXDoseV7ecNyiQafHdzQiStRuKx6Z928f2AWDsWwKeAF0cNGOl-bM_qK7lgjbwHbFpW6MkIvmgnJf0YrGWwXYFvPUjZ2nBXi6DfqY4HmaQ4SbsKt7EVlncpzfMUKb9eVU4LEgowx3cSv4YXzKj3kxuoatV9TUhTvCA7CNKUEdz2dgwu_12q-FnwtzNlQTU5hY-Hn32kw4DRaRIh0uTnxLib3mcvZgNSRgK2Vsl9mGXwa4T4d0XOdpmE6VUZjMAG",
+    image: "/images/relationship.png",
     about: [
-      "Healthy relationships are the cornerstone of a fulfilling life. Our counseling services help individuals and couples navigate family boundaries, intergenerational conflicts, and interpersonal communication.",
-      "We provide a safe space to explore the complexities of dating, marriage, and family dynamics, especially as they relate to cultural heritage and modern expectations."
+      "Our Relationships Service is dedicated to helping individuals and couples navigate the complexities of relationships. We provide a supportive environment where clients can explore and address issues that impact their relationships, whether they are romantic, familial, or platonic.",
+      "Our team of experienced therapists utilizes evidence-based approaches to foster healthy communication, resolve conflicts, and strengthen connections, tailoring our services to meet the unique needs of each client."
     ],
     faqs: [
       { q: "Do we need to come as a couple?", a: "Not necessarily. We offer both individual relationship coaching and traditional couples therapy." },
@@ -860,10 +1014,10 @@ const servicesContent: Record<string, any> = {
   mood: {
     name: "Mood Disorders",
     title: "Mood Support",
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuA8L_vLNXH8wQ2nwnecBDrxOalsyZkMkaOcvKjKOXXEo8KIjLrai_VyhBC0PQ8ho_2NKp0EPyKypwCk4OTFqrjLKCD4gpJi6qAAefxGH9pVom7DiFrSxawx__--s39vlSNRLy0x-XrW19HTCireD5NeTeKB_YIfkh9LCAfTjVXCP1udEFxcdGA4tAaBiYGs_9XD3parB_y9c5S8Bt5ZueiP951eog6IcRKqKwV7AAmexEOU7vQORsYlaarfqR7i1Qrpzo-6UpaxcFr2",
+    image: "/images/mood disorder.png",
     about: [
-      "Mood disorders, including bipolar disorder and persistent depressive disorder, can significantly impact your quality of life. We provide balanced support for managing emotional fluctuations and finding stability.",
-      "Our approach combines clinical expertise with a deep understanding of how cultural factors can influence the perception and management of mood disorders."
+      "Mood disorders are among the most common and treatable mental health conditions that affect a person’s emotional state, energy level, and ability to function in daily life. Our Mood Disorder Services aim to provide comprehensive care and support for individuals experiencing depression, bipolar disorder, and related emotional disturbances.",
+      "We believe in a person-centered and holistic approach, focusing on early identification, accurate diagnosis, effective treatment, and ongoing support to help clients achieve emotional stability and an improved quality of life."
     ],
     faqs: [
       { q: "What is the difference between moodiness and a mood disorder?", a: "Mood disorders involve persistent emotional states that significantly disrupt your ability to function in daily life." },
@@ -873,22 +1027,122 @@ const servicesContent: Record<string, any> = {
   depression: {
     name: "Depression",
     title: "Depression Care",
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuAGYll8zcxJbPFrXg9ijByO-DC4I9KSu0S4sgK0YSM2xlZKGW9-BOoqjOL3wXrztdX4XRV6T2POTTfM318TTjSvmbfnFuCeNw8l18betiVqc1EeJ-C8qItLXnrCFcejuyFdiRs55B_s3-Nc6_p_F1C9RBlUITEEHKgDfi2lM6MNP3z2sVyALuvykyIeOwjtCcCjgDqJ0TK9-JONx517BybybGf7jr9_pxb246NZOg0VipVyZ-SyhdiVMOpntHVjzManz2ZXDWdMLeL9",
+    image: "/images/deplression.png",
     about: [
-      "Depression is more than just feeling sad; it's a persistent weight that can make even simple tasks feel impossible. We offer compassionate paths toward finding purpose and renewed energy.",
-      "We recognize the stigma often associated with depression in Asian cultures and provide a discreet, supportive environment where you can heal without judgment."
+      "Our Depression Service is dedicated to providing compassionate and comprehensive care for individuals experiencing depression. Our team of experienced mental health professionals offers personalized treatment plans based on the latest evidence-based practices.",
+      "We aim to help our clients manage their symptoms, improve their quality of life, and achieve a sense of well-being through a holistic approach that may include therapy, medication management, and supportive services."
     ],
     faqs: [
       { q: "How long does depression therapy take?", a: "The duration varies for everyone, but many clients begin to feel a sense of relief and hope within the first few months of consistent therapy." },
       { q: "What if I feel like I'm beyond help?", a: "That feeling is often a symptom of depression itself. We are here to hold hope for you until you can find it for yourself." }
+    ]
+  },
+  learning: {
+    name: "Learning Problems",
+    title: "Learning Problem Therapy",
+    image: "/images/learning.png",
+    about: [
+      "At nlitme, we understand that every mind learns differently. Some children and young adults face challenges in reading, writing, attention, or memory that affect their academic performance and confidence. These are known as learning problems — and with the right support, they can be managed effectively.",
+      "Our services are designed to provide holistic mental and emotional support to learners struggling with academic difficulties. We combine psychological counseling, assessment, and individualized learning strategies to help each client overcome barriers and rediscover their confidence."
+    ],
+    faqs: [
+      { q: "What are common signs of a learning problem?", a: "Struggles with reading, writing, math, or following instructions, along with frustration or avoidance of school-related tasks, can all be indicators." },
+      { q: "Can therapy help with learning problems?", a: "Yes. Therapy can address the emotional impact, build coping tools, and support the creation of tailored learning strategies and accommodations." }
+    ]
+  },
+  ocd: {
+    name: "OCD",
+    title: "OCD Therapy",
+    image: "/images/ocd.png",
+    about: [
+      "Our OCD Service specializes in providing comprehensive care for individuals dealing with Obsessive-Compulsive Disorder (OCD). Our team of experienced professionals employs evidence-based treatments, including Cognitive Behavioral Therapy (CBT) and Exposure and Response Prevention (ERP), to help manage and reduce symptoms.",
+      "We are dedicated to offering personalized care tailored to each individual’s unique needs, with the goal of improving daily functioning, independence, and overall well-being."
+    ],
+    faqs: [
+      { q: "What is OCD?", a: "OCD is a mental health condition featuring obsessions (unwanted thoughts) and compulsions (repetitive behaviors) that significantly affect daily functioning." },
+      { q: "How is OCD treated?", a: "Therapy often involves exposure and response prevention (ERP), cognitive behavioral therapy, and sometimes medication in collaboration with medical providers." }
+    ]
+  },
+  anger: {
+    name: "Anger Management",
+    title: "Anger Management Therapy",
+    image: "/images/anger.png",
+    about: [
+      "Anger is a natural human emotion — it’s how we respond to frustration, stress, or feeling misunderstood. But when anger becomes frequent, intense, or hard to control, it can harm relationships, work performance, and overall wellbeing.",
+      "At nlitme, our Anger Management Service focuses on emotional awareness, self-control, and constructive communication. We combine psychological counseling, mindfulness-based techniques, and cognitive-behavioral strategies to help clients understand the roots of their anger and gain lasting control over their emotions."
+    ],
+    faqs: [
+      { q: "When should I seek help for anger?", a: "If anger leads to conflict, impacts people you care about, or feels out of control, it can be helpful to seek professional support." },
+      { q: "What happens in anger management therapy?", a: "Together we explore your triggers, practice new responses, and develop tools for calming your body and expressing yourself more effectively." }
     ]
   }
 };
 
 const ServiceDetail = ({ serviceId, setCurrentPage }: { serviceId: string, setCurrentPage: (page: string) => void, key?: string }) => {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
+  const [consultFirstName, setConsultFirstName] = useState('');
+  const [consultFamilyName, setConsultFamilyName] = useState('');
+  const [consultPhone, setConsultPhone] = useState('');
+  const [consultDate, setConsultDate] = useState('');
+  const [consultTime, setConsultTime] = useState('');
+  const [consultSubmitting, setConsultSubmitting] = useState(false);
+  const [consultSuccess, setConsultSuccess] = useState<string | null>(null);
+  const [consultError, setConsultError] = useState<string | null>(null);
 
   const content = servicesContent[serviceId] || servicesContent['adhd'];
+
+  const handleConsultSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    setConsultSuccess(null);
+    setConsultError(null);
+
+    if (!consultFirstName.trim() || !consultPhone.trim() || !consultDate || !consultTime) {
+      setConsultError('Please fill in your first name, phone, date, and time.');
+      return;
+    }
+
+    if (!isValidPhone(consultPhone.trim())) {
+      setConsultError('Please enter a valid phone number.');
+      return;
+    }
+
+    const fullName = `${consultFirstName.trim()}${consultFamilyName.trim() ? ' ' + consultFamilyName.trim() : ''}`;
+
+    try {
+      setConsultSubmitting(true);
+      const res = await fetch(`${API_BASE_URL}/api/appointments`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name: fullName,
+          phone: consultPhone.trim(),
+          date: consultDate,
+          time: consultTime,
+          serviceId,
+          notes: undefined
+        })
+      });
+
+      if (!res.ok) {
+        const body = await res.json().catch(() => null);
+        throw new Error(body?.message || 'Unable to book consultation right now. Please try again.');
+      }
+
+      setConsultSuccess('Your consultation request has been sent. We will contact you shortly.');
+      setConsultFirstName('');
+      setConsultFamilyName('');
+      setConsultPhone('');
+      setConsultDate('');
+      setConsultTime('');
+    } catch (err: any) {
+      setConsultError(err.message || 'Unable to book consultation right now. Please try again.');
+    } finally {
+      setConsultSubmitting(false);
+    }
+  };
 
   return (
     <motion.div
@@ -901,7 +1155,7 @@ const ServiceDetail = ({ serviceId, setCurrentPage }: { serviceId: string, setCu
       {/* Background Elements */}
       <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
         <div className="absolute top-0 left-1/4 w-full h-full bg-gradient-to-br from-blue-50/50 via-slate-50/30 to-white opacity-60"></div>
-        <div className="absolute -top-[10%] -right-[10%] w-[500px] h-[500px] bg-blue-100/20 rounded-full blur-3xl"></div>
+        <div className="absolute -top-24 -right-10 w-72 h-72 md:w-[500px] md:h-[500px] bg-blue-100/20 rounded-full blur-3xl"></div>
       </div>
 
       <main className="max-w-7xl mx-auto px-6 py-12 lg:py-24">
@@ -936,32 +1190,90 @@ const ServiceDetail = ({ serviceId, setCurrentPage }: { serviceId: string, setCu
             </div>
 
             <div className="bg-white rounded-3xl p-8 shadow-xl shadow-slate-200/50 border border-slate-100">
-              <h3 className="text-xl font-black mb-8 tracking-tight">Book a Consultation</h3>
-              <form className="space-y-6">
+              <h3 className="text-lg font-bold text-slate-900 mb-2 tracking-tight">Book a Consultation</h3>
+              <p className="text-xs text-slate-500 mb-6">
+                Share a few details and our care team will reach out to you to schedule your session.
+              </p>
+              <form className="space-y-5" onSubmit={handleConsultSubmit}>
+                {consultSuccess && (
+                  <p className="text-xs font-semibold text-emerald-600">
+                    {consultSuccess}
+                  </p>
+                )}
+                {consultError && (
+                  <p className="text-xs font-semibold text-red-600">
+                    {consultError}
+                  </p>
+                )}
                 <div className="space-y-2">
-                  <label className="text-xs font-black text-slate-400 uppercase tracking-widest">First Name</label>
-                  <input className="w-full bg-slate-50 border-none rounded-xl p-4 text-sm focus:ring-2 focus:ring-primary/20 font-medium" placeholder="Your name" type="text"/>
+                  <label className="text-sm font-semibold text-slate-700">
+                    First Name <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    className="w-full bg-slate-50 border-none rounded-xl p-4 text-sm focus:ring-2 focus:ring-primary/20 font-medium"
+                    placeholder="Enter your first name"
+                    type="text"
+                    value={consultFirstName}
+                    onChange={(e) => setConsultFirstName(e.target.value)}
+                  />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-xs font-black text-slate-400 uppercase tracking-widest">Family Name</label>
-                  <input className="w-full bg-slate-50 border-none rounded-xl p-4 text-sm focus:ring-2 focus:ring-primary/20 font-medium" placeholder="Your family name" type="text"/>
+                  <label className="text-sm font-semibold text-slate-700">
+                    Family Name
+                  </label>
+                  <input
+                    className="w-full bg-slate-50 border-none rounded-xl p-4 text-sm focus:ring-2 focus:ring-primary/20 font-medium"
+                    placeholder="Enter your family name"
+                    type="text"
+                    value={consultFamilyName}
+                    onChange={(e) => setConsultFamilyName(e.target.value)}
+                  />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-xs font-black text-slate-400 uppercase tracking-widest">Phone</label>
-                  <input className="w-full bg-slate-50 border-none rounded-xl p-4 text-sm focus:ring-2 focus:ring-primary/20 font-medium" placeholder="000-000-0000" type="tel"/>
+                  <label className="text-sm font-semibold text-slate-700">
+                    Phone <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    className="w-full bg-slate-50 border-none rounded-xl p-4 text-sm focus:ring-2 focus:ring-primary/20 font-medium"
+                    placeholder="Enter your phone number"
+                    type="tel"
+                    value={consultPhone}
+                    onChange={(e) => {
+                      const digits = e.target.value.replace(/\D/g, '').slice(0, 10);
+                      setConsultPhone(digits);
+                    }}
+                  />
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <label className="text-xs font-black text-slate-400 uppercase tracking-widest">Date</label>
-                    <input className="w-full bg-slate-50 border-none rounded-xl p-4 text-sm focus:ring-2 focus:ring-primary/20 font-medium" type="date"/>
+                    <label className="text-sm font-semibold text-slate-700">
+                      Date <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      className="w-full bg-slate-50 border-none rounded-xl px-4 py-3 text-sm text-slate-400 focus:ring-2 focus:ring-primary/20 font-medium"
+                      type="date"
+                      value={consultDate}
+                      onChange={(e) => setConsultDate(e.target.value)}
+                    />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-xs font-black text-slate-400 uppercase tracking-widest">Time</label>
-                    <input className="w-full bg-slate-50 border-none rounded-xl p-4 text-sm focus:ring-2 focus:ring-primary/20 font-medium" type="time"/>
+                    <label className="text-sm font-semibold text-slate-700">
+                      Time <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      className="w-full bg-slate-50 border-none rounded-xl px-4 py-3 text-sm text-slate-400 focus:ring-2 focus:ring-primary/20 font-medium"
+                      type="time"
+                      value={consultTime}
+                      onChange={(e) => setConsultTime(e.target.value)}
+                    />
                   </div>
                 </div>
-                <button className="w-full bg-primary text-white font-black py-5 rounded-2xl mt-4 shadow-xl shadow-primary/20 hover:bg-primary/95 transition-all active:scale-[0.98] text-lg">
-                  Book Online
+                <button
+                  type="submit"
+                  disabled={consultSubmitting}
+                  className="w-full bg-primary text-white font-black py-5 rounded-2xl mt-4 shadow-xl shadow-primary/20 hover:bg-primary/95 transition-all active:scale-[0.98] text-lg disabled:opacity-60 disabled:cursor-not-allowed"
+                >
+                  {consultSubmitting ? 'Booking...' : 'Book Online'}
                 </button>
               </form>
             </div>
@@ -1028,38 +1340,45 @@ const ServiceDetail = ({ serviceId, setCurrentPage }: { serviceId: string, setCu
     </motion.div>
   );
 };
-const Home = () => (
+const Home = ({ setCurrentPage }: { setCurrentPage: (page: string) => void }) => (
   <motion.div
     initial={{ opacity: 0 }}
     animate={{ opacity: 1 }}
     exit={{ opacity: 0 }}
     transition={{ duration: 0.5 }}
   >
-    <HomeHero />
+    <HomeHero setCurrentPage={setCurrentPage} />
     <Benefits />
-    <Specialties />
+    <Specialties setCurrentPage={setCurrentPage} />
     <Process />
     <Testimonials />
     <CTA />
   </motion.div>
 );
 
-const About = () => (
+const About = ({ setCurrentPage }: { setCurrentPage: (page: string) => void, key?: string }) => (
   <motion.div
     initial={{ opacity: 0 }}
     animate={{ opacity: 1 }}
     exit={{ opacity: 0 }}
     transition={{ duration: 0.5 }}
   >
-    <AboutHero />
+    <AboutHero
+      onLearnMission={() => {
+        const el = document.getElementById('about-mission');
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }}
+    />
     <MissionApproach />
-    <TopSpecialties />
+    <TopSpecialties setCurrentPage={setCurrentPage} />
     <CommunityVoices />
     <AppointmentForm />
   </motion.div>
 );
 
-const Specialties = () => {
+const Specialties = ({ setCurrentPage }: { setCurrentPage: (page: string) => void }) => {
   const specialties = [
     { name: "Anxiety", icon: <Wind className="size-7" /> },
     { name: "Relationships", icon: <Heart className="size-7" /> },
@@ -1089,7 +1408,11 @@ const Specialties = () => {
             </motion.div>
           ))}
         </div>
-        <button className="mt-16 px-10 py-4 border-2 border-primary text-primary font-bold rounded-xl hover:bg-primary hover:text-white transition-all shadow-lg shadow-primary/5">
+        <button
+          type="button"
+          onClick={() => setCurrentPage('services')}
+          className="mt-16 px-10 py-4 border-2 border-primary text-primary font-bold rounded-xl hover:bg-primary hover:text-white transition-all shadow-lg shadow-primary/5"
+        >
           View all Services
         </button>
       </div>
@@ -1233,16 +1556,36 @@ const Footer = ({ setCurrentPage }: { setCurrentPage: (page: string) => void }) 
             Empowering individuals through sophisticated mental wellness solutions and professional care. Your journey to inner peace begins here.
           </p>
           <div className="flex items-center gap-4">
-            <a href="#" className="size-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-white/20 transition-all">
+            <a
+              href="https://www.facebook.com"
+              target="_blank"
+              rel="noreferrer noopener"
+              className="size-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-white/20 transition-all"
+            >
               <Facebook className="size-5 text-white" />
             </a>
-            <a href="#" className="size-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-white/20 transition-all">
+            <a
+              href="https://www.instagram.com"
+              target="_blank"
+              rel="noreferrer noopener"
+              className="size-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-white/20 transition-all"
+            >
               <Instagram className="size-5 text-white" />
             </a>
-            <a href="#" className="size-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-white/20 transition-all">
+            <a
+              href="https://www.linkedin.com"
+              target="_blank"
+              rel="noreferrer noopener"
+              className="size-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-white/20 transition-all"
+            >
               <Linkedin className="size-5 text-white" />
             </a>
-            <a href="#" className="size-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-white/20 transition-all">
+            <a
+              href="https://twitter.com"
+              target="_blank"
+              rel="noreferrer noopener"
+              className="size-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-white/20 transition-all"
+            >
               <Twitter className="size-5 text-white" />
             </a>
           </div>
@@ -1517,7 +1860,7 @@ const Contact = ({ key }: { key?: string }) => {
                 <label className="text-sm font-semibold text-slate-700">Your Message</label>
                 <textarea
                   className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
-                  placeholder="How can we help you today?"
+                  placeholder="Enter your message"
                   rows={4}
                   value={contactMessage}
                   onChange={(e) => setContactMessage(e.target.value)}
@@ -1542,9 +1885,10 @@ const Contact = ({ key }: { key?: string }) => {
 
 const Appointment = ({ setCurrentPage }: { setCurrentPage: (page: string) => void, key?: string }) => {
   const [fullName, setFullName] = useState('');
+  const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [date, setDate] = useState('');
-  const [timeSlot, setTimeSlot] = useState('Morning (9 AM - 12 PM)');
+  const [timeSlot, setTimeSlot] = useState('');
   const [reason, setReason] = useState('');
   const [services, setServices] = useState<{ _id: string; name: string }[]>([]);
   const [serviceId, setServiceId] = useState('');
@@ -1571,8 +1915,18 @@ const Appointment = ({ setCurrentPage }: { setCurrentPage: (page: string) => voi
     setSubmitError(null);
     setSubmitSuccess(null);
 
-    if (!fullName.trim() || !phone.trim() || !date || !timeSlot) {
-      setSubmitError('Please fill in your name, phone, date, and time.');
+    if (!fullName.trim() || !email.trim() || !phone.trim() || !date || !timeSlot) {
+      setSubmitError('Please fill in your name, email, phone, date, and time.');
+      return;
+    }
+
+    if (!isValidEmail(email.trim())) {
+      setSubmitError('Please enter a valid email address.');
+      return;
+    }
+
+    if (!isValidPhone(phone.trim())) {
+      setSubmitError('Please enter a valid phone number.');
       return;
     }
 
@@ -1586,6 +1940,7 @@ const Appointment = ({ setCurrentPage }: { setCurrentPage: (page: string) => voi
         body: JSON.stringify({
           name: fullName.trim(),
           phone: phone.trim(),
+          email: email.trim(),
           date,
           time: timeSlot,
           notes: reason.trim() || undefined,
@@ -1601,6 +1956,7 @@ const Appointment = ({ setCurrentPage }: { setCurrentPage: (page: string) => voi
       setSubmitSuccess('Your appointment request has been sent. We will contact you shortly.');
       setFullName('');
       setPhone('');
+      setEmail('');
       setDate('');
       setTimeSlot('Morning (9 AM - 12 PM)');
       setReason('');
@@ -1654,12 +2010,14 @@ const Appointment = ({ setCurrentPage }: { setCurrentPage: (page: string) => voi
             <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <label className="flex flex-col gap-2">
-                  <span className="text-slate-700 text-sm font-semibold">Full Name</span>
+                  <span className="text-slate-700 text-sm font-semibold">
+                    Full Name <span className="text-red-500">*</span>
+                  </span>
                   <div className="relative">
                     <User className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 size-5" />
                     <input
                       className="w-full pl-11 pr-4 py-3 rounded-lg border border-slate-200 bg-slate-50 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
-                      placeholder="E.g. Ananya Sharma"
+                      placeholder="Enter your full name"
                       type="text"
                       value={fullName}
                       onChange={(e) => setFullName(e.target.value)}
@@ -1667,24 +2025,45 @@ const Appointment = ({ setCurrentPage }: { setCurrentPage: (page: string) => voi
                   </div>
                 </label>
                 <label className="flex flex-col gap-2">
-                  <span className="text-slate-700 text-sm font-semibold">Phone Number</span>
+                  <span className="text-slate-700 text-sm font-semibold">
+                    Email Address <span className="text-red-500">*</span>
+                  </span>
                   <div className="relative">
-                    <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 size-5" />
+                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 size-5" />
                     <input
                       className="w-full pl-11 pr-4 py-3 rounded-lg border border-slate-200 bg-slate-50 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
-                      placeholder="+91 00000 00000"
-                      type="tel"
-                      value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
+                      placeholder="Enter your email address"
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                     />
                   </div>
                 </label>
                 <label className="flex flex-col gap-2">
-                  <span className="text-slate-700 text-sm font-semibold">Preferred Date</span>
+                  <span className="text-slate-700 text-sm font-semibold">
+                    Phone Number <span className="text-red-500">*</span>
+                  </span>
                   <div className="relative">
-                    <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 size-5" />
+                    <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 size-5" />
                     <input
                       className="w-full pl-11 pr-4 py-3 rounded-lg border border-slate-200 bg-slate-50 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
+                      placeholder="Enter your phone number"
+                      type="tel"
+                      value={phone}
+                      onChange={(e) => {
+                        const digits = e.target.value.replace(/\D/g, '').slice(0, 10);
+                        setPhone(digits);
+                      }}
+                    />
+                  </div>
+                </label>
+                <label className="flex flex-col gap-2">
+                  <span className="text-slate-700 text-sm font-semibold">
+                    Preferred Date <span className="text-red-500">*</span>
+                  </span>
+                  <div className="relative">
+                    <input
+                      className="w-full px-4 py-3 rounded-lg border border-slate-200 bg-slate-50 text-slate-400 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
                       type="date"
                       value={date}
                       onChange={(e) => setDate(e.target.value)}
@@ -1692,18 +2071,21 @@ const Appointment = ({ setCurrentPage }: { setCurrentPage: (page: string) => voi
                   </div>
                 </label>
                 <label className="flex flex-col gap-2">
-                  <span className="text-slate-700 text-sm font-semibold">Preferred Time Slot</span>
+                  <span className="text-slate-700 text-sm font-semibold">
+                    Preferred Time Slot <span className="text-red-500">*</span>
+                  </span>
                   <div className="relative">
-                    <Clock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 size-5" />
                     <select
-                      className="w-full pl-11 pr-4 py-3 rounded-lg border border-slate-200 bg-slate-50 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all appearance-none"
+                      className="w-full pl-4 pr-10 py-3 rounded-lg border border-slate-200 bg-slate-50 text-slate-400 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all appearance-none"
                       value={timeSlot}
                       onChange={(e) => setTimeSlot(e.target.value)}
                     >
-                      <option>Morning (9 AM - 12 PM)</option>
-                      <option>Afternoon (12 PM - 4 PM)</option>
-                      <option>Evening (4 PM - 8 PM)</option>
+                      <option value="">Select a time slot</option>
+                      <option value="Morning (9 AM - 12 PM)">Morning (9 AM - 12 PM)</option>
+                      <option value="Afternoon (12 PM - 4 PM)">Afternoon (12 PM - 4 PM)</option>
+                      <option value="Evening (4 PM - 8 PM)">Evening (4 PM - 8 PM)</option>
                     </select>
+                    <Clock className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 size-5 pointer-events-none" />
                   </div>
                 </label>
                 <label className="flex flex-col gap-2">
@@ -1711,11 +2093,11 @@ const Appointment = ({ setCurrentPage }: { setCurrentPage: (page: string) => voi
                   <div className="relative">
                     <LayoutDashboard className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 size-5" />
                     <select
-                      className="w-full pl-11 pr-4 py-3 rounded-lg border border-slate-200 bg-slate-50 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all appearance-none"
+                      className="w-full pl-11 pr-4 py-3 rounded-lg border border-slate-200 bg-slate-50 text-slate-400 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all appearance-none"
                       value={serviceId}
                       onChange={(e) => setServiceId(e.target.value)}
                     >
-                      <option value="">Select a service (optional)</option>
+                      <option value="">Select a service</option>
                       {services.map((service) => (
                         <option key={service._id} value={service._id}>
                           {service.name}
@@ -1726,10 +2108,10 @@ const Appointment = ({ setCurrentPage }: { setCurrentPage: (page: string) => voi
                 </label>
               </div>
               <label className="flex flex-col gap-2">
-                <span className="text-slate-700 text-sm font-semibold">Reason for Appointment (Optional)</span>
+                <span className="text-slate-700 text-sm font-semibold">Reason for Appointment</span>
                 <textarea
                   className="w-full p-4 rounded-lg border border-slate-200 bg-slate-50 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
-                  placeholder="How can we help you?"
+                  placeholder="Enter the reason for your appointment"
                   rows={4}
                   value={reason}
                   onChange={(e) => setReason(e.target.value)}
@@ -1935,6 +2317,7 @@ export default function App() {
     }
 
     window.history.pushState({}, '', path);
+    window.scrollTo(0, 0);
   };
 
   useEffect(() => {
@@ -1951,8 +2334,8 @@ export default function App() {
       <Header currentPage={currentPage} setCurrentPage={setCurrentPage} />
       <main className="flex-1 overflow-hidden">
         <AnimatePresence mode="wait">
-          {currentPage === 'home' && <Home key="home" />}
-          {currentPage === 'about' && <About key="about" />}
+          {currentPage === 'home' && <Home key="home" setCurrentPage={setCurrentPage} />}
+          {currentPage === 'about' && <About key="about" setCurrentPage={setCurrentPage} />}
           {currentPage === 'services' && <Services key="services" setCurrentPage={setCurrentPage} />}
           {['adhd', 'anxiety', 'relationships', 'mood', 'depression', 'learning', 'ocd', 'anger'].includes(currentPage) && (
             <ServiceDetail key={currentPage} serviceId={currentPage} setCurrentPage={setCurrentPage} />
