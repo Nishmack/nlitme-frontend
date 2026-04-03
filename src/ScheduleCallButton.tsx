@@ -53,6 +53,14 @@ export default function ScheduleCallButton({
   const [status, setStatus] = useState<"idle" | "loading" | "confirmed">("idle");
   const [error, setError] = useState<string | null>(null);
 
+  const todayMin = useMemo(() => {
+    const t = new Date();
+    const y = t.getFullYear();
+    const m = String(t.getMonth() + 1).padStart(2, "0");
+    const d = String(t.getDate()).padStart(2, "0");
+    return `${y}-${m}-${d}`;
+  }, []);
+
   const resetForm = () => {
     setName("");
     setEmail("");
@@ -88,6 +96,10 @@ export default function ScheduleCallButton({
     }
     if (!isValidPhone(phone.trim())) {
       setError("Please enter a valid phone number (10 digits).");
+      return;
+    }
+    if (preferredDate < todayMin) {
+      setError("prefered date should be future");
       return;
     }
 
@@ -136,12 +148,13 @@ export default function ScheduleCallButton({
           email.trim() &&
           phoneDigits.length === 10 &&
           preferredDate &&
+          preferredDate >= todayMin &&
           preferredTime &&
           isValidPersonName(name) &&
           isValidEmail(email.trim()) &&
           isValidPhone(phoneDigits),
       ),
-    [name, email, phoneDigits, preferredDate, preferredTime],
+    [name, email, phoneDigits, preferredDate, preferredTime, todayMin],
   );
 
   return (
@@ -254,6 +267,7 @@ export default function ScheduleCallButton({
                           <input
                             className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-xs text-slate-400 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
                             type="date"
+                            min={todayMin}
                             value={preferredDate}
                             onChange={(e) => setPreferredDate(e.target.value)}
                           />
