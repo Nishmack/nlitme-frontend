@@ -265,7 +265,7 @@ export default function ScheduleCallButton({
                             Preferred date <span className="text-red-500">*</span>
                           </label>
                           <input
-                            className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-xs text-slate-400 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
+                            className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-xs text-slate-400 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all cursor-pointer"
                             type="date"
                             min={todayMin}
                             value={preferredDate}

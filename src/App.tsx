@@ -715,7 +715,7 @@ const AppointmentForm = () => {
                 </label>
                 <div className="relative">
                   <input
-                    className="w-full px-5 py-3 rounded-lg border border-slate-200 bg-slate-50 text-xs text-slate-400 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
+                    className="w-full px-5 py-3 rounded-lg border border-slate-200 bg-slate-50 text-xs text-slate-400 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all cursor-pointer"
                     type="date"
                     value={preferredDate}
                     onChange={(e) => setPreferredDate(e.target.value)}
@@ -728,7 +728,7 @@ const AppointmentForm = () => {
                 </label>
                 <div className="relative">
                   <select
-                    className="w-full px-5 py-3 rounded-lg border border-slate-200 bg-slate-50 text-slate-400 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all appearance-none"
+                    className="w-full px-5 py-3 rounded-lg border border-slate-200 bg-slate-50 text-slate-400 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all appearance-none cursor-pointer"
                     value={preferredTime}
                     onChange={(e) => setPreferredTime(e.target.value)}
                   >
