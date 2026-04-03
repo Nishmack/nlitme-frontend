@@ -19,7 +19,8 @@
 
   input::placeholder,
   textarea::placeholder {
-    @apply text-slate-400;
+    @apply text-xs font-normal text-slate-400;
+    line-height: 1.35;
   }
 
   input[type="date"]::-webkit-calendar-picker-indicator,
@@ -27,4 +28,30 @@
     opacity: 0.8;
     filter: invert(63%) sepia(9%) saturate(342%) hue-rotate(178deg) brightness(92%) contrast(88%);
   }
+}
+
+/*
+  Native date/time empty state (dd/mm/yyyy, --:--) is not ::placeholder; size it like other placeholders.
+  Unlayered so this wins over utility classes such as text-sm on the input.
+*/
+input[type="date"],
+input[type="time"] {
+  font-size: 0.75rem;
+  line-height: 1.35;
+}
+
+input[type="date"]::-webkit-datetime-edit,
+input[type="date"]::-webkit-datetime-edit-fields-wrapper,
+input[type="date"]::-webkit-datetime-edit-year-field,
+input[type="date"]::-webkit-datetime-edit-month-field,
+input[type="date"]::-webkit-datetime-edit-day-field,
+input[type="date"]::-webkit-datetime-edit-text,
+input[type="time"]::-webkit-datetime-edit,
+input[type="time"]::-webkit-datetime-edit-fields-wrapper,
+input[type="time"]::-webkit-datetime-edit-hour-field,
+input[type="time"]::-webkit-datetime-edit-minute-field,
+input[type="time"]::-webkit-datetime-edit-text,
+input[type="time"]::-webkit-datetime-edit-ampm-field {
+  font-size: 0.75rem;
+  line-height: 1.35;
 }

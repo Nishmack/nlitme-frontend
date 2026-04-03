@@ -45,6 +45,7 @@ import {
   LayoutDashboard,
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
+import ScheduleCallButton from "./ScheduleCallButton";
 
 const API_BASE_URL =
   import.meta.env.VITE_API_URL ||
@@ -545,6 +546,12 @@ const isValidPhone = (value: string) => {
   const digits = value.replace(/\D/g, "");
   return digits.length === 10;
 };
+/** Letters (including accented), spaces, apostrophes, periods, hyphens; min length enforced by caller */
+const isValidPersonName = (value: string, minLen = 2) => {
+  const t = value.trim();
+  if (t.length < minLen || t.length > 100) return false;
+  return /^[\p{L}\s'.-]+$/u.test(t);
+};
 
 const AppointmentForm = () => {
   const [name, setName] = useState("");
@@ -568,13 +575,18 @@ const AppointmentForm = () => {
       return;
     }
 
+    if (!isValidPersonName(name)) {
+      setSubmitError("Please enter a valid name (letters and spaces, at least 2 characters).");
+      return;
+    }
+
     if (!isValidEmail(email.trim())) {
       setSubmitError("Please enter a valid email address.");
       return;
     }
 
     if (!isValidPhone(phone.trim())) {
-      setSubmitError("Please enter a valid phone number.");
+      setSubmitError("Please enter a valid phone number (10 digits).");
       return;
     }
 
@@ -601,12 +613,14 @@ const AppointmentForm = () => {
         body: JSON.stringify({
           name: name.trim(),
           email: email.trim(),
+          phone: phone.replace(/\D/g, "").slice(0, 10),
           message: messageLines.join("\n"),
         }),
       });
 
       if (!res.ok) {
-        throw new Error();
+        const errBody = await res.json().catch(() => null);
+        throw new Error(errBody?.message || "Unable to send your appointment request right now. Please try again later.");
       }
 
       setSubmitSuccess("Your appointment request has been sent. We will contact you shortly.");
@@ -616,8 +630,9 @@ const AppointmentForm = () => {
       setPreferredDate("");
       setPreferredTime("Morning (9 AM - 12 PM)");
       setNotes("");
-    } catch {
-      setSubmitError("Unable to send your appointment request right now. Please try again later.");
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Unable to send your appointment request right now. Please try again later.";
+      setSubmitError(msg);
     } finally {
       setIsSubmitting(false);
     }
@@ -661,7 +676,7 @@ const AppointmentForm = () => {
                 </label>
                 <input
                   className="w-full px-5 py-3 rounded-lg border border-slate-200 bg-slate-50 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
-                  placeholder="Enter your full name"
+                  placeholder="Enter your name"
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
@@ -700,7 +715,7 @@ const AppointmentForm = () => {
                 </label>
                 <div className="relative">
                   <input
-                    className="w-full px-5 py-3 rounded-lg border border-slate-200 bg-slate-50 text-slate-400 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
+                    className="w-full px-5 py-3 rounded-lg border border-slate-200 bg-slate-50 text-xs text-slate-400 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
                     type="date"
                     value={preferredDate}
                     onChange={(e) => setPreferredDate(e.target.value)}
@@ -1149,8 +1164,18 @@ const ServiceDetail = ({ serviceId, setCurrentPage }: { serviceId: string; setCu
       return;
     }
 
+    if (!isValidPersonName(consultFirstName)) {
+      setConsultError("Please enter a valid first name (letters and spaces, at least 2 characters).");
+      return;
+    }
+
+    if (consultFamilyName.trim() && !isValidPersonName(consultFamilyName, 1)) {
+      setConsultError("Please enter a valid family name.");
+      return;
+    }
+
     if (!isValidPhone(consultPhone.trim())) {
-      setConsultError("Please enter a valid phone number.");
+      setConsultError("Please enter a valid phone number (10 digits).");
       return;
     }
 
@@ -1279,7 +1304,7 @@ const ServiceDetail = ({ serviceId, setCurrentPage }: { serviceId: string; setCu
                       Date <span className="text-red-500">*</span>
                     </label>
                     <input
-                      className="w-full bg-slate-50 border-none rounded-xl px-4 py-3 text-sm text-slate-400 focus:ring-2 focus:ring-primary/20 font-medium"
+                      className="w-full bg-slate-50 border-none rounded-xl px-4 py-3 text-xs text-slate-400 focus:ring-2 focus:ring-primary/20 font-medium"
                       type="date"
                       value={consultDate}
                       onChange={(e) => setConsultDate(e.target.value)}
@@ -1290,7 +1315,7 @@ const ServiceDetail = ({ serviceId, setCurrentPage }: { serviceId: string; setCu
                       Time <span className="text-red-500">*</span>
                     </label>
                     <input
-                      className="w-full bg-slate-50 border-none rounded-xl px-4 py-3 text-sm text-slate-400 focus:ring-2 focus:ring-primary/20 font-medium"
+                      className="w-full bg-slate-50 border-none rounded-xl px-4 py-3 text-xs text-slate-400 focus:ring-2 focus:ring-primary/20 font-medium"
                       type="time"
                       value={consultTime}
                       onChange={(e) => setConsultTime(e.target.value)}
@@ -1551,10 +1576,14 @@ const CTA = () => (
           <p className="text-white/80 text-xl font-medium leading-relaxed">
             Request a call now and our team will help you find the perfect match for your needs.
           </p>
-          <button className="bg-white text-primary px-10 py-5 rounded-2xl font-bold hover:bg-slate-50 transition-all flex items-center gap-3 shadow-xl shadow-black/10">
-            <Phone className="size-5" />
-            Request a Call
-          </button>
+          <ScheduleCallButton
+            buttonClassName="bg-white text-primary px-10 py-5 rounded-full font-bold hover:bg-slate-50 transition-all flex items-center gap-3 shadow-xl shadow-black/10"
+            buttonLabel="Request a Call"
+            modalTitle="Request a call"
+            messageSourceLine="Request a call (Need assistance CTA)"
+            triggerIcon="phone"
+            successIcon="phone"
+          />
         </div>
         <div className="flex-1 h-80 md:h-[500px] w-full">
           <img
@@ -1700,6 +1729,7 @@ const Footer = ({ setCurrentPage }: { setCurrentPage: (page: string) => void }) 
 const Contact = ({ key }: { key?: string }) => {
   const [contactName, setContactName] = useState("");
   const [contactEmail, setContactEmail] = useState("");
+  const [contactPhone, setContactPhone] = useState("");
   const [contactMessage, setContactMessage] = useState("");
   const [isSending, setIsSending] = useState(false);
   const [contactSuccess, setContactSuccess] = useState<string | null>(null);
@@ -1711,31 +1741,54 @@ const Contact = ({ key }: { key?: string }) => {
     setContactSuccess(null);
     setContactError(null);
 
-    if (!contactName.trim() || !contactMessage.trim()) {
-      setContactError("Please fill in your name and message.");
+    if (!contactName.trim() || !contactEmail.trim() || !contactPhone.trim() || !contactMessage.trim()) {
+      setContactError("Please fill in your name, email, phone number, and message.");
+      return;
+    }
+
+    if (!isValidPersonName(contactName)) {
+      setContactError("Please enter a valid name (letters and spaces, at least 2 characters).");
+      return;
+    }
+
+    if (!isValidEmail(contactEmail.trim())) {
+      setContactError("Please enter a valid email address.");
+      return;
+    }
+
+    if (!isValidPhone(contactPhone.trim())) {
+      setContactError("Please enter a valid phone number (10 digits).");
       return;
     }
 
     try {
       setIsSending(true);
-      await fetch(`${API_BASE_URL}/api/contact`, {
+      const res = await fetch(`${API_BASE_URL}/api/contact`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
           name: contactName.trim(),
-          email: contactEmail.trim() || undefined,
-          message: contactMessage.trim(),
+          email: contactEmail.trim(),
+          phone: contactPhone.replace(/\D/g, "").slice(0, 10),
+          message: [`Phone: ${contactPhone.replace(/\D/g, "").slice(0, 10)}`, "", contactMessage.trim()].join("\n"),
         }),
       });
+
+      if (!res.ok) {
+        const errBody = await res.json().catch(() => null);
+        throw new Error(errBody?.message || "Unable to send your message right now. Please try again later.");
+      }
 
       setContactSuccess("Your message has been sent. We will get back to you within 24 hours.");
       setContactName("");
       setContactEmail("");
+      setContactPhone("");
       setContactMessage("");
-    } catch {
-      setContactError("Unable to send your message right now. Please try again later.");
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Unable to send your message right now. Please try again later.";
+      setContactError(msg);
     } finally {
       setIsSending(false);
     }
@@ -1764,10 +1817,7 @@ const Contact = ({ key }: { key?: string }) => {
               </p>
             </div>
             <div className="flex flex-wrap gap-4">
-              <button className="bg-primary text-white px-8 py-4 rounded-xl font-bold flex items-center gap-2 hover:translate-y-[-2px] transition-all shadow-lg">
-                <Calendar className="size-5" />
-                Schedule a call
-              </button>
+              <ScheduleCallButton />
               <button className="bg-white border-2 border-slate-200 text-slate-900 px-8 py-4 rounded-xl font-bold flex items-center gap-2 hover:bg-slate-50 transition-all">
                 <Phone className="size-5" />
                 1-800-NLIT-ME
@@ -1904,28 +1954,49 @@ const Contact = ({ key }: { key?: string }) => {
                 {contactError && <p className="text-sm font-medium text-red-600">{contactError}</p>}
                 <div className="grid md:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <label className="text-sm font-semibold text-slate-700">Full Name</label>
+                    <label className="text-sm font-semibold text-slate-700">
+                      Full Name <span className="text-red-500">*</span>
+                    </label>
                     <input
                       className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
-                      placeholder="John Doe"
+                      placeholder="Enter your name"
                       type="text"
                       value={contactName}
                       onChange={(e) => setContactName(e.target.value)}
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-sm font-semibold text-slate-700">Email Address</label>
+                    <label className="text-sm font-semibold text-slate-700">
+                      Email Address <span className="text-red-500">*</span>
+                    </label>
                     <input
                       className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
-                      placeholder="john@example.com"
+                      placeholder="Enter your email address"
                       type="email"
                       value={contactEmail}
                       onChange={(e) => setContactEmail(e.target.value)}
                     />
                   </div>
+                  <div className="space-y-2 md:col-span-2">
+                    <label className="text-sm font-semibold text-slate-700">
+                      Phone Number <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
+                      placeholder="Enter your phone number"
+                      type="tel"
+                      value={contactPhone}
+                      onChange={(e) => {
+                        const digits = e.target.value.replace(/\D/g, "").slice(0, 10);
+                        setContactPhone(digits);
+                      }}
+                    />
+                  </div>
                 </div>
                 <div className="space-y-2">
-                  <label className="text-sm font-semibold text-slate-700">Your Message</label>
+                  <label className="text-sm font-semibold text-slate-700">
+                    Your Message <span className="text-red-500">*</span>
+                  </label>
                   <textarea
                     className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
                     placeholder="Enter your message"
@@ -1988,13 +2059,18 @@ const Appointment = ({ setCurrentPage }: { setCurrentPage: (page: string) => voi
       return;
     }
 
+    if (!isValidPersonName(fullName)) {
+      setSubmitError("Please enter a valid name (letters and spaces, at least 2 characters).");
+      return;
+    }
+
     if (!isValidEmail(email.trim())) {
       setSubmitError("Please enter a valid email address.");
       return;
     }
 
     if (!isValidPhone(phone.trim())) {
-      setSubmitError("Please enter a valid phone number.");
+      setSubmitError("Please enter a valid phone number (10 digits).");
       return;
     }
 
@@ -2074,12 +2150,14 @@ const Appointment = ({ setCurrentPage }: { setCurrentPage: (page: string) => voi
               <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <label className="flex flex-col gap-2">
-                    <span className="text-slate-700 text-sm font-semibold"></span>
+                    <span className="text-slate-700 text-sm font-semibold">
+                      Full Name <span className="text-red-500">*</span>
+                    </span>
                     <div className="relative">
                       <User className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 size-5" />
                       <input
                         className="w-full pl-11 pr-4 py-3 rounded-lg border border-slate-200 bg-slate-50 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
-                        placeholder="Enter your full name"
+                        placeholder="Enter your name"
                         type="text"
                         value={fullName}
                         onChange={(e) => setFullName(e.target.value)}
@@ -2125,7 +2203,7 @@ const Appointment = ({ setCurrentPage }: { setCurrentPage: (page: string) => voi
                     </span>
                     <div className="relative">
                       <input
-                        className="w-full px-4 py-3 rounded-lg border border-slate-200 bg-slate-50 text-slate-400 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
+                        className="w-full px-4 py-3 rounded-lg border border-slate-200 bg-slate-50 text-xs text-slate-400 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
                         type="date"
                         value={date}
                         onChange={(e) => setDate(e.target.value)}
@@ -2138,7 +2216,7 @@ const Appointment = ({ setCurrentPage }: { setCurrentPage: (page: string) => voi
                     </span>
                     <div className="relative">
                       <select
-                        className="w-full pl-4 pr-10 py-3 rounded-lg border border-slate-200 bg-slate-50 text-slate-400 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all appearance-none"
+                        className="w-full pl-4 pr-10 py-3 rounded-lg border border-slate-200 bg-slate-50 text-xs font-normal text-slate-400 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all appearance-none"
                         value={timeSlot}
                         onChange={(e) => setTimeSlot(e.target.value)}
                       >
@@ -2155,7 +2233,7 @@ const Appointment = ({ setCurrentPage }: { setCurrentPage: (page: string) => voi
                     <div className="relative">
                       <LayoutDashboard className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 size-5" />
                       <select
-                        className="w-full pl-11 pr-4 py-3 rounded-lg border border-slate-200 bg-slate-50 text-slate-400 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all appearance-none"
+                        className="w-full pl-11 pr-4 py-3 rounded-lg border border-slate-200 bg-slate-50 text-xs font-normal text-slate-400 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all appearance-none"
                         value={serviceId}
                         onChange={(e) => setServiceId(e.target.value)}
                       >
@@ -2313,7 +2391,7 @@ const ComingSoon = ({ key }: { key?: string }) => (
       <div className="mt-16 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
         <input
           className="w-full max-w-sm rounded-lg border-primary/10 bg-white px-6 py-4 shadow-sm focus:border-primary focus:ring-primary sm:w-80"
-          placeholder="Enter your email"
+          placeholder="Enter your email address"
           type="email"
         />
         <button className="w-full rounded-lg bg-primary px-8 py-4 font-bold text-white transition-all hover:scale-105 active:scale-95 sm:w-auto">
