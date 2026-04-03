@@ -278,7 +278,7 @@ export default function ScheduleCallButton({
                             Preferred time <span className="text-red-500">*</span>
                           </label>
                           <select
-                            className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-xs font-normal text-slate-600 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all appearance-none"
+                            className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-xs font-normal text-slate-600 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all appearance-none cursor-pointer"
                             value={preferredTime}
                             onChange={(e) => setPreferredTime(e.target.value)}
                           >

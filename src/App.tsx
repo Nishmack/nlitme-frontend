@@ -1304,7 +1304,7 @@ const ServiceDetail = ({ serviceId, setCurrentPage }: { serviceId: string; setCu
                       Date <span className="text-red-500">*</span>
                     </label>
                     <input
-                      className="w-full bg-slate-50 border-none rounded-xl px-4 py-3 text-xs text-slate-400 focus:ring-2 focus:ring-primary/20 font-medium"
+                      className="w-full bg-slate-50 border-none rounded-xl px-4 py-3 text-xs text-slate-400 focus:ring-2 focus:ring-primary/20 font-medium cursor-pointer"
                       type="date"
                       value={consultDate}
                       onChange={(e) => setConsultDate(e.target.value)}
@@ -1315,7 +1315,7 @@ const ServiceDetail = ({ serviceId, setCurrentPage }: { serviceId: string; setCu
                       Time <span className="text-red-500">*</span>
                     </label>
                     <input
-                      className="w-full bg-slate-50 border-none rounded-xl px-4 py-3 text-xs text-slate-400 focus:ring-2 focus:ring-primary/20 font-medium"
+                      className="w-full bg-slate-50 border-none rounded-xl px-4 py-3 text-xs text-slate-400 focus:ring-2 focus:ring-primary/20 font-medium cursor-pointer"
                       type="time"
                       value={consultTime}
                       onChange={(e) => setConsultTime(e.target.value)}
@@ -2203,7 +2203,7 @@ const Appointment = ({ setCurrentPage }: { setCurrentPage: (page: string) => voi
                     </span>
                     <div className="relative">
                       <input
-                        className="w-full px-4 py-3 rounded-lg border border-slate-200 bg-slate-50 text-xs text-slate-400 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
+                        className="w-full px-4 py-3 rounded-lg border border-slate-200 bg-slate-50 text-xs text-slate-400 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all cursor-pointer"
                         type="date"
                         value={date}
                         onChange={(e) => setDate(e.target.value)}
@@ -2216,7 +2216,7 @@ const Appointment = ({ setCurrentPage }: { setCurrentPage: (page: string) => voi
                     </span>
                     <div className="relative">
                       <select
-                        className="w-full pl-4 pr-10 py-3 rounded-lg border border-slate-200 bg-slate-50 text-xs font-normal text-slate-400 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all appearance-none"
+                        className="w-full pl-4 pr-10 py-3 rounded-lg border border-slate-200 bg-slate-50 text-xs font-normal text-slate-400 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all appearance-none cursor-pointer"
                         value={timeSlot}
                         onChange={(e) => setTimeSlot(e.target.value)}
                       >
@@ -2233,7 +2233,7 @@ const Appointment = ({ setCurrentPage }: { setCurrentPage: (page: string) => voi
                     <div className="relative">
                       <LayoutDashboard className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 size-5" />
                       <select
-                        className="w-full pl-11 pr-4 py-3 rounded-lg border border-slate-200 bg-slate-50 text-xs font-normal text-slate-400 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all appearance-none"
+                        className="w-full pl-11 pr-4 py-3 rounded-lg border border-slate-200 bg-slate-50 text-xs font-normal text-slate-400 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all appearance-none cursor-pointer"
                         value={serviceId}
                         onChange={(e) => setServiceId(e.target.value)}
                       >
