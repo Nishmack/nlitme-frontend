@@ -2040,8 +2040,48 @@ const Appointment = ({ setCurrentPage }: { setCurrentPage: (page: string) => voi
       try {
         const res = await fetch(`${API_BASE_URL}/api/services`);
         if (!res.ok) return;
-        const data = await res.json();
-        setServices(data);
+        const data: { _id?: string; name: string }[] = await res.json();
+
+        const legacyMap: Record<string, string> = {
+          ADHD: "ADHD Therapy",
+          Anxiety: "Anxiety Therapy",
+          Depression: "Depression Therapy",
+          "Relationship Counseling": "Relationships Therapy",
+        };
+
+        const base = data.map((s) => {
+          const mappedName = legacyMap[s.name] || s.name;
+          return { _id: s._id ?? mappedName, name: mappedName };
+        });
+
+        const seen = new Set<string>();
+        const merged: { _id: string; name: string }[] = [];
+        for (const s of base) {
+          if (!seen.has(s.name)) {
+            seen.add(s.name);
+            merged.push({ _id: s._id, name: s.name });
+          }
+        }
+
+        const defaultNames = [
+          "ADHD Therapy",
+          "Anxiety Therapy",
+          "Learning Problem Therapy",
+          "Depression Therapy",
+          "Mood Disorders Therapy",
+          "OCD Therapy",
+          "Relationships Therapy",
+          "Anger management Therapy",
+        ];
+
+        for (const name of defaultNames) {
+          if (!seen.has(name)) {
+            seen.add(name);
+            merged.push({ _id: name, name });
+          }
+        }
+
+        setServices(merged);
       } catch {
         // ignore; form still usable without services
       }
