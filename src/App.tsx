@@ -3,22 +3,22 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect } from 'react';
-import { 
-  Search, 
-  MapPin, 
-  ArrowRight, 
-  CheckCircle2, 
-  Video, 
-  Users, 
-  FileText, 
-  Wind, 
-  Heart, 
-  BarChart2, 
-  CloudRain, 
-  Brain, 
-  BookOpen, 
-  Shield, 
+import React, { useState, useEffect } from "react";
+import {
+  Search,
+  MapPin,
+  ArrowRight,
+  CheckCircle2,
+  Video,
+  Users,
+  FileText,
+  Wind,
+  Heart,
+  BarChart2,
+  CloudRain,
+  Brain,
+  BookOpen,
+  Shield,
   Flame,
   Calendar,
   ClipboardList,
@@ -42,41 +42,43 @@ import {
   MessageSquare,
   Briefcase,
   Camera,
-  LayoutDashboard
-} from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
+  LayoutDashboard,
+} from "lucide-react";
+import { motion, AnimatePresence } from "motion/react";
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const API_BASE_URL =
+  import.meta.env.VITE_API_URL ||
+  (import.meta.env.PROD ? "https://nlitme-backend.vercel.app" : "http://localhost:5000");
 
-const Header = ({ currentPage, setCurrentPage }: { currentPage: string, setCurrentPage: (page: string) => void }) => {
+const Header = ({ currentPage, setCurrentPage }: { currentPage: string; setCurrentPage: (page: string) => void }) => {
   const [isServicesOpen, setIsServicesOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileServicesOpen, setIsMobileServicesOpen] = useState(false);
   const [isMobilePagesOpen, setIsMobilePagesOpen] = useState(false);
 
   const services = [
-    { id: 'services', label: 'All Services' },
-    { id: 'adhd', label: 'ADHD Therapy' },
-    { id: 'anxiety', label: 'Anxiety Therapy' },
-    { id: 'learning', label: 'Learning Problem Therapy' },
-    { id: 'depression', label: 'Depression Therapy' },
-    { id: 'mood', label: 'Mood Disorders Therapy' },
-    { id: 'ocd', label: 'OCD Therapy' },
-    { id: 'relationships', label: 'Relationships Therapy' },
-    { id: 'anger', label: 'Anger management Therapy' },
+    { id: "services", label: "All Services" },
+    { id: "adhd", label: "ADHD Therapy" },
+    { id: "anxiety", label: "Anxiety Therapy" },
+    { id: "learning", label: "Learning Problem Therapy" },
+    { id: "depression", label: "Depression Therapy" },
+    { id: "mood", label: "Mood Disorders Therapy" },
+    { id: "ocd", label: "OCD Therapy" },
+    { id: "relationships", label: "Relationships Therapy" },
+    { id: "anger", label: "Anger management Therapy" },
   ];
 
   const pages = [
-    { id: 'appointment', label: 'Appointment' },
-    { id: 'contact', label: 'Contacts' },
-    { id: 'shop', label: 'Shop' },
-    { id: 'imageCredits', label: 'Image Credits' },
+    { id: "appointment", label: "Appointment" },
+    { id: "contact", label: "Contacts" },
+    { id: "shop", label: "Shop" },
+    { id: "imageCredits", label: "Image Credits" },
   ];
 
   return (
     <header className="flex items-center justify-between border-b border-slate-200 bg-white px-6 py-4 lg:px-20 sticky top-0 z-50">
       {/* Logo */}
-      <div className="flex items-center gap-2 text-primary cursor-pointer" onClick={() => setCurrentPage('home')}>
+      <div className="flex items-center gap-2 text-primary cursor-pointer" onClick={() => setCurrentPage("home")}>
         <div className="size-10 bg-primary rounded-lg flex items-center justify-center">
           <span className="material-symbols-outlined text-white text-2xl">spa</span>
         </div>
@@ -85,32 +87,28 @@ const Header = ({ currentPage, setCurrentPage }: { currentPage: string, setCurre
 
       {/* Desktop nav */}
       <nav className="hidden md:flex flex-1 justify-center gap-8">
-        <button 
-          onClick={() => setCurrentPage('home')}
-          className={`text-sm font-semibold transition-colors ${currentPage === 'home' ? 'text-primary' : 'text-slate-600 hover:text-primary'}`}
+        <button
+          onClick={() => setCurrentPage("home")}
+          className={`text-sm font-semibold transition-colors ${currentPage === "home" ? "text-primary" : "text-slate-600 hover:text-primary"}`}
         >
           Home
         </button>
-        <button 
-          onClick={() => setCurrentPage('about')}
-          className={`text-sm font-semibold transition-colors ${currentPage === 'about' ? 'text-primary' : 'text-slate-600 hover:text-primary'}`}
+        <button
+          onClick={() => setCurrentPage("about")}
+          className={`text-sm font-semibold transition-colors ${currentPage === "about" ? "text-primary" : "text-slate-600 hover:text-primary"}`}
         >
           About Us
         </button>
-        <div 
-          className="relative group"
-          onMouseEnter={() => setIsServicesOpen(true)}
-          onMouseLeave={() => setIsServicesOpen(false)}
-        >
-          <button 
-            onClick={() => setCurrentPage('services')}
-            className={`text-sm font-semibold transition-colors flex items-center gap-1 ${['services', 'adhd', 'anxiety', 'relationships', 'mood', 'depression', 'learning', 'ocd', 'anger'].includes(currentPage) ? 'text-primary' : 'text-slate-600 hover:text-primary'}`}
+        <div className="relative group" onMouseEnter={() => setIsServicesOpen(true)} onMouseLeave={() => setIsServicesOpen(false)}>
+          <button
+            onClick={() => setCurrentPage("services")}
+            className={`text-sm font-semibold transition-colors flex items-center gap-1 ${["services", "adhd", "anxiety", "relationships", "mood", "depression", "learning", "ocd", "anger"].includes(currentPage) ? "text-primary" : "text-slate-600 hover:text-primary"}`}
           >
             Services <ChevronDown className="size-4" />
           </button>
           <AnimatePresence>
             {isServicesOpen && (
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 10 }}
@@ -132,10 +130,10 @@ const Header = ({ currentPage, setCurrentPage }: { currentPage: string, setCurre
             )}
           </AnimatePresence>
         </div>
-        
+
         <div className="relative group">
-          <button 
-            className={`text-sm font-semibold transition-colors flex items-center gap-1 ${['appointment', 'shop', 'imageCredits'].includes(currentPage) ? 'text-primary' : 'text-slate-600 hover:text-primary'}`}
+          <button
+            className={`text-sm font-semibold transition-colors flex items-center gap-1 ${["appointment", "shop", "imageCredits"].includes(currentPage) ? "text-primary" : "text-slate-600 hover:text-primary"}`}
           >
             Pages <ChevronDown className="size-4" />
           </button>
@@ -155,14 +153,14 @@ const Header = ({ currentPage, setCurrentPage }: { currentPage: string, setCurre
 
       {/* Right side actions + mobile hamburger */}
       <div className="flex items-center gap-4">
-        <button 
-          onClick={() => setCurrentPage('contact')}
+        <button
+          onClick={() => setCurrentPage("contact")}
           className="hidden sm:block text-sm font-bold text-slate-600 hover:text-primary transition-colors"
         >
           Contact Us
         </button>
-        <button 
-          onClick={() => setCurrentPage('appointment')}
+        <button
+          onClick={() => setCurrentPage("appointment")}
           className="hidden md:flex items-center justify-center rounded-xl h-11 px-6 bg-primary text-white text-sm font-bold gap-2 hover:bg-primary/90 transition-all shadow-lg shadow-primary/20"
         >
           <span>Book Now</span>
@@ -174,19 +172,8 @@ const Header = ({ currentPage, setCurrentPage }: { currentPage: string, setCurre
           aria-label="Open menu"
           onClick={() => setIsMobileMenuOpen(true)}
         >
-          <svg
-            className="h-6 w-6"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M4 6H20M4 12H20M4 18H20"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
+          <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 6H20M4 12H20M4 18H20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </button>
       </div>
@@ -213,32 +200,27 @@ const Header = ({ currentPage, setCurrentPage }: { currentPage: string, setCurre
                 aria-label="Close menu"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                <svg
-                  className="h-5 w-5"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M6 6L18 18M6 18L18 6"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
+                <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M6 6L18 18M6 18L18 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </button>
             </div>
             <nav className="flex-1 px-6 py-6 space-y-2">
               {/* Top-level header items */}
               <button
-                onClick={() => { setCurrentPage('home'); setIsMobileMenuOpen(false); }}
+                onClick={() => {
+                  setCurrentPage("home");
+                  setIsMobileMenuOpen(false);
+                }}
                 className="block w-full text-left text-sm font-semibold text-slate-700 py-2"
               >
                 Home
               </button>
               <button
-                onClick={() => { setCurrentPage('about'); setIsMobileMenuOpen(false); }}
+                onClick={() => {
+                  setCurrentPage("about");
+                  setIsMobileMenuOpen(false);
+                }}
                 className="block w-full text-left text-sm font-semibold text-slate-700 py-2"
               >
                 About Us
@@ -252,16 +234,17 @@ const Header = ({ currentPage, setCurrentPage }: { currentPage: string, setCurre
                   className="flex w-full items-center justify-between py-2 text-sm font-semibold text-slate-700"
                 >
                   <span>Services</span>
-                  <ChevronDown
-                    className={`size-4 transition-transform ${isMobileServicesOpen ? 'rotate-180' : ''}`}
-                  />
+                  <ChevronDown className={`size-4 transition-transform ${isMobileServicesOpen ? "rotate-180" : ""}`} />
                 </button>
                 {isMobileServicesOpen && (
                   <div className="mt-1 space-y-1">
-                    {services.map(service => (
+                    {services.map((service) => (
                       <button
                         key={service.id}
-                        onClick={() => { setCurrentPage(service.id); setIsMobileMenuOpen(false); }}
+                        onClick={() => {
+                          setCurrentPage(service.id);
+                          setIsMobileMenuOpen(false);
+                        }}
                         className="block w-full text-left text-sm text-slate-600 py-1 pl-3"
                       >
                         {service.label}
@@ -279,16 +262,17 @@ const Header = ({ currentPage, setCurrentPage }: { currentPage: string, setCurre
                   className="flex w-full items-center justify-between py-2 text-sm font-semibold text-slate-700"
                 >
                   <span>Pages</span>
-                  <ChevronDown
-                    className={`size-4 transition-transform ${isMobilePagesOpen ? 'rotate-180' : ''}`}
-                  />
+                  <ChevronDown className={`size-4 transition-transform ${isMobilePagesOpen ? "rotate-180" : ""}`} />
                 </button>
                 {isMobilePagesOpen && (
                   <div className="mt-1 space-y-1">
-                    {pages.map(page => (
+                    {pages.map((page) => (
                       <button
                         key={page.id}
-                        onClick={() => { setCurrentPage(page.id); setIsMobileMenuOpen(false); }}
+                        onClick={() => {
+                          setCurrentPage(page.id);
+                          setIsMobileMenuOpen(false);
+                        }}
                         className="block w-full text-left text-sm text-slate-600 py-1 pl-3"
                       >
                         {page.label}
@@ -300,13 +284,19 @@ const Header = ({ currentPage, setCurrentPage }: { currentPage: string, setCurre
             </nav>
             <div className="border-t border-slate-200 px-6 py-4 space-y-3">
               <button
-                onClick={() => { setCurrentPage('contact'); setIsMobileMenuOpen(false); }}
+                onClick={() => {
+                  setCurrentPage("contact");
+                  setIsMobileMenuOpen(false);
+                }}
                 className="w-full text-sm font-semibold text-slate-700 py-2"
               >
                 Contact Us
               </button>
               <button
-                onClick={() => { setCurrentPage('appointment'); setIsMobileMenuOpen(false); }}
+                onClick={() => {
+                  setCurrentPage("appointment");
+                  setIsMobileMenuOpen(false);
+                }}
                 className="w-full flex items-center justify-center rounded-xl h-10 bg-primary text-white text-sm font-bold gap-2 hover:bg-primary/90 transition-all shadow-md shadow-primary/20"
               >
                 Book Now
@@ -322,7 +312,7 @@ const Header = ({ currentPage, setCurrentPage }: { currentPage: string, setCurre
 const HomeHero = ({ setCurrentPage }: { setCurrentPage: (page: string) => void }) => (
   <section className="max-w-7xl mx-auto px-6 py-12 lg:py-24">
     <div className="grid lg:grid-cols-2 gap-16 items-center">
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.6 }}
@@ -333,28 +323,29 @@ const HomeHero = ({ setCurrentPage }: { setCurrentPage: (page: string) => void }
             Highly evaluated therapists, selected for you
           </h1>
           <p className="text-slate-600 text-xl leading-relaxed max-w-xl">
-          Start your path to psychological wellness with our thoroughly selected specialists.          </p>
+            Start your path to psychological wellness with our thoroughly selected specialists.{" "}
+          </p>
         </div>
-        
+
         <button
           type="button"
-          onClick={() => setCurrentPage('appointment')}
+          onClick={() => setCurrentPage("appointment")}
           className="w-full sm:w-auto bg-primary text-white px-10 py-4 rounded-xl font-bold hover:bg-primary/95 transition-all shadow-xl shadow-primary/20"
         >
           Start Your Journey
         </button>
       </motion.div>
 
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.8 }}
         className="order-1 lg:order-2 relative"
       >
         <div className="relative w-full aspect-[4/5] rounded-[2.5rem] overflow-hidden shadow-2xl">
-          <img 
-            alt="Professional therapist" 
-            className="w-full h-full object-cover" 
+          <img
+            alt="Professional therapist"
+            className="w-full h-full object-cover"
             src="https://lh3.googleusercontent.com/aida-public/AB6AXuDWXJe2gO33snNIcQKb-fNDLOPvWccYssJjGsktnZ1GCqCl2Ai7JVVnsmgyFl9sy_E2BqKebt10Zh4i2C2bkeyENLi6bPTYqOneSwO0A0bprybFVF0BaG_S052A5Wro1uj8QjoQoVwzVb76wpoT006sUqrajQ4FeJkT8TL43Y03rpGjwvYOd2xT02UNGbeNEdyB1supfFyHo7Wz0V1r6EWCrOD3KB6TD8xy2KEyz1-PeQToMB13WboESLOiVVhZQMqyg68Wk0qBJZyb"
             referrerPolicy="no-referrer"
           />
@@ -376,25 +367,27 @@ const HomeHero = ({ setCurrentPage }: { setCurrentPage: (page: string) => void }
 const AboutHero = ({ onLearnMission }: { onLearnMission: () => void }) => (
   <section className="max-w-7xl mx-auto px-6 py-12 lg:py-24">
     <div className="flex flex-col lg:flex-row gap-16 items-center">
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.8 }}
         className="w-full lg:w-1/2 aspect-video bg-cover bg-center rounded-[2.5rem] shadow-2xl overflow-hidden"
-        style={{ backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuDux4tgc24IS9ApbNw5EU4kuJqSeb6BOo9srb1U_F7DDvZ3RZfqcQIBjnj6yAJ3mpkmH7Rf_tSq2I1sslXT0vEIUm2u6a5BDOr9H5iB-5Ntkxn4LBW1LTnEw0ie36ZLwevm4umhx1MYk-4UqqgzIs9wxnmEqo4SeOxC_u-uwnR3WU7L1rMLWJWwkIP7L8Dp6PNTVWVWOSuest6aS7Hodu55butQJdEKdSsFA-0aq9mirkaHvyb0ZCwbyUnBXhFz_EPC7Q9wIDq-kqxk")' }}
+        style={{
+          backgroundImage:
+            'url("https://lh3.googleusercontent.com/aida-public/AB6AXuDux4tgc24IS9ApbNw5EU4kuJqSeb6BOo9srb1U_F7DDvZ3RZfqcQIBjnj6yAJ3mpkmH7Rf_tSq2I1sslXT0vEIUm2u6a5BDOr9H5iB-5Ntkxn4LBW1LTnEw0ie36ZLwevm4umhx1MYk-4UqqgzIs9wxnmEqo4SeOxC_u-uwnR3WU7L1rMLWJWwkIP7L8Dp6PNTVWVWOSuest6aS7Hodu55butQJdEKdSsFA-0aq9mirkaHvyb0ZCwbyUnBXhFz_EPC7Q9wIDq-kqxk")',
+        }}
       />
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.6 }}
         className="flex flex-col gap-8 lg:w-1/2"
       >
         <div className="flex flex-col gap-6">
-          <h1 className="text-slate-900 text-5xl lg:text-6xl font-black leading-tight tracking-tight">
-            Why We're Your Trusted Support
-          </h1>
+          <h1 className="text-slate-900 text-5xl lg:text-6xl font-black leading-tight tracking-tight">Why We're Your Trusted Support</h1>
           <p className="text-slate-600 text-xl leading-relaxed font-medium">
-            Empowering your mental wellness with culturally sensitive care and expert guidance tailored for the Asian community. We understand the nuances of heritage and the pressures of modern life.
+            Empowering your mental wellness with culturally sensitive care and expert guidance tailored for the Asian community. We understand the
+            nuances of heritage and the pressures of modern life.
           </p>
         </div>
         <button
@@ -414,38 +407,38 @@ const MissionApproach = () => (
     <div className="max-w-7xl mx-auto px-6">
       <h2 className="text-3xl font-black mb-12 tracking-tight">About Us</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-        <motion.div 
-          whileHover={{ y: -5 }}
-          className="flex flex-col gap-6"
-        >
+        <motion.div whileHover={{ y: -5 }} className="flex flex-col gap-6">
           <div className="w-full aspect-[16/9] rounded-3xl overflow-hidden shadow-xl">
-            <img 
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDdUsDRKLeOUel0vvO5ygv4Cs-aeQYYGmZAGyZG7FXcs7FMBXWI5MIh77y2LptOcFJZxoBwEDtRaWa5b-6CdlU1PAy37_e-9y-EBNHunAM122UzMIRt8SEjPt4Z0_6aIdIDsp4-9vnEGQcOZfdD5YhDgcKABBqYI3_llC00F2NSu2dMFbLk_TJuQ1Uf_L5yVjGw4sppQx2tF9hYD1jxFwC7PY7VFVB2hFEoqr_Pk1TZF4xUMeX-7gg0X2K-r_GNKml9lQkvDq27htDC" 
-              alt="Mission" 
+            <img
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDdUsDRKLeOUel0vvO5ygv4Cs-aeQYYGmZAGyZG7FXcs7FMBXWI5MIh77y2LptOcFJZxoBwEDtRaWa5b-6CdlU1PAy37_e-9y-EBNHunAM122UzMIRt8SEjPt4Z0_6aIdIDsp4-9vnEGQcOZfdD5YhDgcKABBqYI3_llC00F2NSu2dMFbLk_TJuQ1Uf_L5yVjGw4sppQx2tF9hYD1jxFwC7PY7VFVB2hFEoqr_Pk1TZF4xUMeX-7gg0X2K-r_GNKml9lQkvDq27htDC"
+              alt="Mission"
               className="w-full h-full object-cover"
               referrerPolicy="no-referrer"
             />
           </div>
           <div>
             <h3 className="text-2xl font-bold mb-3 text-slate-900">Our Mission</h3>
-            <p className="text-slate-500 text-lg font-medium leading-relaxed">Providing accessible, destigmatized mental health support for diverse Asian identities. We bridge the gap between traditional values and modern psychological science.</p>
+            <p className="text-slate-500 text-lg font-medium leading-relaxed">
+              Providing accessible, destigmatized mental health support for diverse Asian identities. We bridge the gap between traditional values and
+              modern psychological science.
+            </p>
           </div>
         </motion.div>
-        <motion.div 
-          whileHover={{ y: -5 }}
-          className="flex flex-col gap-6"
-        >
+        <motion.div whileHover={{ y: -5 }} className="flex flex-col gap-6">
           <div className="w-full aspect-[16/9] rounded-3xl overflow-hidden shadow-xl">
-            <img 
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuC1MbOmBilqhWZzD9_aQlaY_AlsJTx1s9TsWf71Tlix1vx75jtPHQDkS7lo2Ft9qo-WwAok48vu6_pCFt1itgIRxTrM8RXILX1c6ba07MUjK_pbxRkYPi-W5lmOsB2LOcLRzwnioP-fmTczTCXWM7FHMvp5vEqm3MUZrBmDI6C6yWnKzvLs-d3ww4arnrhgU-z-nE2RWE6nSuabPV29VXlZn2JNb7A7qw8aR0VtzvdyPTc47X5Ckxa8D-2jvU506qdf3T4gwhhu76Pl" 
-              alt="Approach" 
+            <img
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuC1MbOmBilqhWZzD9_aQlaY_AlsJTx1s9TsWf71Tlix1vx75jtPHQDkS7lo2Ft9qo-WwAok48vu6_pCFt1itgIRxTrM8RXILX1c6ba07MUjK_pbxRkYPi-W5lmOsB2LOcLRzwnioP-fmTczTCXWM7FHMvp5vEqm3MUZrBmDI6C6yWnKzvLs-d3ww4arnrhgU-z-nE2RWE6nSuabPV29VXlZn2JNb7A7qw8aR0VtzvdyPTc47X5Ckxa8D-2jvU506qdf3T4gwhhu76Pl"
+              alt="Approach"
               className="w-full h-full object-cover"
               referrerPolicy="no-referrer"
             />
           </div>
           <div>
             <h3 className="text-2xl font-bold mb-3 text-slate-900">Our Approach</h3>
-            <p className="text-slate-500 text-lg font-medium leading-relaxed">Evidence-based therapy combined with deep cultural empathy. We create safe spaces where your background is celebrated as part of your healing journey.</p>
+            <p className="text-slate-500 text-lg font-medium leading-relaxed">
+              Evidence-based therapy combined with deep cultural empathy. We create safe spaces where your background is celebrated as part of your
+              healing journey.
+            </p>
           </div>
         </motion.div>
       </div>
@@ -471,7 +464,7 @@ const TopSpecialties = ({ setCurrentPage }: { setCurrentPage: (page: string) => 
           </div>
           <button
             type="button"
-            onClick={() => setCurrentPage('services')}
+            onClick={() => setCurrentPage("services")}
             className="text-primary font-bold flex items-center gap-2 hover:underline text-lg"
           >
             View All Services <ChevronRight className="size-5" />
@@ -479,14 +472,12 @@ const TopSpecialties = ({ setCurrentPage }: { setCurrentPage: (page: string) => 
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {specialties.map((spec, idx) => (
-            <motion.div 
+            <motion.div
               key={idx}
               whileHover={{ y: -5 }}
               className="bg-white p-10 rounded-3xl border border-slate-100 shadow-sm hover:shadow-xl transition-all"
             >
-              <div className="size-16 bg-primary/5 rounded-2xl flex items-center justify-center text-primary mb-6">
-                {spec.icon}
-              </div>
+              <div className="size-16 bg-primary/5 rounded-2xl flex items-center justify-center text-primary mb-6">{spec.icon}</div>
               <h4 className="text-xl font-bold mb-3 text-slate-900">{spec.name}</h4>
               <p className="text-slate-500 font-medium leading-relaxed">{spec.desc}</p>
             </motion.div>
@@ -509,25 +500,25 @@ const CommunityVoices = () => (
           {
             name: "Aditya K.",
             text: "Finally a space where I don't have to explain my cultural background before I start healing.",
-            img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCClhTegthmTHW5VHR0fMYgXW_QDIhln0NLQ16gsA6quoh7Nkvle0ogLw96moJuv04fEmAb7zZ48IttXzKxTbtVHupycnCXVKlp84XY2f7qLTHP2QtvVAzoGtd44NL6aL5XVC6Bu5PjrD-SaHMnfm0FZ_LsgollLyPsKfRYrgS6DTBBn_UKUQGtuEC1N2tNJIzZuwcb8zbNI2YbAXMJ85io-67_zGwHtVzFjtadFHlYOMsYuT7wjVfMS8EDrbYA1IGCqPQqbkokN3ul"
+            img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCClhTegthmTHW5VHR0fMYgXW_QDIhln0NLQ16gsA6quoh7Nkvle0ogLw96moJuv04fEmAb7zZ48IttXzKxTbtVHupycnCXVKlp84XY2f7qLTHP2QtvVAzoGtd44NL6aL5XVC6Bu5PjrD-SaHMnfm0FZ_LsgollLyPsKfRYrgS6DTBBn_UKUQGtuEC1N2tNJIzZuwcb8zbNI2YbAXMJ85io-67_zGwHtVzFjtadFHlYOMsYuT7wjVfMS8EDrbYA1IGCqPQqbkokN3ul",
           },
           {
             name: "Mei L.",
             text: "The therapist understood the nuances of my family expectations. It was a breakthrough.",
-            img: "https://lh3.googleusercontent.com/aida-public/AB6AXuDmm9XL5OcFQbJN2b0w4dRe9ocbtG4XoI5GXNQdzK3cjJwu8jtmQ0fetOL5fqDGnpzgu6slPOkgPwzrpWvPI8JpkpUW3I-YIaklvpS-IxVXYJ-P1FvPG8t-kNfUoeHMzdg3gPGoG2uQlcaHy2pGnF9KCK3lh1aiuN8cXMtdL56Qry-YbOZcDSMUT23Xnd0Dvtv8KawkBocJpEgjoEjOjlQJdkCeScGKKiPXeqyOx08ll6J4zBMSzSzsC2bzOGZC_YZ31fOsxFBfD4AA"
+            img: "https://lh3.googleusercontent.com/aida-public/AB6AXuDmm9XL5OcFQbJN2b0w4dRe9ocbtG4XoI5GXNQdzK3cjJwu8jtmQ0fetOL5fqDGnpzgu6slPOkgPwzrpWvPI8JpkpUW3I-YIaklvpS-IxVXYJ-P1FvPG8t-kNfUoeHMzdg3gPGoG2uQlcaHy2pGnF9KCK3lh1aiuN8cXMtdL56Qry-YbOZcDSMUT23Xnd0Dvtv8KawkBocJpEgjoEjOjlQJdkCeScGKKiPXeqyOx08ll6J4zBMSzSzsC2bzOGZC_YZ31fOsxFBfD4AA",
           },
           {
             name: "Tan V.",
             text: "Inclusive, warm, and highly professional. Highly recommend for any young professionals.",
-            img: "https://lh3.googleusercontent.com/aida-public/AB6AXuD9ImJMlOVUXuLo38d2vnJpSq7lp4pgyrpvh__CGY97vDymKKB8xFUi8ncmY98RGp6cuHr27PmMVNvX65i9vkN5ikSg0kA2MyB9YqybBBldFj23RtaIequcrYJMwORuz0wYfYGW94kcdrRGdH-G_nJYFNcCSlOEqFoe9km7wTgCBFJ3bDcw1O7aZaBSlYLqXlk0Vmsgp4MWeVK-5JAtQO5rDsK-5NcOsjn3AdZ7n6C8tlI2R_vLyGHqCh4Z4dUNpn_MxwqTbZ6nVpCf"
+            img: "https://lh3.googleusercontent.com/aida-public/AB6AXuD9ImJMlOVUXuLo38d2vnJpSq7lp4pgyrpvh__CGY97vDymKKB8xFUi8ncmY98RGp6cuHr27PmMVNvX65i9vkN5ikSg0kA2MyB9YqybBBldFj23RtaIequcrYJMwORuz0wYfYGW94kcdrRGdH-G_nJYFNcCSlOEqFoe9km7wTgCBFJ3bDcw1O7aZaBSlYLqXlk0Vmsgp4MWeVK-5JAtQO5rDsK-5NcOsjn3AdZ7n6C8tlI2R_vLyGHqCh4Z4dUNpn_MxwqTbZ6nVpCf",
           },
           {
             name: "Sarah P.",
             text: "I feel heard and seen. nlitme has truly enlightened my perspective on mental health.",
-            img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCx8u9wX1jrDbRpCEywYRHk0CktU93rPi-3dsFL9vQOaYzMY6xpB5v6KRLZDT0L0AmUpZC0O99ShRy5g5fhAlaqka804P6AMeP5VcPSRTsrB_91yIfnjY4CKQKll9UmA7PmyingsG289xOl8d0mLZc_icU5gi_4AF2Rx-PGKbbm4c6cohZmkXMtdeTBBxKh01ArtArIyGBGibKmp9xj6Pu6m54cZNlMUmGLJ8yL1RPoMogMXfKrYLlEVxlPM8NN3qGjDkrT4trbKbnE"
-          }
+            img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCx8u9wX1jrDbRpCEywYRHk0CktU93rPi-3dsFL9vQOaYzMY6xpB5v6KRLZDT0L0AmUpZC0O99ShRy5g5fhAlaqka804P6AMeP5VcPSRTsrB_91yIfnjY4CKQKll9UmA7PmyingsG289xOl8d0mLZc_icU5gi_4AF2Rx-PGKbbm4c6cohZmkXMtdeTBBxKh01ArtArIyGBGibKmp9xj6Pu6m54cZNlMUmGLJ8yL1RPoMogMXfKrYLlEVxlPM8NN3qGjDkrT4trbKbnE",
+          },
         ].map((t, idx) => (
-          <motion.div 
+          <motion.div
             key={idx}
             whileHover={{ y: -5 }}
             className="bg-primary/5 p-8 rounded-3xl flex flex-col justify-between border border-primary/5 hover:bg-primary/10 transition-all"
@@ -551,17 +542,17 @@ const CommunityVoices = () => (
 
 const isValidEmail = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 const isValidPhone = (value: string) => {
-  const digits = value.replace(/\D/g, '');
+  const digits = value.replace(/\D/g, "");
   return digits.length === 10;
 };
 
 const AppointmentForm = () => {
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [email, setEmail] = useState('');
-  const [preferredDate, setPreferredDate] = useState('');
-  const [preferredTime, setPreferredTime] = useState('');
-  const [notes, setNotes] = useState('');
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [preferredDate, setPreferredDate] = useState("");
+  const [preferredTime, setPreferredTime] = useState("");
+  const [notes, setNotes] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState<string | null>(null);
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -573,60 +564,60 @@ const AppointmentForm = () => {
     setSubmitError(null);
 
     if (!name.trim() || !email.trim() || !phone.trim() || !preferredDate || !preferredTime) {
-      setSubmitError('Please fill in your name, email, phone, preferred date, and time.');
+      setSubmitError("Please fill in your name, email, phone, preferred date, and time.");
       return;
     }
 
     if (!isValidEmail(email.trim())) {
-      setSubmitError('Please enter a valid email address.');
+      setSubmitError("Please enter a valid email address.");
       return;
     }
 
     if (!isValidPhone(phone.trim())) {
-      setSubmitError('Please enter a valid phone number.');
+      setSubmitError("Please enter a valid phone number.");
       return;
     }
 
     const messageLines = [
-      'Request an Appointment (About page)',
-      '',
+      "Request an Appointment (About page)",
+      "",
       `Name: ${name.trim()}`,
       `Email: ${email.trim()}`,
       `Phone: ${phone.trim()}`,
       `Preferred Date: ${preferredDate}`,
       `Preferred Time: ${preferredTime}`,
-      '',
-      'Notes:',
-      notes.trim() || '(none)'
+      "",
+      "Notes:",
+      notes.trim() || "(none)",
     ].filter(Boolean);
 
     try {
       setIsSubmitting(true);
       const res = await fetch(`${API_BASE_URL}/api/contact`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           name: name.trim(),
           email: email.trim(),
-          message: messageLines.join('\n')
-        })
+          message: messageLines.join("\n"),
+        }),
       });
 
       if (!res.ok) {
         throw new Error();
       }
 
-      setSubmitSuccess('Your appointment request has been sent. We will contact you shortly.');
-      setName('');
-      setEmail('');
-      setPhone('');
-      setPreferredDate('');
-      setPreferredTime('Morning (9 AM - 12 PM)');
-      setNotes('');
+      setSubmitSuccess("Your appointment request has been sent. We will contact you shortly.");
+      setName("");
+      setEmail("");
+      setPhone("");
+      setPreferredDate("");
+      setPreferredTime("Morning (9 AM - 12 PM)");
+      setNotes("");
     } catch {
-      setSubmitError('Unable to send your appointment request right now. Please try again later.');
+      setSubmitError("Unable to send your appointment request right now. Please try again later.");
     } finally {
       setIsSubmitting(false);
     }
@@ -638,13 +629,11 @@ const AppointmentForm = () => {
         <div className="bg-white rounded-[3rem] shadow-2xl overflow-hidden flex flex-col lg:flex-row border border-slate-100">
           <div className="lg:w-1/3 bg-primary p-12 lg:p-16 text-white flex flex-col justify-center">
             <h2 className="text-4xl font-black mb-6 tracking-tight">Start Your Journey</h2>
-            <p className="text-white/70 mb-10 leading-relaxed text-lg font-medium">Schedule a consultation with one of our specialized counselors today. Most appointments are confirmed within 24 hours.</p>
+            <p className="text-white/70 mb-10 leading-relaxed text-lg font-medium">
+              Schedule a consultation with one of our specialized counselors today. Most appointments are confirmed within 24 hours.
+            </p>
             <ul className="space-y-6">
-              {[
-                "100% Confidential",
-                "Online & In-person",
-                "Sliding Scale Available"
-              ].map((item, idx) => (
+              {["100% Confidential", "Online & In-person", "Sliding Scale Available"].map((item, idx) => (
                 <li key={idx} className="flex items-center gap-4 font-bold">
                   <div className="size-6 bg-white rounded-full flex items-center justify-center">
                     <Check className="text-primary size-4" />
@@ -658,16 +647,12 @@ const AppointmentForm = () => {
             <form className="grid grid-cols-1 sm:grid-cols-2 gap-8" onSubmit={handleSubmit}>
               {submitSuccess && (
                 <div className="sm:col-span-2">
-                  <p className="text-sm font-medium text-emerald-600">
-                    {submitSuccess}
-                  </p>
+                  <p className="text-sm font-medium text-emerald-600">{submitSuccess}</p>
                 </div>
               )}
               {submitError && (
                 <div className="sm:col-span-2">
-                  <p className="text-sm font-medium text-red-600">
-                    {submitError}
-                  </p>
+                  <p className="text-sm font-medium text-red-600">{submitError}</p>
                 </div>
               )}
               <div className="flex flex-col gap-3">
@@ -676,7 +661,7 @@ const AppointmentForm = () => {
                 </label>
                 <input
                   className="w-full px-5 py-3 rounded-lg border border-slate-200 bg-slate-50 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
-                  placeholder="Enter your full name" 
+                  placeholder="Enter your full name"
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
@@ -692,7 +677,7 @@ const AppointmentForm = () => {
                   type="tel"
                   value={phone}
                   onChange={(e) => {
-                    const digits = e.target.value.replace(/\D/g, '').slice(0, 10);
+                    const digits = e.target.value.replace(/\D/g, "").slice(0, 10);
                     setPhone(digits);
                   }}
                 />
@@ -703,7 +688,7 @@ const AppointmentForm = () => {
                 </label>
                 <input
                   className="w-full px-5 py-3 rounded-lg border border-slate-200 bg-slate-50 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
-                  placeholder="Enter your email address" 
+                  placeholder="Enter your email address"
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -744,7 +729,7 @@ const AppointmentForm = () => {
                 <label className="text-sm font-semibold text-slate-700">Reason for Appointment</label>
                 <textarea
                   className="w-full p-4 rounded-lg border border-slate-200 bg-slate-50 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
-                  placeholder="Enter what's on your mind" 
+                  placeholder="Enter what's on your mind"
                   rows={4}
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
@@ -756,7 +741,7 @@ const AppointmentForm = () => {
                   type="submit"
                   disabled={isSubmitting}
                 >
-                  {isSubmitting ? 'Sending...' : 'Request an Appointment'}
+                  {isSubmitting ? "Sending..." : "Request an Appointment"}
                 </button>
               </div>
             </form>
@@ -780,30 +765,30 @@ const Benefits = () => (
             title: "Online session",
             desc: "Therapy on your terms. Connect from the comfort of your home with encrypted video calls.",
             img: "https://lh3.googleusercontent.com/aida-public/AB6AXuBwlsTyXWk4eAculbhywFyEtDP6pGgsdjvmqCXFcKDm8yjm83-MvRt9Gtj0mhpGYL2mQSSkcwLdEXhYOpkZvgp1OM3c9wzxjc4kkaRgGhMRh6Cv7Rfun8h7kMNF8xXVBvZbLVDq7h_8HuJkMHYv7rLKYnI8JNFYs00DZWjsV-UCVs8VQ0VwDPTFlvDfioyfKWj24U-pSHn2y-kDFa5pOdcxOuzy20tUD-arV-JPU7m6XSz1tbIkN9CfyB-maKD6w6reFmDo6e605EEz",
-            icon: <Video className="size-6 text-primary" />
+            icon: <Video className="size-6 text-primary" />,
           },
           {
             title: "Family/couple therapy",
             desc: "Online or in-person. Strengthen your bonds with specialized relationship counseling.",
             img: "https://lh3.googleusercontent.com/aida-public/AB6AXuB2sQ1ma-t35D4anIXDoseV7ecNyiQafHdzQiStRuKx6Z928f2AWDsWwKeAF0cNGOl-bM_qK7lgjbwHbFpW6MkIvmgnJf0YrGWwXYFvPUjZ2nBXi6DfqY4HmaQ4SbsKt7EVlncpzfMUKb9eVU4LEgowx3cSv4YXzKj3kxuoatV9TUhTvCA7CNKUEdz2dgwu_12q-FnwtzNlQTU5hY-Hn32kw4DRaRIh0uTnxLib3mcvZgNSRgK2Vsl9mGXwa4T4d0XOdpmE6VUZjMAG",
-            icon: <Users className="size-6 text-primary" />
+            icon: <Users className="size-6 text-primary" />,
           },
           {
             title: "Client/therapist notes",
             desc: "Highly qualified therapists who provide collaborative tools to track your progress.",
             img: "https://lh3.googleusercontent.com/aida-public/AB6AXuA8L_vLNXH8wQ2nwnecBDrxOalsyZkMkaOcvKjKOXXEo8KIjLrai_VyhBC0PQ8ho_2NKp0EPyKypwCk4OTFqrjLKCD4gpJi6qAAefxGH9pVom7DiFrSxawx__--s39vlSNRLy0x-XrW19HTCireD5NeTeKB_YIfkh9LCAfTjVXCP1udEFxcdGA4tAaBiYGs_9XD3parB_y9c5S8Bt5ZueiP951eog6IcRKqKwV7AAmexEOU7vQORsYlaarfqR7i1Qrpzo-6UpaxcFr2",
-            icon: <FileText className="size-6 text-primary" />
-          }
+            icon: <FileText className="size-6 text-primary" />,
+          },
         ].map((benefit, idx) => (
-          <motion.div 
+          <motion.div
             key={idx}
             whileHover={{ y: -10 }}
             className="flex flex-col gap-8 p-4 rounded-3xl border border-transparent hover:border-slate-100 hover:bg-slate-50/50 transition-all group"
           >
             <div className="w-full aspect-[16/10] rounded-2xl overflow-hidden shadow-lg">
-              <img 
-                alt={benefit.title} 
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+              <img
+                alt={benefit.title}
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 src={benefit.img}
                 referrerPolicy="no-referrer"
               />
@@ -819,28 +804,22 @@ const Benefits = () => (
   </section>
 );
 
-const Services = ({ setCurrentPage }: { setCurrentPage: (page: string) => void, key?: string }) => (
-  <motion.div
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    exit={{ opacity: 0 }}
-    transition={{ duration: 0.5 }}
-  >
+const Services = ({ setCurrentPage }: { setCurrentPage: (page: string) => void; key?: string }) => (
+  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }}>
     <section className="max-w-7xl mx-auto px-6 py-12 lg:py-24 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
       <div className="flex flex-col gap-6">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider w-fit">
           Professional Care
         </div>
-        <h1 className="text-5xl md:text-6xl font-black leading-tight tracking-tight text-slate-900">
-          Our Services
-        </h1>
+        <h1 className="text-5xl md:text-6xl font-black leading-tight tracking-tight text-slate-900">Our Services</h1>
         <p className="text-lg text-slate-600 max-w-lg leading-relaxed font-medium">
-          Compassionate care tailored for Southeast and South Asian communities, focusing on anxiety and relationship healing through culturally sensitive therapy.
+          Compassionate care tailored for Southeast and South Asian communities, focusing on anxiety and relationship healing through culturally
+          sensitive therapy.
         </p>
         <div className="flex gap-4">
           <button
             type="button"
-            onClick={() => setCurrentPage('appointment')}
+            onClick={() => setCurrentPage("appointment")}
             className="bg-primary text-white px-8 py-4 rounded-xl font-bold text-base hover:shadow-xl transition-all shadow-lg shadow-primary/20"
           >
             Consultation
@@ -848,9 +827,9 @@ const Services = ({ setCurrentPage }: { setCurrentPage: (page: string) => void, 
           <button
             type="button"
             onClick={() => {
-              const el = document.getElementById('services-faqs');
+              const el = document.getElementById("services-faqs");
               if (el) {
-                el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                el.scrollIntoView({ behavior: "smooth", block: "start" });
               }
             }}
             className="border border-slate-300 px-8 py-4 rounded-xl font-bold text-base hover:bg-slate-50 transition-all"
@@ -861,9 +840,9 @@ const Services = ({ setCurrentPage }: { setCurrentPage: (page: string) => void, 
       </div>
       <div className="relative group">
         <div className="aspect-[4/3] rounded-[2.5rem] bg-slate-200 overflow-hidden shadow-2xl">
-          <img 
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCRvJYYCk___dfh5-x9antLjO8rVuojaPFhkw0XNEg_4FkElbHUAm9xHe9e9yJaLfsASd16wUqhm74oGuOSsYnGtrhkPfBsdIvAwhumOKSGFnxlav2vjWoTLJbHLNXz3bWu-EmS3y7jamzQafgurGThl_QSIoKYW60BH0kcPasF6zRfUUXX8hLXZo0UB08OSl49kJSxzkAvP7EfHZHOPdiv5up_hvKYyITwjjGNOmC0grnIVZCF1XpU14bedF43JHSe4kk1TOEg1xKY" 
-            alt="Support" 
+          <img
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCRvJYYCk___dfh5-x9antLjO8rVuojaPFhkw0XNEg_4FkElbHUAm9xHe9e9yJaLfsASd16wUqhm74oGuOSsYnGtrhkPfBsdIvAwhumOKSGFnxlav2vjWoTLJbHLNXz3bWu-EmS3y7jamzQafgurGThl_QSIoKYW60BH0kcPasF6zRfUUXX8hLXZo0UB08OSl49kJSxzkAvP7EfHZHOPdiv5up_hvKYyITwjjGNOmC0grnIVZCF1XpU14bedF43JHSe4kk1TOEg1xKY"
+            alt="Support"
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
             referrerPolicy="no-referrer"
           />
@@ -877,7 +856,10 @@ const Services = ({ setCurrentPage }: { setCurrentPage: (page: string) => void, 
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
           <div className="max-w-xl">
             <h2 className="text-4xl font-black tracking-tight mb-4">Specialized Areas of Care</h2>
-            <p className="text-slate-500 text-lg font-medium">We offer specialized psychological support across a wide range of mental health challenges, with deep expertise in Asian cultural dynamics.</p>
+            <p className="text-slate-500 text-lg font-medium">
+              We offer specialized psychological support across a wide range of mental health challenges, with deep expertise in Asian cultural
+              dynamics.
+            </p>
           </div>
           <button className="text-primary font-bold text-lg flex items-center gap-2 hover:underline group">
             See All Specialties <ArrowRight className="size-5 group-hover:translate-x-1 transition-transform" />
@@ -885,16 +867,31 @@ const Services = ({ setCurrentPage }: { setCurrentPage: (page: string) => void, 
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {[
-            { name: "Anxiety", desc: "Managing social anxiety and cultural performance pressure.", icon: <Shield className="size-8" />, id: 'anxiety' },
-            { name: "Relationships", desc: "Navigating family boundaries and intergenerational conflicts.", icon: <Users className="size-8" />, id: 'relationships' },
-            { name: "Mood Disorders", desc: "Balance and regulation for emotional well-being.", icon: <Droplets className="size-8" />, id: 'mood' },
-            { name: "Depression", desc: "Renewing hope and finding light in difficult seasons.", icon: <Sun className="size-8" />, id: 'depression' },
-            { name: "ADHD", desc: "Executive function support and focus strategies.", icon: <Brain className="size-8" />, id: 'adhd' },
-            { name: "Learning Problems", desc: "Educational assessments and student support.", icon: <BookOpen className="size-8" />, id: 'learning' },
-            { name: "OCD", desc: "Exposure therapies for intrusive thoughts and rituals.", icon: <TrendingUp className="size-8" />, id: 'ocd' },
-            { name: "Anger Management", desc: "Healthy communication and emotional processing.", icon: <Flame className="size-8" />, id: 'anger' },
+            {
+              name: "Anxiety",
+              desc: "Managing social anxiety and cultural performance pressure.",
+              icon: <Shield className="size-8" />,
+              id: "anxiety",
+            },
+            {
+              name: "Relationships",
+              desc: "Navigating family boundaries and intergenerational conflicts.",
+              icon: <Users className="size-8" />,
+              id: "relationships",
+            },
+            { name: "Mood Disorders", desc: "Balance and regulation for emotional well-being.", icon: <Droplets className="size-8" />, id: "mood" },
+            { name: "Depression", desc: "Renewing hope and finding light in difficult seasons.", icon: <Sun className="size-8" />, id: "depression" },
+            { name: "ADHD", desc: "Executive function support and focus strategies.", icon: <Brain className="size-8" />, id: "adhd" },
+            {
+              name: "Learning Problems",
+              desc: "Educational assessments and student support.",
+              icon: <BookOpen className="size-8" />,
+              id: "learning",
+            },
+            { name: "OCD", desc: "Exposure therapies for intrusive thoughts and rituals.", icon: <TrendingUp className="size-8" />, id: "ocd" },
+            { name: "Anger Management", desc: "Healthy communication and emotional processing.", icon: <Flame className="size-8" />, id: "anger" },
           ].map((service, idx) => (
-            <motion.div 
+            <motion.div
               key={idx}
               whileHover={{ y: -5 }}
               onClick={() => setCurrentPage(service.id)}
@@ -918,7 +915,9 @@ const Services = ({ setCurrentPage }: { setCurrentPage: (page: string) => void, 
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-20">
           <h2 className="text-4xl font-black mb-6 tracking-tight">What Our Community Says</h2>
-          <p className="text-slate-600 text-xl font-medium max-w-2xl mx-auto italic">"Healing is not a solo journey. We walk this path together with cultural understanding and clinical excellence."</p>
+          <p className="text-slate-600 text-xl font-medium max-w-2xl mx-auto italic">
+            "Healing is not a solo journey. We walk this path together with cultural understanding and clinical excellence."
+          </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
           {[
@@ -926,28 +925,28 @@ const Services = ({ setCurrentPage }: { setCurrentPage: (page: string) => void, 
               name: "Arjun K.",
               role: "Tech Lead",
               text: "Finally a therapist who understands the nuances of a South Asian household without me having to explain the basics of our culture.",
-              img: "https://lh3.googleusercontent.com/aida-public/AB6AXuA9AwVMpxnwHr_r_Cqnx0RDQx7NJQRgB9A04GqYsYb54xZ0igOpoannaPIWLAvXgAqQiLxhiMQ3ttlQIJzQaJiH4yQ1aQ__7HK3JbxIQASf8Oh8MubQxX-erRx_EWjpCFWZhMftvH6cE0jNhjvhQtLulojPP8SHwxv3kcWBOz9oRpilZNQsA71i0x3-AwWUQi9qUgllv_kdoP5ZV8gLumLaMxsKhQIiKjLcf99M4GBqrim2nzkjWzn-etLxeRfbN5AtI_37V7zctZQB"
+              img: "https://lh3.googleusercontent.com/aida-public/AB6AXuA9AwVMpxnwHr_r_Cqnx0RDQx7NJQRgB9A04GqYsYb54xZ0igOpoannaPIWLAvXgAqQiLxhiMQ3ttlQIJzQaJiH4yQ1aQ__7HK3JbxIQASf8Oh8MubQxX-erRx_EWjpCFWZhMftvH6cE0jNhjvhQtLulojPP8SHwxv3kcWBOz9oRpilZNQsA71i0x3-AwWUQi9qUgllv_kdoP5ZV8gLumLaMxsKhQIiKjLcf99M4GBqrim2nzkjWzn-etLxeRfbN5AtI_37V7zctZQB",
             },
             {
               name: "Meilin S.",
               role: "Graphic Designer",
               text: "The relationship counseling helped us navigate boundary setting with our parents in a way that felt respectful yet empowering.",
-              img: "https://lh3.googleusercontent.com/aida-public/AB6AXuAGYll8zcxJbPFrXg9ijByO-DC4I9KSu0S4sgK0YSM2xlZKGW9-BOoqjOL3wXrztdX4XRV6T2POTTfM318TTjSvmbfnFuCeNw8l18betiVqc1EeJ-C8qItLXnrCFcejuyFdiRs55B_s3-Nc6_p_F1C9RBlUITEEHKgDfi2lM6MNP3z2sVyALuvykyIeOwjtCcCjgDqJ0TK9-JONx517BybybGf7jr9_pxb246NZOg0VipVyZ-SyhdiVMOpntHVjzManz2ZXDWdMLeL9"
+              img: "https://lh3.googleusercontent.com/aida-public/AB6AXuAGYll8zcxJbPFrXg9ijByO-DC4I9KSu0S4sgK0YSM2xlZKGW9-BOoqjOL3wXrztdX4XRV6T2POTTfM318TTjSvmbfnFuCeNw8l18betiVqc1EeJ-C8qItLXnrCFcejuyFdiRs55B_s3-Nc6_p_F1C9RBlUITEEHKgDfi2lM6MNP3z2sVyALuvykyIeOwjtCcCjgDqJ0TK9-JONx517BybybGf7jr9_pxb246NZOg0VipVyZ-SyhdiVMOpntHVjzManz2ZXDWdMLeL9",
             },
             {
               name: "Priya R.",
               role: "Healthcare Professional",
               text: "The anxiety management tools were practical and culturally relevant. I felt truly heard for the first time.",
-              img: "https://lh3.googleusercontent.com/aida-public/AB6AXuAIPQslHX2J5HxRf52U9Kp5y8LBXJq8BAEBOPGtL86s7ddkoJpPKxCFVI_9Fry_77hc8hfjmPP008RcBGfxV_Ww3PORcLiaVAFTMrdMkTk3ZUyjUlh7atbxIs96aH4ZNdhyPKPXUW-9vokkhWrfXDCu8KsGZDIaWpbcLG4Lz1VL7KwP1-t_nuMjoryqO2lUUxQuMMsi6WaJQBxQiQ8jTuI1xEGo6LwaOPw_MxB8g3wKu6qSBvO2ZAHiS9eDEUyuSnP5H8nTk5PvoPpw"
+              img: "https://lh3.googleusercontent.com/aida-public/AB6AXuAIPQslHX2J5HxRf52U9Kp5y8LBXJq8BAEBOPGtL86s7ddkoJpPKxCFVI_9Fry_77hc8hfjmPP008RcBGfxV_Ww3PORcLiaVAFTMrdMkTk3ZUyjUlh7atbxIs96aH4ZNdhyPKPXUW-9vokkhWrfXDCu8KsGZDIaWpbcLG4Lz1VL7KwP1-t_nuMjoryqO2lUUxQuMMsi6WaJQBxQiQ8jTuI1xEGo6LwaOPw_MxB8g3wKu6qSBvO2ZAHiS9eDEUyuSnP5H8nTk5PvoPpw",
             },
             {
               name: "Kevin H.",
               role: "Graduate Student",
               text: "Safe, professional, and deeply empathetic. The focus on ADHD within an Asian context was life-changing for my studies.",
-              img: "https://lh3.googleusercontent.com/aida-public/AB6AXuBaTlGJQYXDPgUlDbDrFYyy6MVQe92XJsfHKmGf33hzgtceZSmVKBaC2q8IUBf65iq_PFPdmsxAi7Yja55kw94vLO_HesxeC0qVk6TQrL3v4dphAMnsnxxwKOGVDNonMP4cnzVuf5qwl0yzdYxn66rpMFeKnCfkexFe0uh0k4Zv1taa_1l14Wh51PpwGc2fHoaSsXpmKg4-7Q7AuWThP6ChlNXwy9HSnmE2ruwOEwyVNYkViaOafWsiXj6a5wTSHQ4eXtw67e1oX-vy"
-            }
+              img: "https://lh3.googleusercontent.com/aida-public/AB6AXuBaTlGJQYXDPgUlDbDrFYyy6MVQe92XJsfHKmGf33hzgtceZSmVKBaC2q8IUBf65iq_PFPdmsxAi7Yja55kw94vLO_HesxeC0qVk6TQrL3v4dphAMnsnxxwKOGVDNonMP4cnzVuf5qwl0yzdYxn66rpMFeKnCfkexFe0uh0k4Zv1taa_1l14Wh51PpwGc2fHoaSsXpmKg4-7Q7AuWThP6ChlNXwy9HSnmE2ruwOEwyVNYkViaOafWsiXj6a5wTSHQ4eXtw67e1oX-vy",
+            },
           ].map((t, idx) => (
-            <motion.div 
+            <motion.div
               key={idx}
               whileHover={{ scale: 1.02 }}
               className="bg-white p-10 rounded-[2.5rem] shadow-xl shadow-slate-200/50 flex flex-col gap-8"
@@ -977,13 +976,22 @@ const servicesContent: Record<string, any> = {
     image: "/images/adhd.png",
     about: [
       "Our ADHD Service is dedicated to providing specialized care for individuals of all ages who are dealing with Attention-Deficit/Hyperactivity Disorder (ADHD). Our experienced team of professionals offers comprehensive evaluations, personalized treatment plans, and ongoing support to help manage symptoms and improve overall functioning.",
-      "We utilize a combination of evidence-based therapies, medication management, and educational resources to address the unique needs of each individual, promoting success in school, work, and daily life."
+      "We utilize a combination of evidence-based therapies, medication management, and educational resources to address the unique needs of each individual, promoting success in school, work, and daily life.",
     ],
     faqs: [
-      { q: "What are the common symptoms of ADHD?", a: "Common symptoms include difficulty sustaining attention in tasks, frequent careless mistakes, trouble organizing activities, avoiding tasks that require sustained mental effort, being easily distracted, and forgetfulness in daily activities." },
-      { q: "How is ADHD diagnosed?", a: "Diagnosis involves a comprehensive clinical evaluation, including medical history, symptom checklists, and often psychological testing to rule out other conditions." },
-      { q: "What treatments are available for ADHD?", a: "Treatments include behavioral therapy, executive function coaching, lifestyle modifications, and in some cases, medication management in collaboration with psychiatrists." }
-    ]
+      {
+        q: "What are the common symptoms of ADHD?",
+        a: "Common symptoms include difficulty sustaining attention in tasks, frequent careless mistakes, trouble organizing activities, avoiding tasks that require sustained mental effort, being easily distracted, and forgetfulness in daily activities.",
+      },
+      {
+        q: "How is ADHD diagnosed?",
+        a: "Diagnosis involves a comprehensive clinical evaluation, including medical history, symptom checklists, and often psychological testing to rule out other conditions.",
+      },
+      {
+        q: "What treatments are available for ADHD?",
+        a: "Treatments include behavioral therapy, executive function coaching, lifestyle modifications, and in some cases, medication management in collaboration with psychiatrists.",
+      },
+    ],
   },
   anxiety: {
     name: "Anxiety",
@@ -991,12 +999,18 @@ const servicesContent: Record<string, any> = {
     image: "/images/anxiety.png",
     about: [
       "Our Anxiety Service is committed to helping individuals manage and overcome anxiety disorders through comprehensive, evidence-based treatment. We understand that anxiety can significantly impact your daily life, and our team of skilled professionals is here to provide support, guidance, and effective interventions.",
-      "We offer personalized treatment plans tailored to each individual’s unique needs, utilizing the latest research and therapeutic techniques to promote recovery and enhance well-being."
+      "We offer personalized treatment plans tailored to each individual’s unique needs, utilizing the latest research and therapeutic techniques to promote recovery and enhance well-being.",
     ],
     faqs: [
-      { q: "How do I know if my anxiety is 'normal'?", a: "While some stress is normal, persistent anxiety that interferes with your daily life, sleep, or relationships often benefits from professional support." },
-      { q: "What techniques do you use for anxiety?", a: "We use CBT, mindfulness, and somatic experiencing to help you manage both the mental and physical symptoms of anxiety." }
-    ]
+      {
+        q: "How do I know if my anxiety is 'normal'?",
+        a: "While some stress is normal, persistent anxiety that interferes with your daily life, sleep, or relationships often benefits from professional support.",
+      },
+      {
+        q: "What techniques do you use for anxiety?",
+        a: "We use CBT, mindfulness, and somatic experiencing to help you manage both the mental and physical symptoms of anxiety.",
+      },
+    ],
   },
   relationships: {
     name: "Relationships",
@@ -1004,12 +1018,15 @@ const servicesContent: Record<string, any> = {
     image: "/images/relationship.png",
     about: [
       "Our Relationships Service is dedicated to helping individuals and couples navigate the complexities of relationships. We provide a supportive environment where clients can explore and address issues that impact their relationships, whether they are romantic, familial, or platonic.",
-      "Our team of experienced therapists utilizes evidence-based approaches to foster healthy communication, resolve conflicts, and strengthen connections, tailoring our services to meet the unique needs of each client."
+      "Our team of experienced therapists utilizes evidence-based approaches to foster healthy communication, resolve conflicts, and strengthen connections, tailoring our services to meet the unique needs of each client.",
     ],
     faqs: [
       { q: "Do we need to come as a couple?", a: "Not necessarily. We offer both individual relationship coaching and traditional couples therapy." },
-      { q: "How can therapy help with family conflict?", a: "We help you develop healthy boundaries and communication strategies to navigate difficult family dynamics while respecting your values." }
-    ]
+      {
+        q: "How can therapy help with family conflict?",
+        a: "We help you develop healthy boundaries and communication strategies to navigate difficult family dynamics while respecting your values.",
+      },
+    ],
   },
   mood: {
     name: "Mood Disorders",
@@ -1017,12 +1034,18 @@ const servicesContent: Record<string, any> = {
     image: "/images/mood disorder.png",
     about: [
       "Mood disorders are among the most common and treatable mental health conditions that affect a person’s emotional state, energy level, and ability to function in daily life. Our Mood Disorder Services aim to provide comprehensive care and support for individuals experiencing depression, bipolar disorder, and related emotional disturbances.",
-      "We believe in a person-centered and holistic approach, focusing on early identification, accurate diagnosis, effective treatment, and ongoing support to help clients achieve emotional stability and an improved quality of life."
+      "We believe in a person-centered and holistic approach, focusing on early identification, accurate diagnosis, effective treatment, and ongoing support to help clients achieve emotional stability and an improved quality of life.",
     ],
     faqs: [
-      { q: "What is the difference between moodiness and a mood disorder?", a: "Mood disorders involve persistent emotional states that significantly disrupt your ability to function in daily life." },
-      { q: "Can mood disorders be managed without medication?", a: "While therapy is highly effective, some mood disorders benefit from a combination of therapy and medication. We work collaboratively with your healthcare providers." }
-    ]
+      {
+        q: "What is the difference between moodiness and a mood disorder?",
+        a: "Mood disorders involve persistent emotional states that significantly disrupt your ability to function in daily life.",
+      },
+      {
+        q: "Can mood disorders be managed without medication?",
+        a: "While therapy is highly effective, some mood disorders benefit from a combination of therapy and medication. We work collaboratively with your healthcare providers.",
+      },
+    ],
   },
   depression: {
     name: "Depression",
@@ -1030,12 +1053,18 @@ const servicesContent: Record<string, any> = {
     image: "/images/deplression.png",
     about: [
       "Our Depression Service is dedicated to providing compassionate and comprehensive care for individuals experiencing depression. Our team of experienced mental health professionals offers personalized treatment plans based on the latest evidence-based practices.",
-      "We aim to help our clients manage their symptoms, improve their quality of life, and achieve a sense of well-being through a holistic approach that may include therapy, medication management, and supportive services."
+      "We aim to help our clients manage their symptoms, improve their quality of life, and achieve a sense of well-being through a holistic approach that may include therapy, medication management, and supportive services.",
     ],
     faqs: [
-      { q: "How long does depression therapy take?", a: "The duration varies for everyone, but many clients begin to feel a sense of relief and hope within the first few months of consistent therapy." },
-      { q: "What if I feel like I'm beyond help?", a: "That feeling is often a symptom of depression itself. We are here to hold hope for you until you can find it for yourself." }
-    ]
+      {
+        q: "How long does depression therapy take?",
+        a: "The duration varies for everyone, but many clients begin to feel a sense of relief and hope within the first few months of consistent therapy.",
+      },
+      {
+        q: "What if I feel like I'm beyond help?",
+        a: "That feeling is often a symptom of depression itself. We are here to hold hope for you until you can find it for yourself.",
+      },
+    ],
   },
   learning: {
     name: "Learning Problems",
@@ -1043,12 +1072,18 @@ const servicesContent: Record<string, any> = {
     image: "/images/learning.png",
     about: [
       "At nlitme, we understand that every mind learns differently. Some children and young adults face challenges in reading, writing, attention, or memory that affect their academic performance and confidence. These are known as learning problems — and with the right support, they can be managed effectively.",
-      "Our services are designed to provide holistic mental and emotional support to learners struggling with academic difficulties. We combine psychological counseling, assessment, and individualized learning strategies to help each client overcome barriers and rediscover their confidence."
+      "Our services are designed to provide holistic mental and emotional support to learners struggling with academic difficulties. We combine psychological counseling, assessment, and individualized learning strategies to help each client overcome barriers and rediscover their confidence.",
     ],
     faqs: [
-      { q: "What are common signs of a learning problem?", a: "Struggles with reading, writing, math, or following instructions, along with frustration or avoidance of school-related tasks, can all be indicators." },
-      { q: "Can therapy help with learning problems?", a: "Yes. Therapy can address the emotional impact, build coping tools, and support the creation of tailored learning strategies and accommodations." }
-    ]
+      {
+        q: "What are common signs of a learning problem?",
+        a: "Struggles with reading, writing, math, or following instructions, along with frustration or avoidance of school-related tasks, can all be indicators.",
+      },
+      {
+        q: "Can therapy help with learning problems?",
+        a: "Yes. Therapy can address the emotional impact, build coping tools, and support the creation of tailored learning strategies and accommodations.",
+      },
+    ],
   },
   ocd: {
     name: "OCD",
@@ -1056,12 +1091,18 @@ const servicesContent: Record<string, any> = {
     image: "/images/ocd.png",
     about: [
       "Our OCD Service specializes in providing comprehensive care for individuals dealing with Obsessive-Compulsive Disorder (OCD). Our team of experienced professionals employs evidence-based treatments, including Cognitive Behavioral Therapy (CBT) and Exposure and Response Prevention (ERP), to help manage and reduce symptoms.",
-      "We are dedicated to offering personalized care tailored to each individual’s unique needs, with the goal of improving daily functioning, independence, and overall well-being."
+      "We are dedicated to offering personalized care tailored to each individual’s unique needs, with the goal of improving daily functioning, independence, and overall well-being.",
     ],
     faqs: [
-      { q: "What is OCD?", a: "OCD is a mental health condition featuring obsessions (unwanted thoughts) and compulsions (repetitive behaviors) that significantly affect daily functioning." },
-      { q: "How is OCD treated?", a: "Therapy often involves exposure and response prevention (ERP), cognitive behavioral therapy, and sometimes medication in collaboration with medical providers." }
-    ]
+      {
+        q: "What is OCD?",
+        a: "OCD is a mental health condition featuring obsessions (unwanted thoughts) and compulsions (repetitive behaviors) that significantly affect daily functioning.",
+      },
+      {
+        q: "How is OCD treated?",
+        a: "Therapy often involves exposure and response prevention (ERP), cognitive behavioral therapy, and sometimes medication in collaboration with medical providers.",
+      },
+    ],
   },
   anger: {
     name: "Anger Management",
@@ -1069,27 +1110,33 @@ const servicesContent: Record<string, any> = {
     image: "/images/anger.png",
     about: [
       "Anger is a natural human emotion — it’s how we respond to frustration, stress, or feeling misunderstood. But when anger becomes frequent, intense, or hard to control, it can harm relationships, work performance, and overall wellbeing.",
-      "At nlitme, our Anger Management Service focuses on emotional awareness, self-control, and constructive communication. We combine psychological counseling, mindfulness-based techniques, and cognitive-behavioral strategies to help clients understand the roots of their anger and gain lasting control over their emotions."
+      "At nlitme, our Anger Management Service focuses on emotional awareness, self-control, and constructive communication. We combine psychological counseling, mindfulness-based techniques, and cognitive-behavioral strategies to help clients understand the roots of their anger and gain lasting control over their emotions.",
     ],
     faqs: [
-      { q: "When should I seek help for anger?", a: "If anger leads to conflict, impacts people you care about, or feels out of control, it can be helpful to seek professional support." },
-      { q: "What happens in anger management therapy?", a: "Together we explore your triggers, practice new responses, and develop tools for calming your body and expressing yourself more effectively." }
-    ]
-  }
+      {
+        q: "When should I seek help for anger?",
+        a: "If anger leads to conflict, impacts people you care about, or feels out of control, it can be helpful to seek professional support.",
+      },
+      {
+        q: "What happens in anger management therapy?",
+        a: "Together we explore your triggers, practice new responses, and develop tools for calming your body and expressing yourself more effectively.",
+      },
+    ],
+  },
 };
 
-const ServiceDetail = ({ serviceId, setCurrentPage }: { serviceId: string, setCurrentPage: (page: string) => void, key?: string }) => {
+const ServiceDetail = ({ serviceId, setCurrentPage }: { serviceId: string; setCurrentPage: (page: string) => void; key?: string }) => {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
-  const [consultFirstName, setConsultFirstName] = useState('');
-  const [consultFamilyName, setConsultFamilyName] = useState('');
-  const [consultPhone, setConsultPhone] = useState('');
-  const [consultDate, setConsultDate] = useState('');
-  const [consultTime, setConsultTime] = useState('');
+  const [consultFirstName, setConsultFirstName] = useState("");
+  const [consultFamilyName, setConsultFamilyName] = useState("");
+  const [consultPhone, setConsultPhone] = useState("");
+  const [consultDate, setConsultDate] = useState("");
+  const [consultTime, setConsultTime] = useState("");
   const [consultSubmitting, setConsultSubmitting] = useState(false);
   const [consultSuccess, setConsultSuccess] = useState<string | null>(null);
   const [consultError, setConsultError] = useState<string | null>(null);
 
-  const content = servicesContent[serviceId] || servicesContent['adhd'];
+  const content = servicesContent[serviceId] || servicesContent["adhd"];
 
   const handleConsultSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -1098,23 +1145,23 @@ const ServiceDetail = ({ serviceId, setCurrentPage }: { serviceId: string, setCu
     setConsultError(null);
 
     if (!consultFirstName.trim() || !consultPhone.trim() || !consultDate || !consultTime) {
-      setConsultError('Please fill in your first name, phone, date, and time.');
+      setConsultError("Please fill in your first name, phone, date, and time.");
       return;
     }
 
     if (!isValidPhone(consultPhone.trim())) {
-      setConsultError('Please enter a valid phone number.');
+      setConsultError("Please enter a valid phone number.");
       return;
     }
 
-    const fullName = `${consultFirstName.trim()}${consultFamilyName.trim() ? ' ' + consultFamilyName.trim() : ''}`;
+    const fullName = `${consultFirstName.trim()}${consultFamilyName.trim() ? " " + consultFamilyName.trim() : ""}`;
 
     try {
       setConsultSubmitting(true);
       const res = await fetch(`${API_BASE_URL}/api/appointments`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           name: fullName,
@@ -1122,36 +1169,30 @@ const ServiceDetail = ({ serviceId, setCurrentPage }: { serviceId: string, setCu
           date: consultDate,
           time: consultTime,
           serviceId,
-          notes: undefined
-        })
+          notes: undefined,
+        }),
       });
 
       if (!res.ok) {
         const body = await res.json().catch(() => null);
-        throw new Error(body?.message || 'Unable to book consultation right now. Please try again.');
+        throw new Error(body?.message || "Unable to book consultation right now. Please try again.");
       }
 
-      setConsultSuccess('Your consultation request has been sent. We will contact you shortly.');
-      setConsultFirstName('');
-      setConsultFamilyName('');
-      setConsultPhone('');
-      setConsultDate('');
-      setConsultTime('');
+      setConsultSuccess("Your consultation request has been sent. We will contact you shortly.");
+      setConsultFirstName("");
+      setConsultFamilyName("");
+      setConsultPhone("");
+      setConsultDate("");
+      setConsultTime("");
     } catch (err: any) {
-      setConsultError(err.message || 'Unable to book consultation right now. Please try again.');
+      setConsultError(err.message || "Unable to book consultation right now. Please try again.");
     } finally {
       setConsultSubmitting(false);
     }
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.5 }}
-      className="relative"
-    >
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }} className="relative">
       {/* Background Elements */}
       <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
         <div className="absolute top-0 left-1/4 w-full h-full bg-gradient-to-br from-blue-50/50 via-slate-50/30 to-white opacity-60"></div>
@@ -1163,27 +1204,27 @@ const ServiceDetail = ({ serviceId, setCurrentPage }: { serviceId: string, setCu
           {/* Sidebar */}
           <aside className="lg:col-span-3 flex flex-col gap-10">
             <div className="bg-white rounded-3xl p-8 shadow-xl shadow-slate-200/50 border border-slate-100">
-              <h3 className="text-xl font-black mb-8 flex items-center gap-2 tracking-tight">
-                Our Services
-              </h3>
+              <h3 className="text-xl font-black mb-8 flex items-center gap-2 tracking-tight">Our Services</h3>
               <nav className="flex flex-col gap-2">
                 {[
-                  { name: 'Anger Management', id: 'anger' },
-                  { name: 'OCD', id: 'ocd' },
-                  { name: 'Anxiety', id: 'anxiety' },
-                  { name: 'Relationships', id: 'relationships' },
-                  { name: 'Mood Disorders', id: 'mood' },
-                  { name: 'Depression', id: 'depression' },
-                  { name: 'ADHD', id: 'adhd' },
-                  { name: 'Learning Problem', id: 'learning' },
+                  { name: "Anger Management", id: "anger" },
+                  { name: "OCD", id: "ocd" },
+                  { name: "Anxiety", id: "anxiety" },
+                  { name: "Relationships", id: "relationships" },
+                  { name: "Mood Disorders", id: "mood" },
+                  { name: "Depression", id: "depression" },
+                  { name: "ADHD", id: "adhd" },
+                  { name: "Learning Problem", id: "learning" },
                 ].map((item) => (
                   <button
                     key={item.id}
                     onClick={() => setCurrentPage(item.id)}
-                    className={`group flex items-center justify-between p-4 rounded-2xl transition-all ${serviceId === item.id ? 'bg-primary text-white shadow-xl shadow-primary/20' : 'hover:bg-slate-50 text-slate-600'}`}
+                    className={`group flex items-center justify-between p-4 rounded-2xl transition-all ${serviceId === item.id ? "bg-primary text-white shadow-xl shadow-primary/20" : "hover:bg-slate-50 text-slate-600"}`}
                   >
-                    <span className={`text-sm ${serviceId === item.id ? 'font-black' : 'font-semibold'}`}>{item.name}</span>
-                    <ChevronRight className={`size-4 ${serviceId === item.id ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'} transition-all`} />
+                    <span className={`text-sm ${serviceId === item.id ? "font-black" : "font-semibold"}`}>{item.name}</span>
+                    <ChevronRight
+                      className={`size-4 ${serviceId === item.id ? "opacity-100" : "opacity-0 group-hover:opacity-100"} transition-all`}
+                    />
                   </button>
                 ))}
               </nav>
@@ -1191,20 +1232,10 @@ const ServiceDetail = ({ serviceId, setCurrentPage }: { serviceId: string, setCu
 
             <div className="bg-white rounded-3xl p-8 shadow-xl shadow-slate-200/50 border border-slate-100">
               <h3 className="text-lg font-bold text-slate-900 mb-2 tracking-tight">Book a Consultation</h3>
-              <p className="text-xs text-slate-500 mb-6">
-                Share a few details and our care team will reach out to you to schedule your session.
-              </p>
+              <p className="text-xs text-slate-500 mb-6">Share a few details and our care team will reach out to you to schedule your session.</p>
               <form className="space-y-5" onSubmit={handleConsultSubmit}>
-                {consultSuccess && (
-                  <p className="text-xs font-semibold text-emerald-600">
-                    {consultSuccess}
-                  </p>
-                )}
-                {consultError && (
-                  <p className="text-xs font-semibold text-red-600">
-                    {consultError}
-                  </p>
-                )}
+                {consultSuccess && <p className="text-xs font-semibold text-emerald-600">{consultSuccess}</p>}
+                {consultError && <p className="text-xs font-semibold text-red-600">{consultError}</p>}
                 <div className="space-y-2">
                   <label className="text-sm font-semibold text-slate-700">
                     First Name <span className="text-red-500">*</span>
@@ -1218,9 +1249,7 @@ const ServiceDetail = ({ serviceId, setCurrentPage }: { serviceId: string, setCu
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-sm font-semibold text-slate-700">
-                    Family Name
-                  </label>
+                  <label className="text-sm font-semibold text-slate-700">Family Name</label>
                   <input
                     className="w-full bg-slate-50 border-none rounded-xl p-4 text-sm focus:ring-2 focus:ring-primary/20 font-medium"
                     placeholder="Enter your family name"
@@ -1239,7 +1268,7 @@ const ServiceDetail = ({ serviceId, setCurrentPage }: { serviceId: string, setCu
                     type="tel"
                     value={consultPhone}
                     onChange={(e) => {
-                      const digits = e.target.value.replace(/\D/g, '').slice(0, 10);
+                      const digits = e.target.value.replace(/\D/g, "").slice(0, 10);
                       setConsultPhone(digits);
                     }}
                   />
@@ -1273,7 +1302,7 @@ const ServiceDetail = ({ serviceId, setCurrentPage }: { serviceId: string, setCu
                   disabled={consultSubmitting}
                   className="w-full bg-primary text-white font-black py-5 rounded-2xl mt-4 shadow-xl shadow-primary/20 hover:bg-primary/95 transition-all active:scale-[0.98] text-lg disabled:opacity-60 disabled:cursor-not-allowed"
                 >
-                  {consultSubmitting ? 'Booking...' : 'Book Online'}
+                  {consultSubmitting ? "Booking..." : "Book Online"}
                 </button>
               </form>
             </div>
@@ -1283,9 +1312,9 @@ const ServiceDetail = ({ serviceId, setCurrentPage }: { serviceId: string, setCu
           <div className="lg:col-span-9 space-y-16">
             <div className="relative rounded-[3rem] overflow-hidden shadow-2xl group">
               <div className="aspect-[16/9] w-full">
-                <img 
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
-                  alt={content.title} 
+                <img
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  alt={content.title}
                   src={content.image}
                   referrerPolicy="no-referrer"
                 />
@@ -1308,19 +1337,22 @@ const ServiceDetail = ({ serviceId, setCurrentPage }: { serviceId: string, setCu
               <h3 className="text-3xl font-black text-primary px-4 tracking-tight">Frequently Asked Questions</h3>
               <div className="space-y-6">
                 {content.faqs.map((faq: any, idx: number) => (
-                  <div key={idx} className={`bg-white rounded-[2rem] border transition-all ${openFaq === idx ? 'border-primary/20 shadow-2xl shadow-primary/5' : 'border-slate-100 shadow-sm'}`}>
-                    <button 
+                  <div
+                    key={idx}
+                    className={`bg-white rounded-[2rem] border transition-all ${openFaq === idx ? "border-primary/20 shadow-2xl shadow-primary/5" : "border-slate-100 shadow-sm"}`}
+                  >
+                    <button
                       onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
                       className="w-full flex items-center justify-between p-8 text-left group"
                     >
-                      <span className={`text-xl font-black tracking-tight ${openFaq === idx ? 'text-primary' : 'text-slate-800'}`}>{faq.q}</span>
-                      <ChevronRight className={`size-6 transition-transform ${openFaq === idx ? 'text-primary rotate-90' : 'text-slate-400'}`} />
+                      <span className={`text-xl font-black tracking-tight ${openFaq === idx ? "text-primary" : "text-slate-800"}`}>{faq.q}</span>
+                      <ChevronRight className={`size-6 transition-transform ${openFaq === idx ? "text-primary rotate-90" : "text-slate-400"}`} />
                     </button>
                     <AnimatePresence>
                       {openFaq === idx && (
-                        <motion.div 
+                        <motion.div
                           initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: 'auto', opacity: 1 }}
+                          animate={{ height: "auto", opacity: 1 }}
                           exit={{ height: 0, opacity: 0 }}
                           className="overflow-hidden"
                         >
@@ -1341,12 +1373,7 @@ const ServiceDetail = ({ serviceId, setCurrentPage }: { serviceId: string, setCu
   );
 };
 const Home = ({ setCurrentPage }: { setCurrentPage: (page: string) => void }) => (
-  <motion.div
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    exit={{ opacity: 0 }}
-    transition={{ duration: 0.5 }}
-  >
+  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }}>
     <HomeHero setCurrentPage={setCurrentPage} />
     <Benefits />
     <Specialties setCurrentPage={setCurrentPage} />
@@ -1356,18 +1383,13 @@ const Home = ({ setCurrentPage }: { setCurrentPage: (page: string) => void }) =>
   </motion.div>
 );
 
-const About = ({ setCurrentPage }: { setCurrentPage: (page: string) => void, key?: string }) => (
-  <motion.div
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    exit={{ opacity: 0 }}
-    transition={{ duration: 0.5 }}
-  >
+const About = ({ setCurrentPage }: { setCurrentPage: (page: string) => void; key?: string }) => (
+  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }}>
     <AboutHero
       onLearnMission={() => {
-        const el = document.getElementById('about-mission');
+        const el = document.getElementById("about-mission");
         if (el) {
-          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          el.scrollIntoView({ behavior: "smooth", block: "start" });
         }
       }}
     />
@@ -1396,21 +1418,19 @@ const Specialties = ({ setCurrentPage }: { setCurrentPage: (page: string) => voi
         <h2 className="text-4xl font-black mb-16 tracking-tight">Our Specialties</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {specialties.map((spec, idx) => (
-            <motion.div 
+            <motion.div
               key={idx}
               whileHover={{ scale: 1.02, boxShadow: "0 10px 30px -10px rgba(0,0,0,0.1)" }}
               className="p-8 bg-white rounded-2xl border border-slate-100 flex flex-col items-center gap-5 transition-all cursor-pointer"
             >
-              <div className="size-14 bg-primary/5 rounded-xl flex items-center justify-center text-primary">
-                {spec.icon}
-              </div>
+              <div className="size-14 bg-primary/5 rounded-xl flex items-center justify-center text-primary">{spec.icon}</div>
               <h4 className="font-bold text-slate-800">{spec.name}</h4>
             </motion.div>
           ))}
         </div>
         <button
           type="button"
-          onClick={() => setCurrentPage('services')}
+          onClick={() => setCurrentPage("services")}
           className="mt-16 px-10 py-4 border-2 border-primary text-primary font-bold rounded-xl hover:bg-primary hover:text-white transition-all shadow-lg shadow-primary/5"
         >
           View all Services
@@ -1433,7 +1453,9 @@ const Process = () => (
               </div>
               <div>
                 <h3 className="text-2xl font-bold mb-2 text-slate-900">1. Schedule a call</h3>
-                <p className="text-slate-500 text-lg font-medium leading-relaxed">Book a free introductory consultation with your preferred expert.</p>
+                <p className="text-slate-500 text-lg font-medium leading-relaxed">
+                  Book a free introductory consultation with your preferred expert.
+                </p>
               </div>
             </div>
             <div className="flex gap-8 items-start">
@@ -1442,21 +1464,23 @@ const Process = () => (
               </div>
               <div>
                 <h3 className="text-2xl font-bold mb-2 text-slate-900">2. Fill details</h3>
-                <p className="text-slate-500 text-lg font-medium leading-relaxed">Share your history and goals through our secure, private platform.</p>
+                <p className="text-slate-500 text-lg font-medium leading-relaxed">
+                  Share your history and goals through our secure, private platform.
+                </p>
               </div>
             </div>
           </div>
         </div>
         <div className="flex-1">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             className="rounded-[3rem] overflow-hidden shadow-2xl aspect-square border-8 border-slate-50"
           >
-            <img 
-              alt="Therapy process" 
-              className="w-full h-full object-cover" 
+            <img
+              alt="Therapy process"
+              className="w-full h-full object-cover"
               src="https://lh3.googleusercontent.com/aida-public/AB6AXuCv5gOKZSXvEuapcyFqSJRKs8ZHA2c9etXu6iYrsISEhPXzaenzbO-AOqqPwb2wjOxDzpVZYZC3jkEMVvsyQNXGrDCpbEJF-MPSEmztC4g56IaXSni4ANyw0bnhwwHAedXl1ABwQ1vgwI_yReHr8jbcxY7LpsFzVf07LptyqvVLhwoo4tGo7MdEPMD0vm1Zrxm4SUUGigky0eYmgFEGr6BzCTutYMXqH_Nt56h-NBIwL1XoqxuRJQ1eLh7TlOe_Ggn54NVHcYgNc1XF"
               referrerPolicy="no-referrer"
             />
@@ -1476,31 +1500,33 @@ const Testimonials = () => (
           {
             name: "Kenji T.",
             text: "The search process was so intuitive. I found exactly who I needed within minutes.",
-            img: "https://lh3.googleusercontent.com/aida-public/AB6AXuD0mZx-GXQfrRNf2nC81BOvZFGjB_D23F2jO6xeXjlx_ksb9Gh-TDICk9WXYHISwlhBZsyWOhu_cPXyXvyXEO9pKq4vhF-jbru_xUanE9YUvYk83BWWA0rHt83hZy1LyI9G4RucuAgG6-DHjlOmwKKSkcHh5evhcpMY4vggKUuXmTvAOK5Ya_o1276k5wfWgHGLQ3iG5CuxFT4SGFq-4T4GtmNRtJt3JWwWq1o6KU4WZs3MjDh6RDrVWOryR78-ozevHWq2vpwtQDJS"
+            img: "https://lh3.googleusercontent.com/aida-public/AB6AXuD0mZx-GXQfrRNf2nC81BOvZFGjB_D23F2jO6xeXjlx_ksb9Gh-TDICk9WXYHISwlhBZsyWOhu_cPXyXvyXEO9pKq4vhF-jbru_xUanE9YUvYk83BWWA0rHt83hZy1LyI9G4RucuAgG6-DHjlOmwKKSkcHh5evhcpMY4vggKUuXmTvAOK5Ya_o1276k5wfWgHGLQ3iG5CuxFT4SGFq-4T4GtmNRtJt3JWwWq1o6KU4WZs3MjDh6RDrVWOryR78-ozevHWq2vpwtQDJS",
           },
           {
             name: "Mei L.",
             text: "Highly professional and compassionate therapists. nlitme changed my outlook on life.",
-            img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCL4ldsYNPhiX5qAzfvIasEIePSX84DIJ2Nmm_4RoZVQMDjAA-3iPyqOyU5HdrBvbcqCfiA7Ww0e8CSz-lRaaKPbW8ZC8afDpfbECDICzV5bxdAImrZHf59gWOKQOn9Jw6grywdBr5xoIipP4KrILpYnZJlbe_kBnEFWREu17yfl3l01B-0jhKvOSdUWxVztsyKLnhX5EMlRNz4Y787bAqXONXYGq7TQXAaf9U6e0y_MAiXs_fSANq4gh7LU8sP5Yb0bxH18aTRhv69"
+            img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCL4ldsYNPhiX5qAzfvIasEIePSX84DIJ2Nmm_4RoZVQMDjAA-3iPyqOyU5HdrBvbcqCfiA7Ww0e8CSz-lRaaKPbW8ZC8afDpfbECDICzV5bxdAImrZHf59gWOKQOn9Jw6grywdBr5xoIipP4KrILpYnZJlbe_kBnEFWREu17yfl3l01B-0jhKvOSdUWxVztsyKLnhX5EMlRNz4Y787bAqXONXYGq7TQXAaf9U6e0y_MAiXs_fSANq4gh7LU8sP5Yb0bxH18aTRhv69",
           },
           {
             name: "David W.",
             text: "The online sessions are seamless. I appreciate the focus on privacy and security.",
-            img: "https://lh3.googleusercontent.com/aida-public/AB6AXuDJlLpvoWUo52u206vZhN5CxWf6fW8p_hxRbVd2TalU71ueld7stkpy3ucnUR4admEJQSRC5MlgXt2oZtHkKqZhmKPbHCOQO-rpNLO2j0WyG-ad_xIRoqpZXvckoW9u5YbVlTN3GWn5JpfZ0hn371nPTkltH91ONsYNVV7MDrdlkL8FyHYKNQLJQBqKtF-jMZ0duDEOp7BgKrbggHgPHjzoHvwxNqNEjDFouXeols7gt-_-NQyo86YezYAK_IL3MhAh8-5QXsOMn-lD"
+            img: "https://lh3.googleusercontent.com/aida-public/AB6AXuDJlLpvoWUo52u206vZhN5CxWf6fW8p_hxRbVd2TalU71ueld7stkpy3ucnUR4admEJQSRC5MlgXt2oZtHkKqZhmKPbHCOQO-rpNLO2j0WyG-ad_xIRoqpZXvckoW9u5YbVlTN3GWn5JpfZ0hn371nPTkltH91ONsYNVV7MDrdlkL8FyHYKNQLJQBqKtF-jMZ0duDEOp7BgKrbggHgPHjzoHvwxNqNEjDFouXeols7gt-_-NQyo86YezYAK_IL3MhAh8-5QXsOMn-lD",
           },
           {
             name: "Aria S.",
             text: "The specialized ADHD support I found here has been a game changer for my career.",
-            img: "https://lh3.googleusercontent.com/aida-public/AB6AXuAGL3TU653CTiplBN-DR7OP8SKdeD3JVGIrH75cJgOK-4LkAtg2Dda6rEjylUKibJsoQSl3pIGW8qeYGy1Wjapy3hYohAKd4uPX8XuzszKhCAiVq3kObHrpAigQ2yoZx9AR9gPAPWKAcWwtcdwUfmvz_y0g8RFweRqD4RQzMfb5jLiVzrLKBi0ShuHuq-t0Tj0UlBmn88-TJ-dhUNTDksoQmzIELfNnkIkbiie6Ph0jEGttWuD2rmk0d-iW4qH34H-KwF2Z9onUCqPD"
-          }
+            img: "https://lh3.googleusercontent.com/aida-public/AB6AXuAGL3TU653CTiplBN-DR7OP8SKdeD3JVGIrH75cJgOK-4LkAtg2Dda6rEjylUKibJsoQSl3pIGW8qeYGy1Wjapy3hYohAKd4uPX8XuzszKhCAiVq3kObHrpAigQ2yoZx9AR9gPAPWKAcWwtcdwUfmvz_y0g8RFweRqD4RQzMfb5jLiVzrLKBi0ShuHuq-t0Tj0UlBmn88-TJ-dhUNTDksoQmzIELfNnkIkbiie6Ph0jEGttWuD2rmk0d-iW4qH34H-KwF2Z9onUCqPD",
+          },
         ].map((t, idx) => (
-          <motion.div 
+          <motion.div
             key={idx}
             whileHover={{ y: -5 }}
             className="bg-white p-8 rounded-[2rem] border border-slate-100 space-y-6 shadow-sm hover:shadow-xl transition-all"
           >
             <div className="flex text-yellow-400 gap-1">
-              {[...Array(5)].map((_, i) => <Star key={i} className="size-4 fill-current" />)}
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} className="size-4 fill-current" />
+              ))}
             </div>
             <p className="text-slate-600 font-medium italic leading-relaxed">"{t.text}"</p>
             <div className="flex items-center gap-4 pt-2">
@@ -1522,16 +1548,18 @@ const CTA = () => (
       <div className="relative rounded-[3rem] bg-primary overflow-hidden flex flex-col md:flex-row items-center shadow-2xl shadow-primary/30">
         <div className="flex-1 p-10 lg:p-16 text-white space-y-8">
           <h2 className="text-4xl lg:text-5xl font-black tracking-tight">Need assistance?</h2>
-          <p className="text-white/80 text-xl font-medium leading-relaxed">Request a call now and our team will help you find the perfect match for your needs.</p>
+          <p className="text-white/80 text-xl font-medium leading-relaxed">
+            Request a call now and our team will help you find the perfect match for your needs.
+          </p>
           <button className="bg-white text-primary px-10 py-5 rounded-2xl font-bold hover:bg-slate-50 transition-all flex items-center gap-3 shadow-xl shadow-black/10">
             <Phone className="size-5" />
             Request a Call
           </button>
         </div>
         <div className="flex-1 h-80 md:h-[500px] w-full">
-          <img 
-            alt="Support team" 
-            className="w-full h-full object-cover" 
+          <img
+            alt="Support team"
+            className="w-full h-full object-cover"
             src="https://lh3.googleusercontent.com/aida-public/AB6AXuCW4-qJmnUJcHUE0CjLQedikCDfB1asux95XBmlLRQKn-VEZUrb3oy_ILiEyYaqDV4nugkI7EwWNhG83ROQnYG1O8m-_h14I3zYpPIscTrewWgTSAKqkI_aPQ_otwJEPySsYy8XJZfgiTfHvKp5cGFYHB4zWoqYbyufscddeRKUwTVYQrB_iSgV22HadJHKitsOFwJQYPYwBHnCdmQSeoZVMP7tuRquWZ7agAil-IssrGu1F7MMsh1MkoY_oUNxmLPyXxHT7tPI18uX"
             referrerPolicy="no-referrer"
           />
@@ -1590,43 +1618,79 @@ const Footer = ({ setCurrentPage }: { setCurrentPage: (page: string) => void }) 
             </a>
           </div>
         </div>
-        
+
         <div className="md:col-span-2 space-y-6">
           <h4 className="text-white font-bold text-lg">Services</h4>
           <ul className="space-y-4">
-            <li><button onClick={() => setCurrentPage('anxiety')} className="hover:text-white transition-colors">Counseling</button></li>
-            <li><button onClick={() => setCurrentPage('mood')} className="hover:text-white transition-colors">Meditation</button></li>
-            <li><button onClick={() => setCurrentPage('services')} className="hover:text-white transition-colors">Workshops</button></li>
-            <li><button onClick={() => setCurrentPage('depression')} className="hover:text-white transition-colors">Therapy</button></li>
+            <li>
+              <button onClick={() => setCurrentPage("anxiety")} className="hover:text-white transition-colors">
+                Counseling
+              </button>
+            </li>
+            <li>
+              <button onClick={() => setCurrentPage("mood")} className="hover:text-white transition-colors">
+                Meditation
+              </button>
+            </li>
+            <li>
+              <button onClick={() => setCurrentPage("services")} className="hover:text-white transition-colors">
+                Workshops
+              </button>
+            </li>
+            <li>
+              <button onClick={() => setCurrentPage("depression")} className="hover:text-white transition-colors">
+                Therapy
+              </button>
+            </li>
           </ul>
         </div>
-        
+
         <div className="md:col-span-2 space-y-6">
           <h4 className="text-white font-bold text-lg">Pages</h4>
           <ul className="space-y-4">
-            <li><button onClick={() => setCurrentPage('about')} className="hover:text-white transition-colors">About Us</button></li>
-            <li><button onClick={() => setCurrentPage('contact')} className="hover:text-white transition-colors">Contact</button></li>
-            <li><button onClick={() => setCurrentPage('shop')} className="hover:text-white transition-colors">Shop</button></li>
-            <li><button onClick={() => setCurrentPage('imageCredits')} className="hover:text-white transition-colors">Image Credits</button></li>
+            <li>
+              <button onClick={() => setCurrentPage("about")} className="hover:text-white transition-colors">
+                About Us
+              </button>
+            </li>
+            <li>
+              <button onClick={() => setCurrentPage("contact")} className="hover:text-white transition-colors">
+                Contact
+              </button>
+            </li>
+            <li>
+              <button onClick={() => setCurrentPage("shop")} className="hover:text-white transition-colors">
+                Shop
+              </button>
+            </li>
+            <li>
+              <button onClick={() => setCurrentPage("imageCredits")} className="hover:text-white transition-colors">
+                Image Credits
+              </button>
+            </li>
           </ul>
         </div>
 
         <div className="md:col-span-3 flex md:justify-end items-start">
-          <button 
+          <button
             className="group flex items-center gap-3 text-white font-bold bg-white/5 border border-white/10 px-6 py-4 rounded-xl hover:bg-white/10 transition-all"
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           >
             Scroll to Top
             <ArrowUp className="size-5 group-hover:-translate-y-1 transition-transform" />
           </button>
         </div>
       </div>
-      
+
       <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-slate-500 font-medium">
         <p>© 2026 nlitme - All rights reserved. Designed for wellbeing.</p>
         <div className="flex gap-8">
-          <a href="#" className="hover:text-slate-300 transition-colors">Terms of Service</a>
-          <a href="#" className="hover:text-slate-300 transition-colors">Cookie Policy</a>
+          <a href="#" className="hover:text-slate-300 transition-colors">
+            Terms of Service
+          </a>
+          <a href="#" className="hover:text-slate-300 transition-colors">
+            Cookie Policy
+          </a>
         </div>
       </div>
     </div>
@@ -1634,9 +1698,9 @@ const Footer = ({ setCurrentPage }: { setCurrentPage: (page: string) => void }) 
 );
 
 const Contact = ({ key }: { key?: string }) => {
-  const [contactName, setContactName] = useState('');
-  const [contactEmail, setContactEmail] = useState('');
-  const [contactMessage, setContactMessage] = useState('');
+  const [contactName, setContactName] = useState("");
+  const [contactEmail, setContactEmail] = useState("");
+  const [contactMessage, setContactMessage] = useState("");
   const [isSending, setIsSending] = useState(false);
   const [contactSuccess, setContactSuccess] = useState<string | null>(null);
   const [contactError, setContactError] = useState<string | null>(null);
@@ -1648,250 +1712,254 @@ const Contact = ({ key }: { key?: string }) => {
     setContactError(null);
 
     if (!contactName.trim() || !contactMessage.trim()) {
-      setContactError('Please fill in your name and message.');
+      setContactError("Please fill in your name and message.");
       return;
     }
 
     try {
       setIsSending(true);
       await fetch(`${API_BASE_URL}/api/contact`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           name: contactName.trim(),
           email: contactEmail.trim() || undefined,
-          message: contactMessage.trim()
-        })
+          message: contactMessage.trim(),
+        }),
       });
 
-      setContactSuccess('Your message has been sent. We will get back to you within 24 hours.');
-      setContactName('');
-      setContactEmail('');
-      setContactMessage('');
+      setContactSuccess("Your message has been sent. We will get back to you within 24 hours.");
+      setContactName("");
+      setContactEmail("");
+      setContactMessage("");
     } catch {
-      setContactError('Unable to send your message right now. Please try again later.');
+      setContactError("Unable to send your message right now. Please try again later.");
     } finally {
       setIsSending(false);
     }
   };
 
   return (
-  <motion.div
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    exit={{ opacity: 0 }}
-    transition={{ duration: 0.5 }}
-    className="gradient-bg min-h-screen"
-  >
-    <section className="max-w-7xl mx-auto px-6 lg:px-20 py-12 lg:py-24">
-      <div className="grid lg:grid-cols-2 gap-12 items-center">
-        <div className="order-2 lg:order-1 flex flex-col gap-8">
-          <div className="space-y-4">
-            <span className="inline-block px-3 py-1 bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider rounded-full">Get in touch</span>
-            <h1 className="text-4xl lg:text-6xl font-black text-slate-900 leading-[1.1] tracking-tight">
-              Contact us easily online, by phone or by dropping In
-            </h1>
-            <p className="text-lg text-slate-600 max-w-lg">
-              Experience professional and accessible support tailored to your unique wellness journey. We're here to listen and help.
-            </p>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
+      className="gradient-bg min-h-screen"
+    >
+      <section className="max-w-7xl mx-auto px-6 lg:px-20 py-12 lg:py-24">
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="order-2 lg:order-1 flex flex-col gap-8">
+            <div className="space-y-4">
+              <span className="inline-block px-3 py-1 bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider rounded-full">
+                Get in touch
+              </span>
+              <h1 className="text-4xl lg:text-6xl font-black text-slate-900 leading-[1.1] tracking-tight">
+                Contact us easily online, by phone or by dropping In
+              </h1>
+              <p className="text-lg text-slate-600 max-w-lg">
+                Experience professional and accessible support tailored to your unique wellness journey. We're here to listen and help.
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-4">
+              <button className="bg-primary text-white px-8 py-4 rounded-xl font-bold flex items-center gap-2 hover:translate-y-[-2px] transition-all shadow-lg">
+                <Calendar className="size-5" />
+                Schedule a call
+              </button>
+              <button className="bg-white border-2 border-slate-200 text-slate-900 px-8 py-4 rounded-xl font-bold flex items-center gap-2 hover:bg-slate-50 transition-all">
+                <Phone className="size-5" />
+                1-800-NLIT-ME
+              </button>
+            </div>
           </div>
-          <div className="flex flex-wrap gap-4">
-            <button className="bg-primary text-white px-8 py-4 rounded-xl font-bold flex items-center gap-2 hover:translate-y-[-2px] transition-all shadow-lg">
-              <Calendar className="size-5" />
-              Schedule a call
-            </button>
-            <button className="bg-white border-2 border-slate-200 text-slate-900 px-8 py-4 rounded-xl font-bold flex items-center gap-2 hover:bg-slate-50 transition-all">
-              <Phone className="size-5" />
-              1-800-NLIT-ME
-            </button>
-          </div>
-        </div>
-        <div className="order-1 lg:order-2 relative">
-          <div className="aspect-[4/5] rounded-[2rem] overflow-hidden shadow-2xl">
-            <img 
-              alt="Smiling East Asian woman" 
-              className="w-full h-full object-cover" 
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuD94wHopYke5__Ss7vJNIhGFpWV0CR-SPtSQclmVjUZjXmi5-9n1bWUjzn5xNJ7C1KvJnaySTIJja32tkILK5jAUPH-vfagxD_AslRp-T3P_qjRqAiQYnbOi-WNOTFRLEQcEk7NnkMn7riD5gK9R8h1j8WTJHTQYcxKha3RVXuSknx76uxVA201Np77hmOLzp93BA2NWdzQm1N9N46yWSowSNBd0XLZEPFi87UJh5k6ynkYmFilYgPeaS9N7eI3TSIOO8g976H7dQEA"
-              referrerPolicy="no-referrer"
-            />
-          </div>
-          <div className="absolute -bottom-6 -left-6 bg-white p-6 rounded-2xl shadow-xl hidden md:block border border-slate-100">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary font-bold">99%</div>
-              <div>
-                <p className="text-sm font-bold">Response Rate</p>
-                <p className="text-xs text-slate-500">Average response under 2h</p>
+          <div className="order-1 lg:order-2 relative">
+            <div className="aspect-[4/5] rounded-[2rem] overflow-hidden shadow-2xl">
+              <img
+                alt="Smiling East Asian woman"
+                className="w-full h-full object-cover"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuD94wHopYke5__Ss7vJNIhGFpWV0CR-SPtSQclmVjUZjXmi5-9n1bWUjzn5xNJ7C1KvJnaySTIJja32tkILK5jAUPH-vfagxD_AslRp-T3P_qjRqAiQYnbOi-WNOTFRLEQcEk7NnkMn7riD5gK9R8h1j8WTJHTQYcxKha3RVXuSknx76uxVA201Np77hmOLzp93BA2NWdzQm1N9N46yWSowSNBd0XLZEPFi87UJh5k6ynkYmFilYgPeaS9N7eI3TSIOO8g976H7dQEA"
+                referrerPolicy="no-referrer"
+              />
+            </div>
+            <div className="absolute -bottom-6 -left-6 bg-white p-6 rounded-2xl shadow-xl hidden md:block border border-slate-100">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary font-bold">99%</div>
+                <div>
+                  <p className="text-sm font-bold">Response Rate</p>
+                  <p className="text-xs text-slate-500">Average response under 2h</p>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section className="bg-white/50 py-20 border-y border-slate-200">
-      <div className="max-w-7xl mx-auto px-6 lg:px-20">
-        <h2 className="text-3xl font-bold mb-12 flex items-center gap-3">
-          <span className="material-symbols-outlined text-primary">info</span>
-          Contact Information
-        </h2>
-        <div className="grid md:grid-cols-2 gap-12">
-          <div className="p-8 rounded-2xl bg-white shadow-sm border border-slate-100 flex gap-6">
-            <div className="w-12 h-12 bg-primary/5 rounded-xl flex items-center justify-center text-primary">
-              <MapPin className="size-6" />
-            </div>
-            <div className="space-y-2">
-              <h3 className="font-bold text-slate-900">Main Headquarters</h3>
-              <p className="text-slate-600">123 Wellness Way, Suite 100<br/>Minneapolis, MN 55401</p>
-            </div>
-          </div>
-          <div className="p-8 rounded-2xl bg-white shadow-sm border border-slate-100 flex gap-6">
-            <div className="w-12 h-12 bg-primary/5 rounded-xl flex items-center justify-center text-primary">
-              <Clock className="size-6" />
-            </div>
-            <div className="space-y-2">
-              <h3 className="font-bold text-slate-900">Office Hours</h3>
-              <p className="text-slate-600">Mon-Fri: 9am - 6pm<br/>Sat: 10am - 2pm</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section className="max-w-7xl mx-auto px-6 lg:px-20 py-20">
-      <div className="flex justify-between items-end mb-12">
-        <div className="space-y-2">
-          <h2 className="text-3xl font-bold">All Locations</h2>
-          <p className="text-slate-500">Find the nearest nlit.me center to you.</p>
-        </div>
-      </div>
-      <div className="grid md:grid-cols-2 gap-8">
-        <div className="group bg-white rounded-3xl overflow-hidden shadow-sm border border-slate-100 hover:shadow-xl transition-all">
-          <div className="aspect-video relative">
-            <img 
-              alt="Apple Valley Clinic" 
-              className="w-full h-full object-cover" 
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDclohcdBOyNCOGBrqF6iJuhXyHtbmw4CUdw-OqNoaYUosAojShgto8UUPTHwmgz9KntLFXpN7GI5spYfVDPzT18naT7JJCkb4qROzt5B3eDvesJYT5S6p8QE_WEzAchAwi_YAmmnzp7_GsO5I9ZhyHBJLSHw3Wubli8fwDc4aO6Y476ayqs1Dx-nbhAinNbYtuaPe8VhSaOXeEgA1uGedg7wgjYO5FXIjyTP4ZCp99AMjZfj7JeBvjoNLg7gDXsug261cYBNoCpNKf"
-              referrerPolicy="no-referrer"
-            />
-            <div className="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold">Apple Valley</div>
-          </div>
-          <div className="p-8 space-y-4">
-            <h3 className="text-xl font-bold">Apple Valley Clinic</h3>
-            <p className="text-slate-600 text-sm">7654 Gardenia Lane, Apple Valley, MN 55124</p>
-            <a className="inline-flex items-center gap-2 text-primary font-bold text-sm hover:underline" href="#">
-              Get Directions <ArrowRight className="size-4" />
-            </a>
-          </div>
-        </div>
-        <div className="group bg-white rounded-3xl overflow-hidden shadow-sm border border-slate-100 hover:shadow-xl transition-all">
-          <div className="aspect-video relative">
-            <img 
-              alt="White Bear Lake Clinic" 
-              className="w-full h-full object-cover" 
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuBA_WVr1l5P2ZcL61N8A-i7anZthF2CSQTZrNO3oLdx7vN2atSgNTx4dyS-bOeykRkUSsXHSK0xPpTE231cs00Le7BkCkGP6l-BQ5PH3zREM5kR7iGLS3xvAuwhG6mGAiFoDZN8WmMJIVX1_1lyC1QYA-30EmRuPEYb452ZlqiflIICqn5htkICg4ZLpBVucIgtnfseqzO5EfsZUSx9T8ir4uuTEgyhKX-XBcanW8TikS6D7e5xwpdNP99tPQUiP2m18Z56XqmnvNuT"
-              referrerPolicy="no-referrer"
-            />
-            <div className="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold">White Bear Lake</div>
-          </div>
-          <div className="p-8 space-y-4">
-            <h3 className="text-xl font-bold">White Bear Lake Clinic</h3>
-            <p className="text-slate-600 text-sm">3321 Birch Street, White Bear Lake, MN 55110</p>
-            <a className="inline-flex items-center gap-2 text-primary font-bold text-sm hover:underline" href="#">
-              Get Directions <ArrowRight className="size-4" />
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section className="max-w-7xl mx-auto px-6 lg:px-20 py-24">
-          <div className="bg-primary/5 rounded-[3rem] overflow-hidden border border-primary/10">
-        <div className="grid lg:grid-cols-2">
-          <div className="hidden lg:block relative">
-            <img 
-              alt="Professional working" 
-              className="w-full h-full object-cover" 
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuChHtGMSasWpbQU7mlUFf0y3YxhK5ZLP89UNblLat6jPWzmhZySTWJEUYKR4hoXXOjYwaPPrxmVwO86bDMKXMzAxwLr3-Da7YIKX9kclcswIb3bf5mIVr9fMW-QGj8HsBbu1wrz6FR4d2JVruywvKpkrjYX9sqGBWBfSzSx4TnBETyMqSL5zh3JYOuUBkp7Ka8CQ5q7zNPuSEsdw7m52H_P3wdJZs3AusTqNMaEMEMtMaYjFY61zsE_oZ6VEizW1u6Kk77erJLS-jvO"
-              referrerPolicy="no-referrer"
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent to-primary/5"></div>
-          </div>
-            <div className="p-8 lg:p-16 space-y-8 bg-white/40">
-            <div>
-              <h2 className="text-3xl font-bold text-slate-900 mb-4">Ask a Question</h2>
-              <p className="text-slate-600">Can't find what you're looking for? Send us a message and our team will get back to you within 24 hours.</p>
-            </div>
-            <form className="space-y-6" onSubmit={handleContactSubmit}>
-              {contactSuccess && (
-                <p className="text-sm font-medium text-emerald-600">
-                  {contactSuccess}
-                </p>
-              )}
-              {contactError && (
-                <p className="text-sm font-medium text-red-600">
-                  {contactError}
-                </p>
-              )}
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label className="text-sm font-semibold text-slate-700">Full Name</label>
-                  <input
-                    className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
-                    placeholder="John Doe"
-                    type="text"
-                    value={contactName}
-                    onChange={(e) => setContactName(e.target.value)}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-semibold text-slate-700">Email Address</label>
-                  <input
-                    className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
-                    placeholder="john@example.com"
-                    type="email"
-                    value={contactEmail}
-                    onChange={(e) => setContactEmail(e.target.value)}
-                  />
-                </div>
+      <section className="bg-white/50 py-20 border-y border-slate-200">
+        <div className="max-w-7xl mx-auto px-6 lg:px-20">
+          <h2 className="text-3xl font-bold mb-12 flex items-center gap-3">
+            <span className="material-symbols-outlined text-primary">info</span>
+            Contact Information
+          </h2>
+          <div className="grid md:grid-cols-2 gap-12">
+            <div className="p-8 rounded-2xl bg-white shadow-sm border border-slate-100 flex gap-6">
+              <div className="w-12 h-12 bg-primary/5 rounded-xl flex items-center justify-center text-primary">
+                <MapPin className="size-6" />
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-semibold text-slate-700">Your Message</label>
-                <textarea
-                  className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
-                  placeholder="Enter your message"
-                  rows={4}
-                  value={contactMessage}
-                  onChange={(e) => setContactMessage(e.target.value)}
-                ></textarea>
+                <h3 className="font-bold text-slate-900">Main Headquarters</h3>
+                <p className="text-slate-600">
+                  123 Wellness Way, Suite 100
+                  <br />
+                  Minneapolis, MN 55401
+                </p>
               </div>
-              <button
-                className="w-full bg-primary text-white font-bold py-4 rounded-xl hover:bg-opacity-90 transition-all shadow-lg flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
-                type="submit"
-                disabled={isSending}
-              >
-                {isSending ? 'Sending...' : 'Send Message'}
-                <span className="material-symbols-outlined">send</span>
-              </button>
-            </form>
+            </div>
+            <div className="p-8 rounded-2xl bg-white shadow-sm border border-slate-100 flex gap-6">
+              <div className="w-12 h-12 bg-primary/5 rounded-xl flex items-center justify-center text-primary">
+                <Clock className="size-6" />
+              </div>
+              <div className="space-y-2">
+                <h3 className="font-bold text-slate-900">Office Hours</h3>
+                <p className="text-slate-600">
+                  Mon-Fri: 9am - 6pm
+                  <br />
+                  Sat: 10am - 2pm
+                </p>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
-  </motion.div>
+      </section>
+
+      {/* <section className="max-w-7xl mx-auto px-6 lg:px-20 py-20">
+        <div className="flex justify-between items-end mb-12">
+          <div className="space-y-2">
+            <h2 className="text-3xl font-bold">All Locations</h2>
+            <p className="text-slate-500">Find the nearest nlit.me center to you.</p>
+          </div>
+        </div>
+        <div className="grid md:grid-cols-2 gap-8">
+          <div className="group bg-white rounded-3xl overflow-hidden shadow-sm border border-slate-100 hover:shadow-xl transition-all">
+            <div className="aspect-video relative">
+              <img
+                alt="Apple Valley Clinic"
+                className="w-full h-full object-cover"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDclohcdBOyNCOGBrqF6iJuhXyHtbmw4CUdw-OqNoaYUosAojShgto8UUPTHwmgz9KntLFXpN7GI5spYfVDPzT18naT7JJCkb4qROzt5B3eDvesJYT5S6p8QE_WEzAchAwi_YAmmnzp7_GsO5I9ZhyHBJLSHw3Wubli8fwDc4aO6Y476ayqs1Dx-nbhAinNbYtuaPe8VhSaOXeEgA1uGedg7wgjYO5FXIjyTP4ZCp99AMjZfj7JeBvjoNLg7gDXsug261cYBNoCpNKf"
+                referrerPolicy="no-referrer"
+              />
+              <div className="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold">Apple Valley</div>
+            </div>
+            <div className="p-8 space-y-4">
+              <h3 className="text-xl font-bold">Apple Valley Clinic</h3>
+              <p className="text-slate-600 text-sm">7654 Gardenia Lane, Apple Valley, MN 55124</p>
+              <a className="inline-flex items-center gap-2 text-primary font-bold text-sm hover:underline" href="#">
+                Get Directions <ArrowRight className="size-4" />
+              </a>
+            </div>
+          </div>
+          <div className="group bg-white rounded-3xl overflow-hidden shadow-sm border border-slate-100 hover:shadow-xl transition-all">
+            <div className="aspect-video relative">
+              <img
+                alt="White Bear Lake Clinic"
+                className="w-full h-full object-cover"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBA_WVr1l5P2ZcL61N8A-i7anZthF2CSQTZrNO3oLdx7vN2atSgNTx4dyS-bOeykRkUSsXHSK0xPpTE231cs00Le7BkCkGP6l-BQ5PH3zREM5kR7iGLS3xvAuwhG6mGAiFoDZN8WmMJIVX1_1lyC1QYA-30EmRuPEYb452ZlqiflIICqn5htkICg4ZLpBVucIgtnfseqzO5EfsZUSx9T8ir4uuTEgyhKX-XBcanW8TikS6D7e5xwpdNP99tPQUiP2m18Z56XqmnvNuT"
+                referrerPolicy="no-referrer"
+              />
+              <div className="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold">White Bear Lake</div>
+            </div>
+            <div className="p-8 space-y-4">
+              <h3 className="text-xl font-bold">White Bear Lake Clinic</h3>
+              <p className="text-slate-600 text-sm">3321 Birch Street, White Bear Lake, MN 55110</p>
+              <a className="inline-flex items-center gap-2 text-primary font-bold text-sm hover:underline" href="#">
+                Get Directions <ArrowRight className="size-4" />
+              </a>
+            </div>
+          </div>
+        </div>
+      </section> */}
+
+      <section className="max-w-7xl mx-auto px-6 lg:px-20 py-24">
+        <div className="bg-primary/5 rounded-[3rem] overflow-hidden border border-primary/10">
+          <div className="grid lg:grid-cols-2">
+            <div className="hidden lg:block relative">
+              <img
+                alt="Professional working"
+                className="w-full h-full object-cover"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuChHtGMSasWpbQU7mlUFf0y3YxhK5ZLP89UNblLat6jPWzmhZySTWJEUYKR4hoXXOjYwaPPrxmVwO86bDMKXMzAxwLr3-Da7YIKX9kclcswIb3bf5mIVr9fMW-QGj8HsBbu1wrz6FR4d2JVruywvKpkrjYX9sqGBWBfSzSx4TnBETyMqSL5zh3JYOuUBkp7Ka8CQ5q7zNPuSEsdw7m52H_P3wdJZs3AusTqNMaEMEMtMaYjFY61zsE_oZ6VEizW1u6Kk77erJLS-jvO"
+                referrerPolicy="no-referrer"
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent to-primary/5"></div>
+            </div>
+            <div className="p-8 lg:p-16 space-y-8 bg-white/40">
+              <div>
+                <h2 className="text-3xl font-bold text-slate-900 mb-4">Ask a Question</h2>
+                <p className="text-slate-600">
+                  Can't find what you're looking for? Send us a message and our team will get back to you within 24 hours.
+                </p>
+              </div>
+              <form className="space-y-6" onSubmit={handleContactSubmit}>
+                {contactSuccess && <p className="text-sm font-medium text-emerald-600">{contactSuccess}</p>}
+                {contactError && <p className="text-sm font-medium text-red-600">{contactError}</p>}
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label className="text-sm font-semibold text-slate-700">Full Name</label>
+                    <input
+                      className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
+                      placeholder="John Doe"
+                      type="text"
+                      value={contactName}
+                      onChange={(e) => setContactName(e.target.value)}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-semibold text-slate-700">Email Address</label>
+                    <input
+                      className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
+                      placeholder="john@example.com"
+                      type="email"
+                      value={contactEmail}
+                      onChange={(e) => setContactEmail(e.target.value)}
+                    />
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-semibold text-slate-700">Your Message</label>
+                  <textarea
+                    className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
+                    placeholder="Enter your message"
+                    rows={4}
+                    value={contactMessage}
+                    onChange={(e) => setContactMessage(e.target.value)}
+                  ></textarea>
+                </div>
+                <button
+                  className="w-full bg-primary text-white font-bold py-4 rounded-xl hover:bg-opacity-90 transition-all shadow-lg flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
+                  type="submit"
+                  disabled={isSending}
+                >
+                  {isSending ? "Sending..." : "Send Message"}
+                  <span className="material-symbols-outlined">send</span>
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+    </motion.div>
   );
 };
 
-const Appointment = ({ setCurrentPage }: { setCurrentPage: (page: string) => void, key?: string }) => {
-  const [fullName, setFullName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [date, setDate] = useState('');
-  const [timeSlot, setTimeSlot] = useState('');
-  const [reason, setReason] = useState('');
+const Appointment = ({ setCurrentPage }: { setCurrentPage: (page: string) => void; key?: string }) => {
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [date, setDate] = useState("");
+  const [timeSlot, setTimeSlot] = useState("");
+  const [reason, setReason] = useState("");
   const [services, setServices] = useState<{ _id: string; name: string }[]>([]);
-  const [serviceId, setServiceId] = useState('');
+  const [serviceId, setServiceId] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [submitSuccess, setSubmitSuccess] = useState<string | null>(null);
@@ -1916,26 +1984,26 @@ const Appointment = ({ setCurrentPage }: { setCurrentPage: (page: string) => voi
     setSubmitSuccess(null);
 
     if (!fullName.trim() || !email.trim() || !phone.trim() || !date || !timeSlot) {
-      setSubmitError('Please fill in your name, email, phone, date, and time.');
+      setSubmitError("Please fill in your name, email, phone, date, and time.");
       return;
     }
 
     if (!isValidEmail(email.trim())) {
-      setSubmitError('Please enter a valid email address.');
+      setSubmitError("Please enter a valid email address.");
       return;
     }
 
     if (!isValidPhone(phone.trim())) {
-      setSubmitError('Please enter a valid phone number.');
+      setSubmitError("Please enter a valid phone number.");
       return;
     }
 
     try {
       setIsSubmitting(true);
       const res = await fetch(`${API_BASE_URL}/api/appointments`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           name: fullName.trim(),
@@ -1944,252 +2012,267 @@ const Appointment = ({ setCurrentPage }: { setCurrentPage: (page: string) => voi
           date,
           time: timeSlot,
           notes: reason.trim() || undefined,
-          serviceId: serviceId || undefined
-        })
+          serviceId: serviceId || undefined,
+        }),
       });
 
       if (!res.ok) {
         const errorBody = await res.json().catch(() => null);
-        throw new Error(errorBody?.message || 'Unable to book appointment. Please try again.');
+        throw new Error(errorBody?.message || "Unable to book appointment. Please try again.");
       }
 
-      setSubmitSuccess('Your appointment request has been sent. We will contact you shortly.');
-      setFullName('');
-      setPhone('');
-      setEmail('');
-      setDate('');
-      setTimeSlot('Morning (9 AM - 12 PM)');
-      setReason('');
-      setServiceId('');
+      setSubmitSuccess("Your appointment request has been sent. We will contact you shortly.");
+      setFullName("");
+      setPhone("");
+      setEmail("");
+      setDate("");
+      setTimeSlot("Morning (9 AM - 12 PM)");
+      setReason("");
+      setServiceId("");
     } catch (err: any) {
-      setSubmitError(err.message || 'Something went wrong. Please try again.');
+      setSubmitError(err.message || "Something went wrong. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.5 }}
-    >
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }}>
       <div className="max-w-7xl mx-auto px-6 py-10">
-      <div className="flex flex-col gap-6 md:gap-12 md:flex-row items-center bg-white rounded-xl overflow-hidden shadow-sm border border-slate-200">
-        <div 
-          className="w-full md:w-1/2 h-[300px] md:h-[500px] bg-center bg-no-repeat bg-cover" 
-          style={{ backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuDb_-TNHzvzqzAg2-_UXo9fhoV3xQDurNB8W_ZvdLr5tuWj3P82M8QnE924hy3QLdE4FiOWLiu-Cvy_2THI812PTIgCwssqduqiK0OwX0_A2euZCcpDwi2NN8fYR1Md0xX3FEaczyhKX3J4pABiCOkDogqkGch6GgUfRMrbMFqB-mkBcgu_Gj2PbTDhQKrzTRKcEgOErKXPJTt4SN3DNqyG9-s0AArd3ViIxVH4XhtQlkgG2JwKPSxkkSB_maczQLuQtsCvv6ZqE2pG')" }}
-        >
-        </div>
-        <div className="flex flex-col gap-6 p-8 md:w-1/2">
-          <div className="flex flex-col gap-3">
-            <span className="text-primary font-bold tracking-widest text-xs uppercase">Mental Well-being</span>
-            <h1 className="text-slate-900 text-4xl md:text-5xl font-black leading-tight tracking-tight">
-              Book an Appointment
-            </h1>
-            <p className="text-slate-600 text-base md:text-lg leading-relaxed">
-              Take the first step towards a healthier mind. Our specialists are here to guide you through your journey of self-discovery and healing.
-            </p>
-          </div>
-          <div className="flex gap-4 items-center">
-            <div className="flex -space-x-2">
-              {[1, 2, 3].map(i => (
-                <div key={i} className="size-8 rounded-full border-2 border-white bg-slate-200"></div>
-              ))}
+        <div className="flex flex-col gap-6 md:gap-12 md:flex-row items-center bg-white rounded-xl overflow-hidden shadow-sm border border-slate-200">
+          <div
+            className="w-full md:w-1/2 h-[300px] md:h-[500px] bg-center bg-no-repeat bg-cover"
+            style={{
+              backgroundImage:
+                "url('https://lh3.googleusercontent.com/aida-public/AB6AXuDb_-TNHzvzqzAg2-_UXo9fhoV3xQDurNB8W_ZvdLr5tuWj3P82M8QnE924hy3QLdE4FiOWLiu-Cvy_2THI812PTIgCwssqduqiK0OwX0_A2euZCcpDwi2NN8fYR1Md0xX3FEaczyhKX3J4pABiCOkDogqkGch6GgUfRMrbMFqB-mkBcgu_Gj2PbTDhQKrzTRKcEgOErKXPJTt4SN3DNqyG9-s0AArd3ViIxVH4XhtQlkgG2JwKPSxkkSB_maczQLuQtsCvv6ZqE2pG')",
+            }}
+          ></div>
+          <div className="flex flex-col gap-6 p-8 md:w-1/2">
+            <div className="flex flex-col gap-3">
+              <span className="text-primary font-bold tracking-widest text-xs uppercase">Mental Well-being</span>
+              <h1 className="text-slate-900 text-4xl md:text-5xl font-black leading-tight tracking-tight">Book an Appointment</h1>
+              <p className="text-slate-600 text-base md:text-lg leading-relaxed">
+                Take the first step towards a healthier mind. Our specialists are here to guide you through your journey of self-discovery and
+                healing.
+              </p>
             </div>
-            <span className="text-sm font-medium text-slate-500">Joined by 500+ happy clients</span>
-          </div>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 py-10">
-        <div className="lg:col-span-2 flex flex-col gap-8">
-          <section className="bg-white p-8 rounded-xl border border-slate-200 shadow-sm">
-            <h2 className="text-2xl font-bold text-slate-900 mb-6">Appointment Request Form</h2>
-            <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <label className="flex flex-col gap-2">
-                  <span className="text-slate-700 text-sm font-semibold">
-                    Full Name <span className="text-red-500">*</span>
-                  </span>
-                  <div className="relative">
-                    <User className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 size-5" />
-                    <input
-                      className="w-full pl-11 pr-4 py-3 rounded-lg border border-slate-200 bg-slate-50 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
-                      placeholder="Enter your full name"
-                      type="text"
-                      value={fullName}
-                      onChange={(e) => setFullName(e.target.value)}
-                    />
-                  </div>
-                </label>
-                <label className="flex flex-col gap-2">
-                  <span className="text-slate-700 text-sm font-semibold">
-                    Email Address <span className="text-red-500">*</span>
-                  </span>
-                  <div className="relative">
-                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 size-5" />
-                    <input
-                      className="w-full pl-11 pr-4 py-3 rounded-lg border border-slate-200 bg-slate-50 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
-                      placeholder="Enter your email address"
-                      type="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                    />
-                  </div>
-                </label>
-                <label className="flex flex-col gap-2">
-                  <span className="text-slate-700 text-sm font-semibold">
-                    Phone Number <span className="text-red-500">*</span>
-                  </span>
-                  <div className="relative">
-                    <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 size-5" />
-                    <input
-                      className="w-full pl-11 pr-4 py-3 rounded-lg border border-slate-200 bg-slate-50 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
-                      placeholder="Enter your phone number"
-                      type="tel"
-                      value={phone}
-                      onChange={(e) => {
-                        const digits = e.target.value.replace(/\D/g, '').slice(0, 10);
-                        setPhone(digits);
-                      }}
-                    />
-                  </div>
-                </label>
-                <label className="flex flex-col gap-2">
-                  <span className="text-slate-700 text-sm font-semibold">
-                    Preferred Date <span className="text-red-500">*</span>
-                  </span>
-                  <div className="relative">
-                    <input
-                      className="w-full px-4 py-3 rounded-lg border border-slate-200 bg-slate-50 text-slate-400 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
-                      type="date"
-                      value={date}
-                      onChange={(e) => setDate(e.target.value)}
-                    />
-                  </div>
-                </label>
-                <label className="flex flex-col gap-2">
-                  <span className="text-slate-700 text-sm font-semibold">
-                    Preferred Time Slot <span className="text-red-500">*</span>
-                  </span>
-                  <div className="relative">
-                    <select
-                      className="w-full pl-4 pr-10 py-3 rounded-lg border border-slate-200 bg-slate-50 text-slate-400 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all appearance-none"
-                      value={timeSlot}
-                      onChange={(e) => setTimeSlot(e.target.value)}
-                    >
-                      <option value="">Select a time slot</option>
-                      <option value="Morning (9 AM - 12 PM)">Morning (9 AM - 12 PM)</option>
-                      <option value="Afternoon (12 PM - 4 PM)">Afternoon (12 PM - 4 PM)</option>
-                      <option value="Evening (4 PM - 8 PM)">Evening (4 PM - 8 PM)</option>
-                    </select>
-                    <Clock className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 size-5 pointer-events-none" />
-                  </div>
-                </label>
-                <label className="flex flex-col gap-2">
-                  <span className="text-slate-700 text-sm font-semibold">Service Interest</span>
-                  <div className="relative">
-                    <LayoutDashboard className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 size-5" />
-                    <select
-                      className="w-full pl-11 pr-4 py-3 rounded-lg border border-slate-200 bg-slate-50 text-slate-400 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all appearance-none"
-                      value={serviceId}
-                      onChange={(e) => setServiceId(e.target.value)}
-                    >
-                      <option value="">Select a service</option>
-                      {services.map((service) => (
-                        <option key={service._id} value={service._id}>
-                          {service.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </label>
+            <div className="flex gap-4 items-center">
+              <div className="flex -space-x-2">
+                {[1, 2, 3].map((i) => (
+                  <div key={i} className="size-8 rounded-full border-2 border-white bg-slate-200"></div>
+                ))}
               </div>
-              <label className="flex flex-col gap-2">
-                <span className="text-slate-700 text-sm font-semibold">Reason for Appointment</span>
-                <textarea
-                  className="w-full p-4 rounded-lg border border-slate-200 bg-slate-50 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
-                  placeholder="Enter the reason for your appointment"
-                  rows={4}
-                  value={reason}
-                  onChange={(e) => setReason(e.target.value)}
-                ></textarea>
-              </label>
-              {submitError && (
-                <p className="text-sm text-red-600 font-medium">{submitError}</p>
-              )}
-              {submitSuccess && (
-                <p className="text-sm text-emerald-600 font-medium">{submitSuccess}</p>
-              )}
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full md:w-max px-10 py-4 bg-primary text-white font-bold rounded-xl hover:shadow-lg hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
-              >
-                <span>{isSubmitting ? 'Booking...' : 'Book an Appointment'}</span>
-                {!isSubmitting && <ArrowRight className="size-5" />}
-              </button>
-            </form>
-          </section>
-
-          <section>
-            <h3 className="text-xl font-bold mb-6">What happens next?</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {[
-                { title: "1. Fill out form", desc: "Provide your basic details and preference for the session.", icon: <FileText className="size-6" /> },
-                { title: "2. Specialist call", desc: "Our intake specialist will call you for a brief assessment.", icon: <Phone className="size-6" /> },
-                { title: "3. Match with therapist", desc: "We pair you with the best professional for your specific needs.", icon: <User className="size-6" /> }
-              ].map((step, i) => (
-                <div key={i} className="flex flex-col gap-4 p-8 bg-white border border-slate-200 rounded-2xl shadow-sm">
-                  <div className="size-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
-                    {step.icon}
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-lg mb-1">{step.title}</h4>
-                    <p className="text-sm text-slate-600">{step.desc}</p>
-                  </div>
-                </div>
-              ))}
+              <span className="text-sm font-medium text-slate-500">Joined by 500+ happy clients</span>
             </div>
-          </section>
+          </div>
         </div>
 
-        <aside className="flex flex-col gap-10">
-          <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
-            <h3 className="text-lg font-bold mb-5 flex items-center gap-2">
-              <Brain className="text-primary size-5" />
-              Our Specialties
-            </h3>
-            <ul className="flex flex-col gap-3">
-              {['Anxiety', 'Relationships', 'Mood Disorders', 'Depression', 'ADHD', 'Learning Problems', 'OCD', 'Anger Management'].map(s => (
-                <li key={s} className="flex items-center gap-3 p-2 hover:bg-slate-50 rounded-lg cursor-pointer">
-                  <CheckCircle2 className="text-primary/60 size-4" />
-                  <span className="text-sm font-medium">{s}</span>
-                </li>
-              ))}
-            </ul>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 py-10">
+          <div className="lg:col-span-2 flex flex-col gap-8">
+            <section className="bg-white p-8 rounded-xl border border-slate-200 shadow-sm">
+              <h2 className="text-2xl font-bold text-slate-900 mb-6">Appointment Request Form</h2>
+              <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <label className="flex flex-col gap-2">
+                    <span className="text-slate-700 text-sm font-semibold"></span>
+                    <div className="relative">
+                      <User className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 size-5" />
+                      <input
+                        className="w-full pl-11 pr-4 py-3 rounded-lg border border-slate-200 bg-slate-50 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
+                        placeholder="Enter your full name"
+                        type="text"
+                        value={fullName}
+                        onChange={(e) => setFullName(e.target.value)}
+                      />
+                    </div>
+                  </label>
+                  <label className="flex flex-col gap-2">
+                    <span className="text-slate-700 text-sm font-semibold">
+                      Email Address <span className="text-red-500">*</span>
+                    </span>
+                    <div className="relative">
+                      <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 size-5" />
+                      <input
+                        className="w-full pl-11 pr-4 py-3 rounded-lg border border-slate-200 bg-slate-50 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
+                        placeholder="Enter your email address"
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                      />
+                    </div>
+                  </label>
+                  <label className="flex flex-col gap-2">
+                    <span className="text-slate-700 text-sm font-semibold">
+                      Phone Number <span className="text-red-500">*</span>
+                    </span>
+                    <div className="relative">
+                      <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 size-5" />
+                      <input
+                        className="w-full pl-11 pr-4 py-3 rounded-lg border border-slate-200 bg-slate-50 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
+                        placeholder="Enter your phone number"
+                        type="tel"
+                        value={phone}
+                        onChange={(e) => {
+                          const digits = e.target.value.replace(/\D/g, "").slice(0, 10);
+                          setPhone(digits);
+                        }}
+                      />
+                    </div>
+                  </label>
+                  <label className="flex flex-col gap-2">
+                    <span className="text-slate-700 text-sm font-semibold">
+                      Preferred Date <span className="text-red-500">*</span>
+                    </span>
+                    <div className="relative">
+                      <input
+                        className="w-full px-4 py-3 rounded-lg border border-slate-200 bg-slate-50 text-slate-400 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
+                        type="date"
+                        value={date}
+                        onChange={(e) => setDate(e.target.value)}
+                      />
+                    </div>
+                  </label>
+                  <label className="flex flex-col gap-2">
+                    <span className="text-slate-700 text-sm font-semibold">
+                      Preferred Time Slot <span className="text-red-500">*</span>
+                    </span>
+                    <div className="relative">
+                      <select
+                        className="w-full pl-4 pr-10 py-3 rounded-lg border border-slate-200 bg-slate-50 text-slate-400 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all appearance-none"
+                        value={timeSlot}
+                        onChange={(e) => setTimeSlot(e.target.value)}
+                      >
+                        <option value="">Select a time slot</option>
+                        <option value="Morning (9 AM - 12 PM)">Morning (9 AM - 12 PM)</option>
+                        <option value="Afternoon (12 PM - 4 PM)">Afternoon (12 PM - 4 PM)</option>
+                        <option value="Evening (4 PM - 8 PM)">Evening (4 PM - 8 PM)</option>
+                      </select>
+                      <Clock className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 size-5 pointer-events-none" />
+                    </div>
+                  </label>
+                  <label className="flex flex-col gap-2">
+                    <span className="text-slate-700 text-sm font-semibold">Service Interest</span>
+                    <div className="relative">
+                      <LayoutDashboard className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 size-5" />
+                      <select
+                        className="w-full pl-11 pr-4 py-3 rounded-lg border border-slate-200 bg-slate-50 text-slate-400 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all appearance-none"
+                        value={serviceId}
+                        onChange={(e) => setServiceId(e.target.value)}
+                      >
+                        <option value="">Select a service</option>
+                        {services.map((service) => (
+                          <option key={service._id} value={service._id}>
+                            {service.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </label>
+                </div>
+                <label className="flex flex-col gap-2">
+                  <span className="text-slate-700 text-sm font-semibold">Reason for Appointment</span>
+                  <textarea
+                    className="w-full p-4 rounded-lg border border-slate-200 bg-slate-50 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
+                    placeholder="Enter the reason for your appointment"
+                    rows={4}
+                    value={reason}
+                    onChange={(e) => setReason(e.target.value)}
+                  ></textarea>
+                </label>
+                {submitError && <p className="text-sm text-red-600 font-medium">{submitError}</p>}
+                {submitSuccess && <p className="text-sm text-emerald-600 font-medium">{submitSuccess}</p>}
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full md:w-max px-10 py-4 bg-primary text-white font-bold rounded-xl hover:shadow-lg hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
+                >
+                  <span>{isSubmitting ? "Booking..." : "Book an Appointment"}</span>
+                  {!isSubmitting && <ArrowRight className="size-5" />}
+                </button>
+              </form>
+            </section>
+
+            <section>
+              <h3 className="text-xl font-bold mb-6">What happens next?</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {[
+                  {
+                    title: "1. Fill out form",
+                    desc: "Provide your basic details and preference for the session.",
+                    icon: <FileText className="size-6" />,
+                  },
+                  {
+                    title: "2. Specialist call",
+                    desc: "Our intake specialist will call you for a brief assessment.",
+                    icon: <Phone className="size-6" />,
+                  },
+                  {
+                    title: "3. Match with therapist",
+                    desc: "We pair you with the best professional for your specific needs.",
+                    icon: <User className="size-6" />,
+                  },
+                ].map((step, i) => (
+                  <div key={i} className="flex flex-col gap-4 p-8 bg-white border border-slate-200 rounded-2xl shadow-sm">
+                    <div className="size-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center">{step.icon}</div>
+                    <div>
+                      <h4 className="font-bold text-lg mb-1">{step.title}</h4>
+                      <p className="text-sm text-slate-600">{step.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
           </div>
-          <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
-            <h3 className="text-lg font-bold mb-5 flex items-center gap-2">
-              <ClipboardList className="text-primary size-5" />
-              Quick Links
-            </h3>
-            <ul className="flex flex-col gap-2">
-              {['About Us', 'Our Services', 'Contacts', 'Shop', 'Image Credits'].map(link => (
-                <li key={link}>
-                  <button onClick={() => setCurrentPage(link === 'About Us' ? 'about' : link === 'Our Services' ? 'services' : link === 'Contacts' ? 'contact' : link === 'Shop' ? 'shop' : 'imageCredits')} className="text-sm text-slate-600 hover:text-primary py-1 block text-left w-full">
-                    {link}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </aside>
+
+          <aside className="flex flex-col gap-10">
+            <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+              <h3 className="text-lg font-bold mb-5 flex items-center gap-2">
+                <Brain className="text-primary size-5" />
+                Our Specialties
+              </h3>
+              <ul className="flex flex-col gap-3">
+                {["Anxiety", "Relationships", "Mood Disorders", "Depression", "ADHD", "Learning Problems", "OCD", "Anger Management"].map((s) => (
+                  <li key={s} className="flex items-center gap-3 p-2 hover:bg-slate-50 rounded-lg cursor-pointer">
+                    <CheckCircle2 className="text-primary/60 size-4" />
+                    <span className="text-sm font-medium">{s}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+              <h3 className="text-lg font-bold mb-5 flex items-center gap-2">
+                <ClipboardList className="text-primary size-5" />
+                Quick Links
+              </h3>
+              <ul className="flex flex-col gap-2">
+                {["About Us", "Our Services", "Contacts", "Shop", "Image Credits"].map((link) => (
+                  <li key={link}>
+                    <button
+                      onClick={() =>
+                        setCurrentPage(
+                          link === "About Us"
+                            ? "about"
+                            : link === "Our Services"
+                              ? "services"
+                              : link === "Contacts"
+                                ? "contact"
+                                : link === "Shop"
+                                  ? "shop"
+                                  : "imageCredits",
+                        )
+                      }
+                      className="text-sm text-slate-600 hover:text-primary py-1 block text-left w-full"
+                    >
+                      {link}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </aside>
+        </div>
       </div>
-    </div>
-  </motion.div>
+    </motion.div>
   );
 };
 
@@ -2208,19 +2291,17 @@ const ComingSoon = ({ key }: { key?: string }) => (
       <span className="mb-6 inline-block rounded-full bg-primary/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-primary">
         Coming Soon
       </span>
-      <h1 className="font-serif text-5xl font-bold leading-tight text-primary md:text-7xl">
-        Great things are on the horizon
-      </h1>
+      <h1 className="font-serif text-5xl font-bold leading-tight text-primary md:text-7xl">Great things are on the horizon</h1>
       <p className="mt-8 text-lg leading-relaxed text-slate-600 md:text-xl">
         Something big is brewing! Our store is in the works and will be launching soon!
       </p>
       <div className="mt-12 flex flex-wrap justify-center gap-4 md:gap-8">
         {[
-          { val: '05', label: 'Days' },
-          { val: '12', label: 'Hours' },
-          { val: '45', label: 'Minutes' },
-          { val: '30', label: 'Seconds' }
-        ].map(item => (
+          { val: "05", label: "Days" },
+          { val: "12", label: "Hours" },
+          { val: "45", label: "Minutes" },
+          { val: "30", label: "Seconds" },
+        ].map((item) => (
           <div key={item.label} className="flex min-w-[100px] flex-col gap-2">
             <div className="flex h-20 items-center justify-center rounded-2xl bg-white text-3xl font-bold text-primary shadow-xl shadow-primary/5">
               {item.val}
@@ -2230,20 +2311,21 @@ const ComingSoon = ({ key }: { key?: string }) => (
         ))}
       </div>
       <div className="mt-16 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-        <input className="w-full max-w-sm rounded-lg border-primary/10 bg-white px-6 py-4 shadow-sm focus:border-primary focus:ring-primary sm:w-80" placeholder="Enter your email" type="email"/>
-        <button className="w-full rounded-lg bg-primary px-8 py-4 font-bold text-white transition-all hover:scale-105 active:scale-95 sm:w-auto">Notify Me</button>
+        <input
+          className="w-full max-w-sm rounded-lg border-primary/10 bg-white px-6 py-4 shadow-sm focus:border-primary focus:ring-primary sm:w-80"
+          placeholder="Enter your email"
+          type="email"
+        />
+        <button className="w-full rounded-lg bg-primary px-8 py-4 font-bold text-white transition-all hover:scale-105 active:scale-95 sm:w-auto">
+          Notify Me
+        </button>
       </div>
     </div>
   </motion.div>
 );
 
 const ImageCredits = ({ key }: { key?: string }) => (
-  <motion.div
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    exit={{ opacity: 0 }}
-    transition={{ duration: 0.5 }}
-  >
+  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }}>
     <section className="relative w-full py-24 md:py-32 overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-indigo-50 to-orange-50/30 -z-10"></div>
       <div className="max-w-7xl mx-auto px-6 text-center">
@@ -2258,10 +2340,26 @@ const ImageCredits = ({ key }: { key?: string }) => (
     <main className="max-w-7xl mx-auto px-6 py-20 w-full">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-16">
         {[
-          { provider: "Streamline", desc: "Premium icons and detailed vector illustrations used throughout the platform to enhance visual clarity and mental wellness guidance.", icon: <LayoutDashboard className="size-6" /> },
-          { provider: "Pexels", desc: "High-quality, diverse stock photography focusing on serenity, natural wellness, and professional mental health environments.", icon: <Camera className="size-6" /> },
-          { provider: "Freepik", desc: "Elegant vector graphics, background patterns, and creative assets that form the foundation of our sophisticated brand aesthetic.", icon: <ClipboardList className="size-6" /> },
-          { provider: "Unsplash", desc: "Premium atmospheric imagery and artistic landscape shots curated to provide a calming, inviting experience for our visitors.", icon: <Camera className="size-6" /> }
+          {
+            provider: "Streamline",
+            desc: "Premium icons and detailed vector illustrations used throughout the platform to enhance visual clarity and mental wellness guidance.",
+            icon: <LayoutDashboard className="size-6" />,
+          },
+          {
+            provider: "Pexels",
+            desc: "High-quality, diverse stock photography focusing on serenity, natural wellness, and professional mental health environments.",
+            icon: <Camera className="size-6" />,
+          },
+          {
+            provider: "Freepik",
+            desc: "Elegant vector graphics, background patterns, and creative assets that form the foundation of our sophisticated brand aesthetic.",
+            icon: <ClipboardList className="size-6" />,
+          },
+          {
+            provider: "Unsplash",
+            desc: "Premium atmospheric imagery and artistic landscape shots curated to provide a calming, inviting experience for our visitors.",
+            icon: <Camera className="size-6" />,
+          },
         ].map((item, i) => (
           <div key={i} className="group border-t border-slate-200 pt-8">
             <div className="flex items-start justify-between mb-4">
@@ -2269,9 +2367,7 @@ const ImageCredits = ({ key }: { key?: string }) => (
                 <span className="text-xs font-bold tracking-[0.2em] text-primary/50 uppercase">Provider</span>
                 <h3 className="text-2xl font-bold text-slate-900 mt-1">{item.provider}</h3>
               </div>
-              <div className="text-slate-300 group-hover:text-primary transition-colors">
-                {item.icon}
-              </div>
+              <div className="text-slate-300 group-hover:text-primary transition-colors">{item.icon}</div>
             </div>
             <p className="text-slate-600 leading-relaxed text-lg">{item.desc}</p>
             <a className="inline-flex items-center gap-2 mt-6 text-primary font-bold hover:gap-3 transition-all" href="#">
@@ -2286,18 +2382,18 @@ const ImageCredits = ({ key }: { key?: string }) => (
 
 export default function App() {
   const getInitialPageFromPath = () => {
-    const rawPath = window.location.pathname.replace(/^\//, '').toLowerCase();
-    if (!rawPath || rawPath === '') return 'home';
-    if (rawPath === 'about') return 'about';
-    if (rawPath === 'services') return 'services';
-    if (rawPath === 'contact') return 'contact';
-    if (rawPath === 'appointment') return 'appointment';
-    if (rawPath === 'shop') return 'shop';
-    if (rawPath === 'image-credits' || rawPath === 'imagecredits') return 'imageCredits';
-    if (['adhd', 'anxiety', 'relationships', 'mood', 'depression', 'learning', 'ocd', 'anger'].includes(rawPath)) {
+    const rawPath = window.location.pathname.replace(/^\//, "").toLowerCase();
+    if (!rawPath || rawPath === "") return "home";
+    if (rawPath === "about") return "about";
+    if (rawPath === "services") return "services";
+    if (rawPath === "contact") return "contact";
+    if (rawPath === "appointment") return "appointment";
+    if (rawPath === "shop") return "shop";
+    if (rawPath === "image-credits" || rawPath === "imagecredits") return "imageCredits";
+    if (["adhd", "anxiety", "relationships", "mood", "depression", "learning", "ocd", "anger"].includes(rawPath)) {
       return rawPath;
     }
-    return 'home';
+    return "home";
   };
 
   const [currentPage, setCurrentPageState] = useState(getInitialPageFromPath);
@@ -2305,18 +2401,18 @@ export default function App() {
   const setCurrentPage = (page: string) => {
     setCurrentPageState(page);
 
-    let path = '/';
-    if (page === 'about') path = '/about';
-    else if (page === 'services') path = '/services';
-    else if (page === 'contact') path = '/contact';
-    else if (page === 'appointment') path = '/appointment';
-    else if (page === 'shop') path = '/shop';
-    else if (page === 'imageCredits') path = '/image-credits';
-    else if (['adhd', 'anxiety', 'relationships', 'mood', 'depression', 'learning', 'ocd', 'anger'].includes(page)) {
+    let path = "/";
+    if (page === "about") path = "/about";
+    else if (page === "services") path = "/services";
+    else if (page === "contact") path = "/contact";
+    else if (page === "appointment") path = "/appointment";
+    else if (page === "shop") path = "/shop";
+    else if (page === "imageCredits") path = "/image-credits";
+    else if (["adhd", "anxiety", "relationships", "mood", "depression", "learning", "ocd", "anger"].includes(page)) {
       path = `/${page}`;
     }
 
-    window.history.pushState({}, '', path);
+    window.history.pushState({}, "", path);
     window.scrollTo(0, 0);
   };
 
@@ -2325,8 +2421,8 @@ export default function App() {
       setCurrentPageState(getInitialPageFromPath());
     };
 
-    window.addEventListener('popstate', handlePopState);
-    return () => window.removeEventListener('popstate', handlePopState);
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
   }, []);
 
   return (
@@ -2334,16 +2430,16 @@ export default function App() {
       <Header currentPage={currentPage} setCurrentPage={setCurrentPage} />
       <main className="flex-1 overflow-hidden">
         <AnimatePresence mode="wait">
-          {currentPage === 'home' && <Home key="home" setCurrentPage={setCurrentPage} />}
-          {currentPage === 'about' && <About key="about" setCurrentPage={setCurrentPage} />}
-          {currentPage === 'services' && <Services key="services" setCurrentPage={setCurrentPage} />}
-          {['adhd', 'anxiety', 'relationships', 'mood', 'depression', 'learning', 'ocd', 'anger'].includes(currentPage) && (
+          {currentPage === "home" && <Home key="home" setCurrentPage={setCurrentPage} />}
+          {currentPage === "about" && <About key="about" setCurrentPage={setCurrentPage} />}
+          {currentPage === "services" && <Services key="services" setCurrentPage={setCurrentPage} />}
+          {["adhd", "anxiety", "relationships", "mood", "depression", "learning", "ocd", "anger"].includes(currentPage) && (
             <ServiceDetail key={currentPage} serviceId={currentPage} setCurrentPage={setCurrentPage} />
           )}
-          {currentPage === 'contact' && <Contact key="contact" />}
-          {currentPage === 'appointment' && <Appointment key="appointment" setCurrentPage={setCurrentPage} />}
-          {currentPage === 'shop' && <ComingSoon key="shop" />}
-          {currentPage === 'imageCredits' && <ImageCredits key="imageCredits" />}
+          {currentPage === "contact" && <Contact key="contact" />}
+          {currentPage === "appointment" && <Appointment key="appointment" setCurrentPage={setCurrentPage} />}
+          {currentPage === "shop" && <ComingSoon key="shop" />}
+          {currentPage === "imageCredits" && <ImageCredits key="imageCredits" />}
         </AnimatePresence>
       </main>
       <Footer setCurrentPage={setCurrentPage} />
